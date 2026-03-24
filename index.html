@@ -158,9 +158,9 @@ main{padding:12px 9px;}nav{padding:0 4px;}header{padding:0 12px;}
 <div class="toast-container" id="toastContainer"></div>
 
 <header>
-  <div class="logo">LOA <span>PARTY</span> BUILDER</div>
+  <div class="logo">LOA <span>PARTY</span> MATCH</div>
   <div class="header-right">
-    <span class="header-sub">AUTO COMPOSER</span>
+    <span class="header-sub"></span>
     <span class="theme-label" id="themeLabel">라이트</span>
     <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="다크/라이트 모드"></div>
   </div>
@@ -230,13 +230,35 @@ main{padding:12px 9px;}nav{padding:0 4px;}header{padding:0 12px;}
 </div>
 
 <div class="tab-pane" id="t2">
+
+  <!-- 레이드 이름 관리 -->
+  <div class="card">
+    <div class="section-title">레이드 이름 / 난이도 관리</div>
+    <div class="form-row fr-2">
+      <div class="ff">
+        <label>레이드 이름</label>
+        <input id="raidBaseName" placeholder="ex) 카제로스">
+      </div>
+      <div class="ff">
+        <label>난이도</label>
+        <input id="raidBaseTier" placeholder="ex) 노말">
+      </div>
+      <div class="ff fe">
+        <button class="btn btn-gold" onclick="addRaidBase()">추가</button>
+      </div>
+    </div>
+    <div id="raidBaseList"></div>
+  </div>
+  <!-- 기존 레이드 등록 -->
   <div class="card">
     <div class="section-title">레이드 등록</div>
     <div class="form-row fr-raid">
       <div class="ff"><label>레이드 이름</label>
-        <input id="raidName" type="text" placeholder="ex) 에키드나" onkeydown="if(event.key==='Enter')addRaid()"></div>
+	<select id="raidName" onchange="updateTierSelect()"></select>
+      </div>
       <div class="ff"><label>단계/난이도</label>
-        <input id="raidTier" type="text" placeholder="노말/하드/1관문" onkeydown="if(event.key==='Enter')addRaid()"></div>
+	<select id="raidTier"></select>
+      </div>
       <div class="ff"><label>입장 레벨</label>
         <input id="raidLv" type="text" inputmode="numeric" placeholder="1620" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addRaid()">
         <div class="field-error" id="err-raidLv">숫자만 입력해주세요!</div></div>
@@ -276,10 +298,41 @@ main{padding:12px 9px;}nav{padding:0 4px;}header{padding:0 12px;}
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getDatabase,ref,set,remove,push,update,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{getDatabase,ref,set,remove,push,update,onValue,get}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 const app=initializeApp({apiKey:"AIzaSyDPIMLD5b4RO5SxSUbZgUu12xUxiUGmS9s",authDomain:"lostark-party-build.firebaseapp.com",databaseURL:"https://lostark-party-build-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"lostark-party-build",storageBucket:"lostark-party-build.firebasestorage.app",messagingSenderId:"495176787080",appId:"1:495176787080:web:5adec7a58add53176deb3d"});
 const db=getDatabase(app);
-window._E={};window._R={};
+window._E={};
+window._R={};
+window._RB={}; 
+
+window.addRaidBase = async()=>{
+
+  const name=document.getElementById('raidBaseName').value.trim();
+  const tier=document.getElementById('raidBaseTier').value.trim();
+
+  if(!name || !tier)
+    return toast("레이드 이름 / 난이도 입력","error");
+
+  const baseRef = ref(db,`raidBase/${name}`);
+
+  const snap = await get(baseRef);
+
+  let data = snap.val() || {tiers:[]};
+
+  if(!data.tiers.includes(tier))
+      data.tiers.push(tier);
+
+  await set(baseRef,data);
+
+  document.getElementById("raidBaseName").value="";
+  document.getElementById("raidBaseTier").value="";
+
+  toast("레이드 난이도 추가 완료");
+
+  updateRaidSelect();   // ⭐ 추가
+  updateTierSelect();   // ⭐ 추가
+
+}
 
 window.toast=(msg,type='success')=>{
   const c=document.getElementById('toastContainer'),t=document.createElement('div');
@@ -353,6 +406,7 @@ role
   toast(`"${nick}" 추가 완료`);
 };
 window.delChar=async(eid,cid)=>{
+	if(!confirm('해당 캐릭터를 삭제하시겠습니까?')) return;
   await remove(ref(db,`expeditions/${eid}/chars/${cid}`));
   toast('캐릭터 삭제');
 };
@@ -419,8 +473,8 @@ window.saveChar=async(eid,cid)=>{
 
 
 window.addRaid=async()=>{
-  const name=document.getElementById('raidName').value.trim();
-  const tier=document.getElementById('raidTier').value.trim();
+  const name=document.getElementById('raidName').value;
+  const tier=document.getElementById('raidTier').value;
   const lv=document.getElementById('raidLv').value;
   const d=document.getElementById('raidD').value;
   const s=document.getElementById('raidS').value;
@@ -486,8 +540,20 @@ window.importChars=async()=>{
   toast(`${cnt}개 캐릭터 가져오기 완료`);document.getElementById('loaApiResult').innerHTML='';
 };
 
-onValue(ref(db,'expeditions'),snap=>{window._E=snap.val()||{};renderExp();updExpSel();});
-onValue(ref(db,'raids'),snap=>{window._R=snap.val()||{};renderRaids();updRaidSel();});
+onValue(ref(db,'expeditions'),snap=>
+{window._E=snap.val()||{};renderExp();updExpSel();});
+
+onValue(ref(db,'raids'),snap=>{
+  window._R=snap.val()||{};
+  renderRaids();
+  updRaidSel();
+});
+
+onValue(ref(db,'raidBase'),snap=>{
+  window._RB = snap.val() || {};
+  renderRaidBase();
+  updateRaidSelect();
+});
 
 window.renderExp=()=>{
   const el=document.getElementById('expList'),exps=window._E;
@@ -530,6 +596,21 @@ window.renderExp=()=>{
   }).join('');
 };
 
+function renderRaidBase(){
+  const el=document.getElementById("raidBaseList");
+  if(!el) return;
+  let html="";
+  Object.entries(window._RB).forEach(([name,data])=>{
+
+    html+=`
+    <div style="margin-top:6px">
+      <strong>${name}</strong> → ${data.tiers.join(" / ")}
+    </div>
+    `;
+  });
+  el.innerHTML=html;
+}
+
 function renderRaids(){
   const el=document.getElementById('raidWrap'),raids=window._R;
   if(!Object.keys(raids).length){el.innerHTML='<div class="empty"><div class="empty-icon">🗡️</div>등록된 레이드가 없습니다</div>';return;}
@@ -562,6 +643,30 @@ function updExpSel(){
 function updRaidSel(){
   const s=document.getElementById('compRaid'),cur=s.value;
   s.innerHTML='<option value="">레이드를 선택하세요</option>'+Object.entries(window._R).map(([id,r])=>`<option value="${id}" ${id===cur?'selected':''}>${r.name} (Lv.${r.level}/딜${r.dealers}+서${r.supports})</option>`).join('');
+}
+
+function updateRaidSelect(){
+  const sel=document.getElementById("raidName");
+  if(!sel) return;
+  sel.innerHTML =
+    '<option value="">레이드 선택</option>' +
+    Object.keys(window._RB)
+      .map(n=>`<option value="${n}">${n}</option>`)
+      .join("");
+}
+
+window.updateTierSelect=()=>{
+  const name=document.getElementById("raidName").value;
+  const tierSel=document.getElementById("raidTier");
+  const data=window._RB[name];
+  if(!data){
+    tierSel.innerHTML="";
+    return;
+  }
+  tierSel.innerHTML =
+    data.tiers
+      .map(t=>`<option value="${t}">${t}</option>`)
+      .join("");
 }
 
 window.showChips=()=>{
