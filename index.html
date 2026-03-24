@@ -304,7 +304,64 @@ window.addChar=async()=>{
   document.getElementById('charNick').value='';document.getElementById('charLv').value='';document.getElementById('charCP').value='';
   toast(`"${nick}" 추가 완료`);
 };
-window.delChar=async(eid,cid)=>{await remove(ref(db,`expeditions/${eid}/chars/${cid}`));toast('캐릭터 삭제');};
+window.delChar=async(eid,cid)=>{
+  await remove(ref(db,`expeditions/${eid}/chars/${cid}`));
+  toast('캐릭터 삭제');
+};
+window.editChar=(eid,cid)=>{
+  const c = window._E[eid].chars[cid];
+
+  const row = event.target.closest("tr");
+
+  row.innerHTML = `
+    <td>
+      <select id="er-role-${cid}" style="padding:3px 6px;font-size:12px">
+        <option value="dealer" ${c.role==='dealer'?'selected':''}>딜러</option>
+        <option value="support" ${c.role==='support'?'selected':''}>서폿</option>
+      </select>
+    </td>
+
+    <td>
+      <input id="er-nick-${cid}" value="${c.nick}" style="width:120px">
+    </td>
+
+    <td>
+      <input id="er-lv-${cid}" value="${c.level}" style="width:70px">
+    </td>
+
+    <td>
+      <input id="er-cp-${cid}" value="${c.cp}" style="width:90px">
+    </td>
+
+    <td style="display:flex;gap:4px">
+      <button class="btn btn-gold btn-sm" onclick="saveChar('${eid}','${cid}')">저장</button>
+      <button class="btn btn-ghost btn-sm" onclick="renderExp()">취소</button>
+    </td>
+  `;
+};
+
+window.saveChar=async(eid,cid)=>{
+
+  const nick = document.getElementById(`er-nick-${cid}`).value.trim();
+  const level = document.getElementById(`er-lv-${cid}`).value;
+  const cp = document.getElementById(`er-cp-${cid}`).value;
+  const role = document.getElementById(`er-role-${cid}`).value;
+
+  if(!nick) return toast("닉네임 입력","error");
+  if(!/^\d+$/.test(level)) return toast("레벨 숫자만 입력","error");
+  if(!/^\d+$/.test(cp)) return toast("전투력 숫자만 입력","error");
+
+  await update(ref(db,`expeditions/${eid}/chars/${cid}`),{
+    nick:nick,
+    level:+level,
+    cp:+cp,
+    role:role
+  });
+
+  toast("캐릭터 수정 완료");
+  renderExp();
+};
+
 
 window.addRaid=async()=>{
   const name=document.getElementById('raidName').value.trim();
@@ -381,14 +438,18 @@ window.renderExp=()=>{
   const el=document.getElementById('expList'),exps=window._E;
   if(!Object.keys(exps).length){el.innerHTML='<div class="empty"><div class="empty-icon">⚔️</div>등록된 원정대가 없습니다</div>';return;}
   el.innerHTML=Object.entries(exps).map(([id,exp])=>{
-    const chars=exp.chars||{},list=Object.entries(chars);
+    const chars=exp.chars||{};
+    const list = Object.entries(chars).sort((a,b)=> (b[1].level || 0) - (a[1].level || 0));
     const nd=list.filter(([,c])=>c.role==='dealer').length,ns=list.filter(([,c])=>c.role==='support').length;
     const rows=list.length?list.map(([cid,c])=>`<tr>
       <td><span class="badge ${c.role==='dealer'?'badge-d':'badge-s'}">${c.role==='dealer'?'딜러':'서폿'}</span></td>
       <td style="font-weight:500">${c.nick}</td>
       <td><span class="badge badge-lv">Lv.${c.level}</span></td>
       <td style="color:var(--gold);font-weight:700">${Number(c.cp).toLocaleString()}</td>
-      <td><button class="btn btn-red btn-sm" onclick="delChar('${id}','${cid}')">삭제</button></td>
+      <td style="display:flex;gap:4px">
+  	<button class="btn btn-ghost btn-sm" onclick="editChar('${id}','${cid}')">수정</button>
+  	<button class="btn btn-red btn-sm" onclick="delChar('${id}','${cid}')">삭제</button>
+      </td>
     </tr>`).join(''):`<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:12px">캐릭터 없음</td></tr>`;
     return `<div class="exp-group">
       <div class="exp-header">
