@@ -168,7 +168,7 @@ main{padding:12px 9px;}nav{padding:0 4px;}header{padding:0 12px;}
 
   <div class="card">
     <div class="section-title">캐릭터 직접 추가</div>
-    <div class="form-row fr-5">
+    <div class="form-row fr-raid">
       <div class="ff"><label>원정대</label>
         <select id="charExp" onchange="clearCharFields()"><option value="">원정대 선택</option></select></div>
       <div class="ff"><label>닉네임</label>
@@ -176,7 +176,13 @@ main{padding:12px 9px;}nav{padding:0 4px;}header{padding:0 12px;}
       <div class="ff"><label>레벨</label>
         <input id="charLv" type="text" inputmode="numeric" placeholder="1640" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addChar()">
         <div class="field-error" id="err-charLv">숫자만 입력해주세요!</div></div>
-      <div class="ff"><label>전투력</label>
+      <div class="ff"><label>전투력 종류</label>
+	<select id="charCPType">
+	<option value="cp">전투력</option>
+	<option value="lopek">로펙</option>
+	</select>
+      </div>
+      <div class="ff"><label>전투력/로펙</label>
         <input id="charCP" type="text" inputmode="numeric" placeholder="100000" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addChar()">
         <div class="field-error" id="err-charCP">숫자만 입력해주세요!</div></div>
       <div class="ff"><label>역할</label>
@@ -293,6 +299,7 @@ window.addChar=async()=>{
   const nick=document.getElementById('charNick').value.trim();
   const lv=document.getElementById('charLv').value;
   const cp=document.getElementById('charCP').value;
+  const cpType=document.getElementById('charCPType').value;
   const role=document.getElementById('charRole').value;
   if(!eid)return toast('원정대를 선택하세요','error');
   if(!nick)return toast('닉네임을 입력하세요','error');
@@ -300,7 +307,13 @@ window.addChar=async()=>{
   if(!lv||!/^\d+$/.test(lv)){document.getElementById('charLv').classList.add('input-error');document.getElementById('err-charLv').classList.add('show');ok=false;}
   if(!cp||!/^\d+$/.test(cp)){document.getElementById('charCP').classList.add('input-error');document.getElementById('err-charCP').classList.add('show');ok=false;}
   if(!ok)return toast('숫자만 입력해주세요!','error');
-  await set(push(ref(db,`expeditions/${eid}/chars`)),{nick,level:+lv,cp:+cp,role});
+  await set(push(ref(db,`expeditions/${eid}/chars`)),{
+nick,
+level:+lv,
+cp:+cp,
+cpType,
+role
+});
   document.getElementById('charNick').value='';document.getElementById('charLv').value='';document.getElementById('charCP').value='';
   toast(`"${nick}" 추가 완료`);
 };
@@ -349,7 +362,7 @@ window.saveChar=async(eid,cid)=>{
 
   if(!nick) return toast("닉네임 입력","error");
   if(!/^\d+$/.test(level)) return toast("레벨 숫자만 입력","error");
-  if(!/^\d+$/.test(cp)) return toast("전투력 숫자만 입력","error");
+  if(!/^\d+$/.test(cp)) return toast("전투력/로펙 숫자만 입력","error");
 
   await update(ref(db,`expeditions/${eid}/chars/${cid}`),{
     nick:nick,
@@ -445,12 +458,17 @@ window.renderExp=()=>{
       <td><span class="badge ${c.role==='dealer'?'badge-d':'badge-s'}">${c.role==='dealer'?'딜러':'서폿'}</span></td>
       <td style="font-weight:500">${c.nick}</td>
       <td><span class="badge badge-lv">Lv.${c.level}</span></td>
-      <td style="color:var(--gold);font-weight:700">${Number(c.cp).toLocaleString()}</td>
+      <td>
+	${c.cpType === 'lopek' ? '로펙' : '전투력'}
+      </td>
+      <td style="color:${c.role==='dealer'?'var(--dealer)':'var(--support)'};font-weight:700">
+  	${Number(c.cp).toLocaleString()}
+      </td>
       <td style="display:flex;gap:4px">
   	<button class="btn btn-ghost btn-sm" onclick="editChar('${id}','${cid}')">수정</button>
   	<button class="btn btn-red btn-sm" onclick="delChar('${id}','${cid}')">삭제</button>
       </td>
-    </tr>`).join(''):`<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:12px">캐릭터 없음</td></tr>`;
+    </tr>`).join(''):`<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:12px">캐릭터 없음</td></tr>`;
     return `<div class="exp-group">
       <div class="exp-header">
         <span id="en-${id}" class="exp-name">${exp.name}</span>
@@ -463,7 +481,7 @@ window.renderExp=()=>{
         <span style="font-size:11px;color:var(--text-muted);margin-left:6px">총 ${list.length}캐</span>
       </div>
       <div class="exp-body"><table class="data-table">
-        <thead><tr><th>역할</th><th>닉네임</th><th>레벨</th><th>전투력</th><th></th></tr></thead>
+        <thead><tr><th>역할</th><th>닉네임</th><th>레벨</th><th>종류</th><th>전투력/로펙</th><th></th></tr></thead>
         <tbody>${rows}</tbody>
       </table></div>
     </div>`;
