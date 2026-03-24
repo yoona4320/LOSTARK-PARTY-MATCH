@@ -667,12 +667,14 @@ function renderRaids(){
   let html='';
   Object.entries(grp).forEach(([base,entries])=>{
     html+=`<div style="margin-bottom:16px">
-      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);padding:6px 11px;border-bottom:1px solid var(--border);font-weight:700">${base}</div>
-      <table class="data-table"><thead><tr><th>이름/단계</th><th>입장 레벨</th><th>딜러</th><th>서폿</th><th>규모</th><th></th></tr></thead><tbody>
+      <div style="font-size:14px;letter-spacing:1px;color:var(--gold);padding:8px 12px;border-bottom:1px solid var(--border);font-weight:700">${base}</div>
+      <table class="data-table"><thead><tr><th>단계</th><th>입장 레벨</th><th>딜러</th><th>서폿</th><th>규모</th><th></th></tr></thead><tbody>
       ${entries.map(([id,r])=>{
         const tc=/하드|hard/i.test(r.tier)?'t-h':/노말|normal/i.test(r.tier)?'t-n':'t-c';
         return `<tr>
-          <td style="font-weight:700">${r.baseName||r.name}${r.tier?`<span class="tier-badge ${tc}">${r.tier}</span>`:''}</td>
+          <td style="font-weight:700;text-align:center">
+${r.tier ? `<span class="tier-badge ${tc}" style="font-size:12px;padding:3px 8px">${r.tier}</span>` : r.name}
+</td>
           <td><span class="badge badge-lv">Lv.${r.level}</span></td>
           <td style="color:var(--dealer);font-weight:700">${r.dealers}명</td>
           <td style="color:var(--support);font-weight:700">${r.supports}명</td>
