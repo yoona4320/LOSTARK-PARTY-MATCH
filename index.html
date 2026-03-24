@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>로아 파티빌더</title>
+<title>로아 파티 매칭</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
@@ -67,6 +67,12 @@ input.input-error{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba
   border-collapse:collapse;
   font-size:13px;
   table-layout:fixed;
+}
+
+.btn-cell{
+display:flex;
+justify-content:center;
+gap:4px;
 }
 
 /* 컬럼 고정 width */
@@ -372,10 +378,17 @@ window.editChar=(eid,cid)=>{
     </td>
 
     <td>
-      <input id="er-cp-${cid}" value="${c.cp}" style="width:90px">
-    </td>
+  	<select id="er-type-${cid}">
+    	<option value="cp" ${c.cpType==='cp'?'selected':''}>전투력</option>
+    	<option value="lopek" ${c.cpType==='lopek'?'selected':''}>로펙</option>
+  	</select>
+   </td>
 
-    <td style="display:flex;gap:4px">
+<td>
+  <input id="er-cp-${cid}" value="${c.cp}" style="width:90px">
+</td>
+
+    <td class="btn-cell">
       <button class="btn btn-gold btn-sm" onclick="saveChar('${eid}','${cid}')">저장</button>
       <button class="btn btn-ghost btn-sm" onclick="renderExp()">취소</button>
     </td>
@@ -493,7 +506,7 @@ window.renderExp=()=>{
       <td style="color:${c.role==='dealer'?'var(--dealer)':'var(--support)'};font-weight:700">
   	${Number(c.cp).toLocaleString()}
       </td>
-      <td style="display:flex;gap:4px">
+      <td class="btn-cell">
   	<button class="btn btn-ghost btn-sm" onclick="editChar('${id}','${cid}')">수정</button>
   	<button class="btn btn-red btn-sm" onclick="delChar('${id}','${cid}')">삭제</button>
       </td>
