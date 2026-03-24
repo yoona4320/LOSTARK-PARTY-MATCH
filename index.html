@@ -37,6 +37,9 @@ main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:26px 22p
 .card:hover{border-color:var(--border-hover);}
 .form-row{display:grid;gap:10px;margin-bottom:10px;}
 .fr-2{grid-template-columns:1fr auto;}
+.fr-raidbase{
+  grid-template-columns:1fr 1fr auto;
+}
 .fr-3{grid-template-columns:1fr 1fr 1fr auto;}
 .fr-4{grid-template-columns:1fr 1fr 1fr 1fr auto;}
 .fr-5{grid-template-columns:1fr 1fr 1fr 1fr 1fr auto;}
@@ -177,7 +180,7 @@ main{padding:12px 9px;}nav{padding:0 4px;}header{padding:0 12px;}
 <div class="tab-pane active" id="t1">
   <div class="card">
     <div class="section-title">원정대 등록</div>
-    <div class="form-row fr-2">
+    <div class="form-row fr-raidbase">
       <div class="ff"><label>원정대 이름</label>
         <input id="expName" type="text" placeholder="ex) 홍길동 원정대" onkeydown="if(event.key==='Enter')addExpedition()"></div>
       <div class="ff fe"><button class="btn btn-gold" onclick="addExpedition()">원정대 추가</button></div>
@@ -234,7 +237,7 @@ main{padding:12px 9px;}nav{padding:0 4px;}header{padding:0 12px;}
   <!-- 레이드 이름 관리 -->
   <div class="card">
     <div class="section-title">레이드 이름 / 난이도 관리</div>
-    <div class="form-row fr-2">
+	<div class="form-row fr-raidbase">
       <div class="ff">
         <label>레이드 이름</label>
         <input id="raidBaseName" placeholder="ex) 카제로스">
@@ -243,7 +246,7 @@ main{padding:12px 9px;}nav{padding:0 4px;}header{padding:0 12px;}
         <label>난이도</label>
         <input id="raidBaseTier" placeholder="ex) 노말">
       </div>
-      <div class="ff fe">
+	<div class="ff fe" style="justify-content:flex-end">
         <button class="btn btn-gold" onclick="addRaidBase()">추가</button>
       </div>
     </div>
