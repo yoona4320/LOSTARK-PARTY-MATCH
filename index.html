@@ -6,457 +6,115 @@
 <title>로아 파티빌더</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-
 <style>
-:root {
-  --gold: #c9a84c;
-  --gold-light: #f0d080;
-  --gold-dark: #8a6e2f;
-  --bg-deep: #080c14;
-  --bg-card: #0e1520;
-  --bg-card2: #121c2a;
-  --bg-panel: #0a1018;
-  --border: rgba(201,168,76,0.18);
-  --border-hover: rgba(201,168,76,0.5);
-  --text: #d4c8a8;
-  --text-muted: #7a7060;
-  --dealer: #e05a5a;
-  --dealer-bg: rgba(224,90,90,0.12);
-  --support: #5ab8e0;
-  --support-bg: rgba(90,184,224,0.12);
-  --success: #5ae0a0;
-  --success-bg: rgba(90,224,160,0.1);
-  --shadow: 0 8px 40px rgba(0,0,0,0.7);
-  --glow: 0 0 20px rgba(201,168,76,0.15);
-}
-
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  background: var(--bg-deep);
-  color: var(--text);
-  font-family: 'Noto Sans KR', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* BG pattern */
-body::before {
-  content:'';
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(201,168,76,0.06) 0%, transparent 60%),
-    repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(201,168,76,0.03) 60px),
-    repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(201,168,76,0.03) 60px);
-  pointer-events:none;
-  z-index:0;
-}
-
-/* ─── HEADER ─── */
-header {
-  position:relative;
-  z-index:10;
-  border-bottom: 1px solid var(--border);
-  background: rgba(8,12,20,0.95);
-  backdrop-filter: blur(12px);
-  padding: 0 32px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  height:64px;
-}
-.logo {
-  font-family:'Orbitron',sans-serif;
-  font-size:18px;
-  font-weight:900;
-  color:var(--gold);
-  letter-spacing:3px;
-  text-transform:uppercase;
-  text-shadow: 0 0 20px rgba(201,168,76,0.4);
-}
-.logo span { color:#fff; }
-.header-sub {
-  font-size:11px;
-  color:var(--text-muted);
-  letter-spacing:2px;
-}
-
-/* ─── NAV TABS ─── */
-nav {
-  position:relative;
-  z-index:10;
-  display:flex;
-  border-bottom:1px solid var(--border);
-  background:var(--bg-panel);
-  padding: 0 32px;
-  gap:4px;
-}
-.tab-btn {
-  padding:14px 24px;
-  background:none;
-  border:none;
-  color:var(--text-muted);
-  font-family:'Noto Sans KR',sans-serif;
-  font-size:13px;
-  font-weight:500;
-  cursor:pointer;
-  position:relative;
-  transition:color .2s;
-  letter-spacing:.5px;
-}
-.tab-btn::after {
-  content:'';
-  position:absolute;
-  bottom:0; left:0; right:0;
-  height:2px;
-  background:var(--gold);
-  transform:scaleX(0);
-  transition:transform .25s;
-}
-.tab-btn.active { color:var(--gold-light); }
-.tab-btn.active::after { transform:scaleX(1); }
-.tab-btn:hover:not(.active) { color:var(--text); }
-
-/* ─── MAIN ─── */
-main {
-  position:relative;
-  z-index:1;
-  max-width:1200px;
-  margin:0 auto;
-  padding:32px 24px;
-}
-
-.tab-pane { display:none; }
-.tab-pane.active { display:block; }
-
-/* ─── SECTION TITLE ─── */
-.section-title {
-  font-family:'Orbitron',sans-serif;
-  font-size:12px;
-  letter-spacing:3px;
-  color:var(--gold);
-  text-transform:uppercase;
-  margin-bottom:20px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.section-title::after {
-  content:'';
-  flex:1;
-  height:1px;
-  background:linear-gradient(90deg, var(--border) 0%, transparent 100%);
-}
-
-/* ─── CARDS ─── */
-.card {
-  background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:24px;
-  margin-bottom:16px;
-  box-shadow: var(--shadow);
-}
-.card:hover { border-color:var(--border-hover); }
-
-/* ─── FORM ─── */
-.form-row {
-  display:grid;
-  gap:12px;
-  margin-bottom:12px;
-}
-.form-row.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr auto; }
-.form-row.cols-5 { grid-template-columns: 1fr 1fr 1fr 1fr 1fr auto; }
-.form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr auto; }
-
-label {
-  display:block;
-  font-size:11px;
-  color:var(--text-muted);
-  letter-spacing:1px;
-  margin-bottom:5px;
-  text-transform:uppercase;
-}
-input, select {
-  width:100%;
-  background:var(--bg-panel);
-  border:1px solid var(--border);
-  border-radius:4px;
-  color:var(--text);
-  padding:9px 12px;
-  font-family:'Noto Sans KR',sans-serif;
-  font-size:13px;
-  transition:border-color .2s;
-  outline:none;
-}
-input:focus, select:focus { border-color:var(--gold-dark); box-shadow:0 0 0 2px rgba(201,168,76,0.1); }
-input::placeholder { color:var(--text-muted); }
-select option { background:var(--bg-card); }
-
-.btn {
-  padding:9px 18px;
-  border:none;
-  border-radius:4px;
-  cursor:pointer;
-  font-family:'Noto Sans KR',sans-serif;
-  font-size:13px;
-  font-weight:700;
-  transition:all .2s;
-  white-space:nowrap;
-  letter-spacing:.5px;
-}
-.btn-gold {
-  background:linear-gradient(135deg,var(--gold-dark),var(--gold));
-  color:#080c14;
-}
-.btn-gold:hover { filter:brightness(1.15); transform:translateY(-1px); box-shadow:0 4px 16px rgba(201,168,76,0.3); }
-.btn-red {
-  background:rgba(224,90,90,0.15);
-  border:1px solid rgba(224,90,90,0.3);
-  color:var(--dealer);
-}
-.btn-red:hover { background:rgba(224,90,90,0.25); }
-.btn-blue {
-  background:rgba(90,184,224,0.15);
-  border:1px solid rgba(90,184,224,0.3);
-  color:var(--support);
-}
-.btn-blue:hover { background:rgba(90,184,224,0.25); }
-.btn-big {
-  padding:14px 32px;
-  font-size:15px;
-  border-radius:6px;
-  width:100%;
-  text-align:center;
-  display:block;
-}
-.btn-ghost {
-  background:transparent;
-  border:1px solid var(--border);
-  color:var(--text-muted);
-  font-size:12px;
-  padding:6px 12px;
-}
-.btn-ghost:hover { border-color:var(--border-hover); color:var(--text); }
-
-.form-field { min-width:0; }
-
-/* ─── TABLE ─── */
-.data-table {
-  width:100%;
-  border-collapse:collapse;
-  font-size:13px;
-}
-.data-table th {
-  text-align:left;
-  font-size:10px;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-  color:var(--text-muted);
-  padding:8px 12px;
-  border-bottom:1px solid var(--border);
-  font-weight:500;
-}
-.data-table td {
-  padding:10px 12px;
-  border-bottom:1px solid rgba(201,168,76,0.06);
-  vertical-align:middle;
-}
-.data-table tr:hover td { background:rgba(201,168,76,0.03); }
-.data-table tr:last-child td { border-bottom:none; }
-
-/* ─── BADGES ─── */
-.badge {
-  display:inline-block;
-  padding:3px 10px;
-  border-radius:20px;
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:.5px;
-}
-.badge-dealer { background:var(--dealer-bg); color:var(--dealer); border:1px solid rgba(224,90,90,0.3); }
-.badge-support { background:var(--support-bg); color:var(--support); border:1px solid rgba(90,184,224,0.3); }
-.badge-level { background:rgba(201,168,76,0.1); color:var(--gold); border:1px solid rgba(201,168,76,0.2); }
-
-/* ─── PARTY RESULT ─── */
-.party-grid {
-  display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px,1fr));
-  gap:16px;
-  margin-top:8px;
-}
-.party-card {
-  background:var(--bg-card2);
-  border:1px solid var(--border);
-  border-radius:8px;
-  overflow:hidden;
-  box-shadow: var(--shadow);
-  transition:border-color .2s, transform .2s;
-}
-.party-card:hover { border-color:var(--border-hover); transform:translateY(-2px); }
-.party-header {
-  background:linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04));
-  padding:14px 18px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid var(--border);
-}
-.party-name {
-  font-family:'Orbitron',sans-serif;
-  font-size:12px;
-  font-weight:700;
-  color:var(--gold-light);
-  letter-spacing:1px;
-}
-.party-avg {
-  font-size:11px;
-  color:var(--text-muted);
-}
-.party-avg strong { color:var(--gold); font-size:14px; }
-.party-members { padding:14px 18px; }
-.member-row {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:6px 0;
-  border-bottom:1px solid rgba(201,168,76,0.05);
-}
-.member-row:last-child { border-bottom:none; }
-.member-icon {
-  width:28px; height:28px;
-  border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  font-size:12px;
-  flex-shrink:0;
-}
-.member-icon.d { background:var(--dealer-bg); color:var(--dealer); }
-.member-icon.s { background:var(--support-bg); color:var(--support); }
-.member-name { flex:1; font-size:13px; font-weight:500; }
-.member-meta { font-size:11px; color:var(--text-muted); text-align:right; }
-.member-meta .cp { color:var(--gold); font-weight:700; }
-
-/* ─── EMPTY STATE ─── */
-.empty {
-  text-align:center;
-  padding:48px 24px;
-  color:var(--text-muted);
-  font-size:13px;
-}
-.empty-icon { font-size:40px; margin-bottom:12px; opacity:.5; }
-
-/* ─── TOAST ─── */
-.toast-container {
-  position:fixed;
-  bottom:24px; right:24px;
-  z-index:1000;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-.toast {
-  background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:6px;
-  padding:12px 18px;
-  font-size:13px;
-  box-shadow:var(--shadow);
-  animation:slideIn .25s ease;
-  display:flex; align-items:center; gap:10px;
-}
-.toast.success { border-color:rgba(90,224,160,0.4); }
-.toast.error { border-color:rgba(224,90,90,0.4); color:var(--dealer); }
-@keyframes slideIn { from{transform:translateX(40px);opacity:0} to{transform:translateX(0);opacity:1} }
-
-/* ─── STAT CHIPS ─── */
-.stat-row {
-  display:flex;
-  gap:16px;
-  margin-bottom:24px;
-  flex-wrap:wrap;
-}
-.stat-chip {
-  background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:6px;
-  padding:12px 20px;
-  display:flex; flex-direction:column;
-  gap:2px;
-}
-.stat-chip .val {
-  font-family:'Orbitron',sans-serif;
-  font-size:22px;
-  font-weight:700;
-  color:var(--gold-light);
-}
-.stat-chip .lbl {
-  font-size:10px;
-  letter-spacing:1.5px;
-  color:var(--text-muted);
-  text-transform:uppercase;
-}
-
-/* ─── EXPEDITION ─── */
-.expedition-group {
-  margin-bottom:24px;
-}
-.expedition-header {
-  background:linear-gradient(90deg, rgba(201,168,76,0.1), transparent);
-  border:1px solid var(--border);
-  border-radius:6px 6px 0 0;
-  padding:10px 16px;
-  display:flex; align-items:center; gap:10px;
-  cursor:pointer;
-}
-.expedition-name {
-  font-weight:700;
-  font-size:14px;
-  color:var(--gold-light);
-  flex:1;
-}
-.expedition-chars {
-  font-size:11px;
-  color:var(--text-muted);
-}
-.expedition-body {
-  border:1px solid var(--border);
-  border-top:none;
-  border-radius:0 0 6px 6px;
-  overflow:hidden;
-}
-
-/* ─── DIVIDER ─── */
-.divider {
-  border:none;
-  border-top:1px solid var(--border);
-  margin:20px 0;
-}
-
-.flex-between { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
-.gap-8 { gap:8px; }
-.flex { display:flex; align-items:center; }
-.alert {
-  padding:12px 16px;
-  border-radius:6px;
-  font-size:13px;
-  margin-bottom:16px;
-}
-.alert-info { background:rgba(90,184,224,0.08); border:1px solid rgba(90,184,224,0.2); color:var(--support); }
-.alert-warn { background:rgba(224,180,90,0.08); border:1px solid rgba(224,180,90,0.2); color:#e0b45a; }
-
-@media(max-width:700px){
-  .form-row.cols-4, .form-row.cols-5, .form-row.cols-3 {
-    grid-template-columns:1fr 1fr;
-  }
-  .form-row.cols-4 > *:last-child,
-  .form-row.cols-5 > *:last-child,
-  .form-row.cols-3 > *:last-child {
-    grid-column:1/-1;
-  }
-  main { padding:16px 12px; }
-  nav { padding:0 8px; }
-  header { padding:0 16px; }
+:root{--gold:#c9a84c;--gold-light:#f0d080;--gold-dark:#8a6e2f;--dealer:#e05a5a;--dealer-bg:rgba(224,90,90,0.12);--support:#5ab8e0;--support-bg:rgba(90,184,224,0.12);}
+body{--bg-deep:#f4f1eb;--bg-card:#ffffff;--bg-card2:#f9f7f2;--bg-panel:#ede9e0;--border:rgba(140,110,50,0.18);--border-hover:rgba(140,110,50,0.45);--text:#2a2318;--text-muted:#9a8e78;--shadow:0 4px 24px rgba(0,0,0,0.08);--input-bg:#ffffff;--table-alt:rgba(201,168,76,0.04);}
+body.dark{--bg-deep:#080c14;--bg-card:#0e1520;--bg-card2:#121c2a;--bg-panel:#0a1018;--border:rgba(201,168,76,0.18);--border-hover:rgba(201,168,76,0.5);--text:#d4c8a8;--text-muted:#7a7060;--shadow:0 8px 40px rgba(0,0,0,0.7);--input-bg:#0a1018;--table-alt:rgba(201,168,76,0.03);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .25s,color .25s;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(201,168,76,0.05) 0%,transparent 60%);pointer-events:none;z-index:0;}
+header{position:relative;z-index:10;border-bottom:1px solid var(--border);background:var(--bg-card);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:58px;}
+.logo{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--gold);letter-spacing:3px;}
+.logo span{color:var(--text);}
+.header-right{display:flex;align-items:center;gap:12px;}
+.header-sub{font-size:11px;color:var(--text-muted);letter-spacing:2px;}
+.theme-toggle{width:44px;height:24px;background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;cursor:pointer;position:relative;transition:background .25s;flex-shrink:0;}
+.theme-toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--gold);transition:transform .25s;}
+body.dark .theme-toggle::after{transform:translateX(20px);}
+.theme-label{font-size:11px;color:var(--text-muted);}
+nav{position:relative;z-index:10;display:flex;border-bottom:1px solid var(--border);background:var(--bg-panel);padding:0 28px;gap:4px;}
+.tab-btn{padding:12px 20px;background:none;border:none;color:var(--text-muted);font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;cursor:pointer;position:relative;transition:color .2s;}
+.tab-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .25s;}
+.tab-btn.active{color:var(--gold);}
+.tab-btn.active::after{transform:scaleX(1);}
+.tab-btn:hover:not(.active){color:var(--text);}
+main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:26px 22px;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+.section-title{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border) 0%,transparent 100%);}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:14px;box-shadow:var(--shadow);transition:border-color .2s;}
+.card:hover{border-color:var(--border-hover);}
+.form-row{display:grid;gap:10px;margin-bottom:10px;}
+.fr-2{grid-template-columns:1fr auto;}
+.fr-3{grid-template-columns:1fr 1fr 1fr auto;}
+.fr-4{grid-template-columns:1fr 1fr 1fr 1fr auto;}
+.fr-5{grid-template-columns:1fr 1fr 1fr 1fr 1fr auto;}
+.fr-raid{grid-template-columns:1.4fr 1fr 1fr 1fr 1fr auto;}
+.fr-api{grid-template-columns:1.2fr 1fr auto auto;}
+label{display:block;font-size:11px;color:var(--text-muted);letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;}
+input,select{width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:4px;color:var(--text);padding:8px 11px;font-family:'Noto Sans KR',sans-serif;font-size:13px;transition:border-color .2s;outline:none;}
+input:focus,select:focus{border-color:var(--gold-dark);box-shadow:0 0 0 2px rgba(201,168,76,0.1);}
+input::placeholder{color:var(--text-muted);}
+select option{background:var(--bg-card);color:var(--text);}
+input.input-error{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90,90,0.15)!important;}
+.field-error{font-size:11px;color:var(--dealer);margin-top:3px;display:none;}
+.field-error.show{display:block;}
+.btn{padding:8px 15px;border:none;border-radius:4px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;transition:all .2s;white-space:nowrap;}
+.btn-gold{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#080c14;}
+.btn-gold:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 4px 14px rgba(201,168,76,0.3);}
+.btn-red{background:var(--dealer-bg);border:1px solid rgba(224,90,90,0.3);color:var(--dealer);}
+.btn-red:hover{background:rgba(224,90,90,0.2);}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-muted);font-size:12px;padding:5px 11px;}
+.btn-ghost:hover{border-color:var(--border-hover);color:var(--text);}
+.btn-sm{padding:4px 10px;font-size:11px;}
+.ff{min-width:0;}
+.fe{display:flex;align-items:flex-end;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;}
+.data-table th{text-align:left;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);padding:8px 11px;border-bottom:1px solid var(--border);font-weight:500;}
+.data-table td{padding:9px 11px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.data-table tbody tr:hover td{background:var(--table-alt);}
+.data-table tbody tr:last-child td{border-bottom:none;}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge-d{background:var(--dealer-bg);color:var(--dealer);border:1px solid rgba(224,90,90,0.3);}
+.badge-s{background:var(--support-bg);color:var(--support);border:1px solid rgba(90,184,224,0.3);}
+.badge-lv{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.25);}
+.tier-badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:10px;font-weight:700;margin-left:6px;}
+.t-n{background:rgba(90,224,160,0.12);color:#5ae0a0;border:1px solid rgba(90,224,160,0.3);}
+.t-h{background:rgba(224,90,90,0.12);color:var(--dealer);border:1px solid rgba(224,90,90,0.3);}
+.t-c{background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3);}
+.exp-group{margin-bottom:14px;}
+.exp-header{background:linear-gradient(90deg,rgba(201,168,76,0.08),transparent);border:1px solid var(--border);border-radius:6px 6px 0 0;padding:9px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.exp-name{font-weight:700;font-size:14px;color:var(--gold);}
+.exp-body{border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;overflow:hidden;}
+.exp-name-input{background:var(--input-bg);border:1px solid var(--gold-dark);border-radius:4px;color:var(--text);padding:3px 8px;font-size:14px;font-weight:700;font-family:'Noto Sans KR',sans-serif;width:180px;}
+.party-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:8px;}
+.party-card{background:var(--bg-card2);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:var(--shadow);transition:border-color .2s,transform .2s;}
+.party-card:hover{border-color:var(--border-hover);transform:translateY(-2px);}
+.party-header{background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(201,168,76,0.03));padding:11px 15px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
+.party-name{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1px;}
+.party-avg{font-size:11px;color:var(--text-muted);}
+.party-avg strong{color:var(--gold);font-size:13px;}
+.party-members{padding:11px 15px;}
+.member-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(201,168,76,0.05);}
+.member-row:last-child{border-bottom:none;}
+.mi{width:25px;height:25px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.mi.d{background:var(--dealer-bg);color:var(--dealer);}
+.mi.s{background:var(--support-bg);color:var(--support);}
+.stat-row{display:flex;gap:10px;flex-wrap:wrap;}
+.stat-chip{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:9px 16px;}
+.stat-chip .val{font-family:'Orbitron',sans-serif;font-size:19px;font-weight:700;color:var(--gold);}
+.stat-chip .lbl{font-size:10px;letter-spacing:1.5px;color:var(--text-muted);text-transform:uppercase;}
+.alert{padding:10px 14px;border-radius:6px;font-size:13px;margin-bottom:12px;line-height:1.6;}
+.alert-info{background:rgba(90,184,224,0.07);border:1px solid rgba(90,184,224,0.2);color:var(--support);}
+.alert-warn{background:rgba(224,180,90,0.07);border:1px solid rgba(224,180,90,0.2);color:#c9943c;}
+.api-section{background:linear-gradient(135deg,rgba(90,184,224,0.05),rgba(201,168,76,0.04));border:1px dashed rgba(90,184,224,0.3);border-radius:8px;padding:16px;margin-bottom:14px;}
+.api-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--support);font-weight:700;margin-bottom:8px;}
+.api-notice{font-size:12px;color:var(--text-muted);margin-bottom:11px;line-height:1.65;}
+.api-notice strong{color:var(--text);}
+.toast-container{position:fixed;bottom:18px;right:18px;z-index:1000;display:flex;flex-direction:column;gap:6px;}
+.toast{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:9px 15px;font-size:13px;box-shadow:var(--shadow);animation:slideIn .22s ease;display:flex;align-items:center;gap:8px;max-width:310px;}
+.toast.success{border-color:rgba(90,224,160,0.4);}
+.toast.error{border-color:rgba(224,90,90,0.4);color:var(--dealer);}
+@keyframes slideIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}60%{transform:translateX(5px)}}
+.empty{text-align:center;padding:38px 18px;color:var(--text-muted);font-size:13px;}
+.empty-icon{font-size:34px;margin-bottom:9px;opacity:.4;}
+@media(max-width:720px){
+.fr-2,.fr-3,.fr-4,.fr-5,.fr-raid,.fr-api{grid-template-columns:1fr 1fr;}
+.form-row>*:last-child{grid-column:1/-1;}
+main{padding:12px 9px;}nav{padding:0 4px;}header{padding:0 12px;}
+.tab-btn{padding:10px 10px;font-size:12px;}
 }
 </style>
 </head>
@@ -465,504 +123,430 @@ select option { background:var(--bg-card); }
 <div class="toast-container" id="toastContainer"></div>
 
 <header>
-  <div>
-    <div class="logo">LOA <span>PARTY</span> BUILDER</div>
+  <div class="logo">LOA <span>PARTY</span> BUILDER</div>
+  <div class="header-right">
+    <span class="header-sub">AUTO COMPOSER</span>
+    <span class="theme-label" id="themeLabel">라이트</span>
+    <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="다크/라이트 모드"></div>
   </div>
-  <div class="header-sub">AUTO PARTY COMPOSER</div>
 </header>
 
-<nav id="mainNav">
-  <button class="tab-btn active" data-tab="tab-expedition">⚔ 원정대 관리</button>
-  <button class="tab-btn" data-tab="tab-raid">🗡 레이드 관리</button>
-  <button class="tab-btn" data-tab="tab-compose">✨ 파티 자동 조합</button>
+<nav>
+  <button class="tab-btn active" data-tab="t1">⚔ 원정대 관리</button>
+  <button class="tab-btn" data-tab="t2">🗡 레이드 관리</button>
+  <button class="tab-btn" data-tab="t3">✨ 파티 자동 조합</button>
 </nav>
 
 <main>
 
-<!-- ══════════════════════════════════════
-     TAB 1: 원정대 관리
-══════════════════════════════════════ -->
-<div class="tab-pane active" id="tab-expedition">
-
+<div class="tab-pane active" id="t1">
   <div class="card">
     <div class="section-title">원정대 등록</div>
-    <div class="form-row cols-3">
-      <div class="form-field">
-        <label>원정대 이름</label>
-        <input id="expName" type="text" placeholder="ex) 홍길동 원정대">
-      </div>
-      <div class="form-field" style="grid-column:span 2; display:flex; align-items:flex-end; gap:8px;">
-        <button class="btn btn-gold" onclick="addExpedition()" style="flex-shrink:0">원정대 추가</button>
-      </div>
+    <div class="form-row fr-2">
+      <div class="ff"><label>원정대 이름</label>
+        <input id="expName" type="text" placeholder="ex) 홍길동 원정대" onkeydown="if(event.key==='Enter')addExpedition()"></div>
+      <div class="ff fe"><button class="btn btn-gold" onclick="addExpedition()">원정대 추가</button></div>
     </div>
+  </div>
+
+  <div class="api-section">
+    <div class="api-tag">🎮 인게임 정보 자동 불러오기 (로스트아크 Open API)</div>
+    <div class="api-notice">
+      <strong>로스트아크 공식 Open API</strong>로 캐릭터명만 입력하면 레벨·아이템레벨을 자동으로 가져올 수 있습니다.<br>
+      API 키는 <a href="https://developer-lostark.game.onstove.com/" target="_blank" style="color:var(--gold)">developer-lostark.game.onstove.com</a> 에서 무료 발급 가능합니다.
+    </div>
+    <div class="form-row fr-api">
+      <div class="ff"><label>API 키</label>
+        <input id="loaApiKey" type="password" placeholder="발급받은 API 키 입력"></div>
+      <div class="ff"><label>대표 캐릭터명 (원정대 조회)</label>
+        <input id="loaCharName" type="text" placeholder="인게임 캐릭터명" onkeydown="if(event.key==='Enter')fetchLoaChar()"></div>
+      <div class="ff fe"><button class="btn btn-ghost" onclick="fetchLoaChar()">🔍 조회</button></div>
+      <div class="ff fe"><button class="btn btn-ghost" onclick="window.open('https://developer-lostark.game.onstove.com/','_blank')">🔑 키 발급</button></div>
+    </div>
+    <div id="loaApiResult" style="margin-top:10px"></div>
   </div>
 
   <div class="card">
-    <div class="section-title">캐릭터 추가</div>
-    <div class="form-row cols-5">
-      <div class="form-field">
-        <label>원정대 선택</label>
-        <select id="charExpedition">
-          <option value="">원정대 선택</option>
-        </select>
-      </div>
-      <div class="form-field">
-        <label>닉네임</label>
-        <input id="charNick" type="text" placeholder="캐릭터명">
-      </div>
-      <div class="form-field">
-        <label>레벨</label>
-        <input id="charLevel" type="number" placeholder="1640" min="0">
-      </div>
-      <div class="form-field">
-        <label>전투력</label>
-        <input id="charCP" type="number" placeholder="100000" min="0">
-      </div>
-      <div class="form-field">
-        <label>역할</label>
-        <select id="charRole">
-          <option value="dealer">딜러</option>
-          <option value="support">서폿</option>
-        </select>
-      </div>
-      <div class="form-field" style="display:flex; align-items:flex-end;">
-        <button class="btn btn-gold" onclick="addCharacter()" style="width:100%">추가</button>
-      </div>
+    <div class="section-title">캐릭터 직접 추가</div>
+    <div class="form-row fr-5">
+      <div class="ff"><label>원정대</label>
+        <select id="charExp" onchange="clearCharFields()"><option value="">원정대 선택</option></select></div>
+      <div class="ff"><label>닉네임</label>
+        <input id="charNick" type="text" placeholder="캐릭터명" onkeydown="if(event.key==='Enter')addChar()"></div>
+      <div class="ff"><label>레벨</label>
+        <input id="charLv" type="text" inputmode="numeric" placeholder="1640" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addChar()">
+        <div class="field-error" id="err-charLv">숫자만 입력해주세요!</div></div>
+      <div class="ff"><label>전투력</label>
+        <input id="charCP" type="text" inputmode="numeric" placeholder="100000" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addChar()">
+        <div class="field-error" id="err-charCP">숫자만 입력해주세요!</div></div>
+      <div class="ff"><label>역할</label>
+        <select id="charRole"><option value="dealer">딜러</option><option value="support">서폿</option></select></div>
+      <div class="ff fe"><button class="btn btn-gold" onclick="addChar()" style="width:100%">추가</button></div>
     </div>
   </div>
 
-  <!-- 원정대 목록 -->
-  <div id="expeditionList">
-    <div class="empty"><div class="empty-icon">⚔️</div>등록된 원정대가 없습니다</div>
-  </div>
-
+  <div id="expList"><div class="empty"><div class="empty-icon">⚔️</div>등록된 원정대가 없습니다</div></div>
 </div>
 
-<!-- ══════════════════════════════════════
-     TAB 2: 레이드 관리
-══════════════════════════════════════ -->
-<div class="tab-pane" id="tab-raid">
-
+<div class="tab-pane" id="t2">
   <div class="card">
     <div class="section-title">레이드 등록</div>
-    <div class="form-row cols-4">
-      <div class="form-field">
-        <label>레이드 이름</label>
-        <input id="raidName" type="text" placeholder="ex) 에키드나 노말">
-      </div>
-      <div class="form-field">
-        <label>입장 레벨</label>
-        <input id="raidLevel" type="number" placeholder="1620" min="0">
-      </div>
-      <div class="form-field">
-        <label>딜러 인원</label>
-        <input id="raidDealers" type="number" placeholder="6" min="1" max="7">
-      </div>
-      <div class="form-field">
-        <label>서폿 인원</label>
-        <input id="raidSupports" type="number" placeholder="2" min="0" max="4">
-      </div>
-      <div class="form-field" style="display:flex; align-items:flex-end;">
-        <button class="btn btn-gold" onclick="addRaid()" style="width:100%">등록</button>
-      </div>
+    <div class="form-row fr-raid">
+      <div class="ff"><label>레이드 이름</label>
+        <input id="raidName" type="text" placeholder="ex) 에키드나" onkeydown="if(event.key==='Enter')addRaid()"></div>
+      <div class="ff"><label>단계/난이도</label>
+        <input id="raidTier" type="text" placeholder="노말/하드/1관문" onkeydown="if(event.key==='Enter')addRaid()"></div>
+      <div class="ff"><label>입장 레벨</label>
+        <input id="raidLv" type="text" inputmode="numeric" placeholder="1620" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addRaid()">
+        <div class="field-error" id="err-raidLv">숫자만 입력해주세요!</div></div>
+      <div class="ff"><label>딜러 인원</label>
+        <input id="raidD" type="text" inputmode="numeric" placeholder="6" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addRaid()">
+        <div class="field-error" id="err-raidD">숫자만 입력해주세요!</div></div>
+      <div class="ff"><label>서폿 인원</label>
+        <input id="raidS" type="text" inputmode="numeric" placeholder="2" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addRaid()">
+        <div class="field-error" id="err-raidS">숫자만 입력해주세요!</div></div>
+      <div class="ff fe"><button class="btn btn-gold" onclick="addRaid()">등록</button></div>
+    </div>
+    <div class="alert alert-info" style="margin-top:10px;margin-bottom:0">
+      💡 같은 레이드의 노말/하드는 각각 별도 등록하세요. 예) "에키드나 노말" / "에키드나 하드"
     </div>
   </div>
-
   <div class="card">
-    <div class="flex-between">
-      <div class="section-title" style="margin-bottom:0">등록된 레이드</div>
-    </div>
-    <div id="raidTableWrap">
-      <div class="empty"><div class="empty-icon">🗡️</div>등록된 레이드가 없습니다</div>
-    </div>
+    <div class="section-title">등록된 레이드</div>
+    <div id="raidWrap"><div class="empty"><div class="empty-icon">🗡️</div>등록된 레이드가 없습니다</div></div>
   </div>
-
 </div>
 
-<!-- ══════════════════════════════════════
-     TAB 3: 파티 자동 조합
-══════════════════════════════════════ -->
-<div class="tab-pane" id="tab-compose">
-
+<div class="tab-pane" id="t3">
   <div class="card">
     <div class="section-title">레이드 선택</div>
-    <div class="form-row cols-3">
-      <div class="form-field">
-        <label>레이드</label>
-        <select id="composeRaid">
-          <option value="">레이드를 선택하세요</option>
-        </select>
-      </div>
-      <div class="form-field" style="display:flex; align-items:flex-end; gap:8px;">
-        <button class="btn btn-gold btn-big" onclick="composeParties()" style="width:auto; padding:9px 28px;">파티 자동 조합 시작</button>
-      </div>
+    <div class="form-row fr-2">
+      <div class="ff"><label>레이드</label>
+        <select id="compRaid" onchange="showChips()"><option value="">레이드를 선택하세요</option></select></div>
+      <div class="ff fe">
+        <button class="btn btn-gold" style="padding:9px 26px" onclick="compose()">✨ 파티 자동 조합</button></div>
     </div>
-    <div id="raidInfoChips" style="display:none" class="stat-row"></div>
+    <div id="chips" style="display:none;margin-top:12px" class="stat-row"></div>
   </div>
-
-  <div id="composeResult"></div>
-
+  <div id="compResult"></div>
 </div>
 
 </main>
 
-<!-- Firebase SDK -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, remove, push, onValue }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getDatabase,ref,set,remove,push,update,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const app=initializeApp({apiKey:"AIzaSyDPIMLD5b4RO5SxSUbZgUu12xUxiUGmS9s",authDomain:"lostark-party-build.firebaseapp.com",databaseURL:"https://lostark-party-build-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"lostark-party-build",storageBucket:"lostark-party-build.firebasestorage.app",messagingSenderId:"495176787080",appId:"1:495176787080:web:5adec7a58add53176deb3d"});
+const db=getDatabase(app);
+window._E={};window._R={};
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDPIMLD5b4RO5SxSUbZgUu12xUxiUGmS9s",
-  authDomain: "lostark-party-build.firebaseapp.com",
-  databaseURL: "https://lostark-party-build-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "lostark-party-build",
-  storageBucket: "lostark-party-build.firebasestorage.app",
-  messagingSenderId: "495176787080",
-  appId: "1:495176787080:web:5adec7a58add53176deb3d",
-  measurementId: "G-WRHWP92NW9"
-};
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-// ── STATE ──
-window._expeditions = {};   // {id: {name, chars:{id:{nick,level,cp,role}}}}
-window._raids = {};         // {id: {name,level,dealers,supports}}
-
-// ── TOAST ──
-window.toast = (msg, type='success') => {
-  const c = document.getElementById('toastContainer');
-  const t = document.createElement('div');
-  t.className = `toast ${type}`;
-  t.innerHTML = `<span>${type==='success'?'✓':'✕'}</span>${msg}`;
-  c.appendChild(t);
-  setTimeout(()=>t.remove(), 2800);
+window.toast=(msg,type='success')=>{
+  const c=document.getElementById('toastContainer'),t=document.createElement('div');
+  t.className=`toast ${type}`;t.innerHTML=`<span>${type==='success'?'✓':'✕'}</span> ${msg}`;
+  c.appendChild(t);setTimeout(()=>t.remove(),2800);
 };
 
-// ── EXPEDITION CRUD ──
-window.addExpedition = async () => {
-  const name = document.getElementById('expName').value.trim();
-  if(!name) return toast('원정대 이름을 입력하세요', 'error');
-  const r = ref(db, 'expeditions');
-  const newRef = push(r);
-  await set(newRef, { name, chars:{} });
-  document.getElementById('expName').value = '';
-  toast(`원정대 "${name}" 등록 완료`);
+window.toggleTheme=()=>{
+  document.body.classList.toggle('dark');
+  const d=document.body.classList.contains('dark');
+  document.getElementById('themeLabel').textContent=d?'다크':'라이트';
+  localStorage.setItem('loa_th',d?'dark':'light');
+};
+(()=>{if(localStorage.getItem('loa_th')==='dark'){document.body.classList.add('dark');document.getElementById('themeLabel').textContent='다크';}})();
+
+window.numOnly=(el)=>{
+  const raw=el.value,clean=raw.replace(/[^0-9]/g,'');
+  const e=document.getElementById('err-'+el.id);
+  if(raw!==clean){el.classList.add('input-error');if(e)e.classList.add('show');el.value=clean;el.style.animation='none';el.offsetHeight;el.style.animation='shake .3s ease';}
+  else{el.classList.remove('input-error');if(e)e.classList.remove('show');}
 };
 
-window.deleteExpedition = async (id) => {
-  if(!confirm('원정대를 삭제하시겠습니까? 소속 캐릭터도 모두 삭제됩니다.')) return;
-  await remove(ref(db, `expeditions/${id}`));
-  toast('원정대 삭제 완료');
+window.clearCharFields=()=>{
+  ['charNick','charLv','charCP'].forEach(id=>{const el=document.getElementById(id);el.value='';el.classList.remove('input-error');});
+  ['err-charLv','err-charCP'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('show');});
+  document.getElementById('charRole').value='dealer';
 };
 
-// ── CHARACTER CRUD ──
-window.addCharacter = async () => {
-  const expId = document.getElementById('charExpedition').value;
-  const nick  = document.getElementById('charNick').value.trim();
-  const level = parseInt(document.getElementById('charLevel').value);
-  const cp    = parseInt(document.getElementById('charCP').value);
-  const role  = document.getElementById('charRole').value;
-  if(!expId) return toast('원정대를 선택하세요','error');
-  if(!nick)  return toast('닉네임을 입력하세요','error');
-  if(!level || level<0) return toast('레벨을 입력하세요','error');
-  if(!cp || cp<0) return toast('전투력을 입력하세요','error');
-
-  const r = ref(db, `expeditions/${expId}/chars`);
-  const newRef = push(r);
-  await set(newRef, { nick, level, cp, role });
-  document.getElementById('charNick').value='';
-  document.getElementById('charLevel').value='';
-  document.getElementById('charCP').value='';
-  toast(`"${nick}" 캐릭터 추가 완료`);
+window.addExpedition=async()=>{
+  const n=document.getElementById('expName').value.trim();
+  if(!n)return toast('원정대 이름을 입력하세요','error');
+  await set(push(ref(db,'expeditions')),{name:n,chars:{}});
+  document.getElementById('expName').value='';toast(`"${n}" 원정대 등록 완료`);
+};
+window.delExp=async(id)=>{
+  if(!confirm('원정대를 삭제하시겠습니까? 소속 캐릭터도 모두 삭제됩니다.'))return;
+  await remove(ref(db,`expeditions/${id}`));toast('원정대 삭제 완료');
+};
+window.startEditExp=(id,cur)=>{
+  document.getElementById(`en-${id}`).innerHTML=`<input class="exp-name-input" id="ei-${id}" value="${cur}" onkeydown="if(event.key==='Enter')saveExp('${id}');if(event.key==='Escape')renderExp()">`;
+  document.getElementById(`ea-${id}`).innerHTML=`<button class="btn btn-gold btn-sm" onclick="saveExp('${id}')">저장</button><button class="btn btn-ghost btn-sm" onclick="renderExp()">취소</button>`;
+  document.getElementById(`ei-${id}`)?.focus();
+};
+window.saveExp=async(id)=>{
+  const inp=document.getElementById(`ei-${id}`);if(!inp)return;
+  const v=inp.value.trim();if(!v)return toast('이름을 입력하세요','error');
+  await update(ref(db,`expeditions/${id}`),{name:v});toast('원정대 이름 수정 완료');
 };
 
-window.deleteChar = async (expId, charId) => {
-  await remove(ref(db, `expeditions/${expId}/chars/${charId}`));
-  toast('캐릭터 삭제 완료');
+window.addChar=async()=>{
+  const eid=document.getElementById('charExp').value;
+  const nick=document.getElementById('charNick').value.trim();
+  const lv=document.getElementById('charLv').value;
+  const cp=document.getElementById('charCP').value;
+  const role=document.getElementById('charRole').value;
+  if(!eid)return toast('원정대를 선택하세요','error');
+  if(!nick)return toast('닉네임을 입력하세요','error');
+  let ok=true;
+  if(!lv||!/^\d+$/.test(lv)){document.getElementById('charLv').classList.add('input-error');document.getElementById('err-charLv').classList.add('show');ok=false;}
+  if(!cp||!/^\d+$/.test(cp)){document.getElementById('charCP').classList.add('input-error');document.getElementById('err-charCP').classList.add('show');ok=false;}
+  if(!ok)return toast('숫자만 입력해주세요!','error');
+  await set(push(ref(db,`expeditions/${eid}/chars`)),{nick,level:+lv,cp:+cp,role});
+  document.getElementById('charNick').value='';document.getElementById('charLv').value='';document.getElementById('charCP').value='';
+  toast(`"${nick}" 추가 완료`);
 };
+window.delChar=async(eid,cid)=>{await remove(ref(db,`expeditions/${eid}/chars/${cid}`));toast('캐릭터 삭제');};
 
-// ── RAID CRUD ──
-window.addRaid = async () => {
-  const name     = document.getElementById('raidName').value.trim();
-  const level    = parseInt(document.getElementById('raidLevel').value);
-  const dealers  = parseInt(document.getElementById('raidDealers').value);
-  const supports = parseInt(document.getElementById('raidSupports').value);
-  if(!name) return toast('레이드 이름을 입력하세요','error');
-  if(!level) return toast('입장 레벨을 입력하세요','error');
-  if(isNaN(dealers)||dealers<1) return toast('딜러 인원을 입력하세요','error');
-  if(isNaN(supports)||supports<0) return toast('서폿 인원을 입력하세요','error');
-  const r = push(ref(db,'raids'));
-  await set(r, { name, level, dealers, supports });
-  ['raidName','raidLevel','raidDealers','raidSupports'].forEach(id=>document.getElementById(id).value='');
-  toast(`레이드 "${name}" 등록 완료`);
+window.addRaid=async()=>{
+  const name=document.getElementById('raidName').value.trim();
+  const tier=document.getElementById('raidTier').value.trim();
+  const lv=document.getElementById('raidLv').value;
+  const d=document.getElementById('raidD').value;
+  const s=document.getElementById('raidS').value;
+  if(!name)return toast('레이드 이름을 입력하세요','error');
+  let ok=true;
+  [['raidLv',lv],['raidD',d],['raidS',s]].forEach(([id,v])=>{
+    if(!v||!/^\d+$/.test(v)){document.getElementById(id).classList.add('input-error');document.getElementById('err-'+id).classList.add('show');ok=false;}
+  });
+  if(!ok)return toast('숫자만 입력해주세요!','error');
+  const full=tier?`${name} ${tier}`:name;
+  await set(push(ref(db,'raids')),{name:full,baseName:name,tier:tier||'',level:+lv,dealers:+d,supports:+s});
+  ['raidName','raidTier','raidLv','raidD','raidS'].forEach(id=>{const el=document.getElementById(id);el.value='';el.classList.remove('input-error');});
+  ['err-raidLv','err-raidD','err-raidS'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('show');});
+  toast(`"${full}" 레이드 등록 완료`);
 };
+window.delRaid=async(id)=>{if(!confirm('레이드를 삭제하시겠습니까?'))return;await remove(ref(db,`raids/${id}`));toast('레이드 삭제 완료');};
 
-window.deleteRaid = async (id) => {
-  if(!confirm('레이드를 삭제하시겠습니까?')) return;
-  await remove(ref(db,`raids/${id}`));
-  toast('레이드 삭제 완료');
+window.fetchLoaChar=async()=>{
+  const key=document.getElementById('loaApiKey').value.trim();
+  const name=document.getElementById('loaCharName').value.trim();
+  const res=document.getElementById('loaApiResult');
+  if(!name)return toast('캐릭터명을 입력하세요','error');
+  if(!key){res.innerHTML=`<div class="alert alert-warn">⚠️ API 키를 먼저 입력해주세요. <a href="https://developer-lostark.game.onstove.com/" target="_blank" style="color:var(--gold)">키 발급 →</a></div>`;return;}
+  res.innerHTML=`<div style="color:var(--text-muted);font-size:13px">🔍 조회 중...</div>`;
+  try{
+    const r=await fetch(`https://developer-lostark.game.onstove.com/characters/${encodeURIComponent(name)}/siblings`,{headers:{accept:'application/json',authorization:`bearer ${key}`}});
+    if(!r.ok)throw new Error(r.status===401?'API 키가 올바르지 않습니다':r.status===404?'캐릭터를 찾을 수 없습니다':`오류 ${r.status}`);
+    const data=await r.json();
+    if(!Array.isArray(data)||!data.length)throw new Error('캐릭터 정보 없음');
+    const rows=data.map(c=>{
+      const lvN=Math.floor(parseFloat((c.ItemAvgLevel||'0').replace(',',''))||0);
+      const cpE=Math.round(lvN*100);
+      return `<tr><td style="font-weight:500">${c.CharacterName}</td><td>${c.CharacterClassName||'-'}</td>
+        <td><span class="badge badge-lv">Lv.${lvN}</span></td>
+        <td style="color:var(--gold);font-weight:700">${cpE.toLocaleString()}</td>
+        <td><select id="ir-${c.CharacterName}" style="padding:3px 6px;font-size:11px;width:68px"><option value="dealer">딜러</option><option value="support">서폿</option></select></td>
+        <td><input type="checkbox" id="ic-${c.CharacterName}" data-name="${c.CharacterName}" data-lv="${lvN}" data-cp="${cpE}" checked style="accent-color:var(--gold);width:14px;height:14px"></td>
+      </tr>`;
+    }).join('');
+    res.innerHTML=`<div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">원정대 캐릭터 ${data.length}개 조회됨. 가져올 캐릭터를 선택하세요.</div>
+      <div style="overflow-x:auto"><table class="data-table" style="font-size:12px">
+        <thead><tr><th>닉네임</th><th>클래스</th><th>아이템 레벨</th><th>전투력(추정)</th><th>역할</th><th>선택</th></tr></thead>
+        <tbody>${rows}</tbody></table></div>
+      <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <select id="impExpId" style="padding:7px 10px;font-size:13px"><option value="">원정대 선택</option>
+          ${Object.entries(window._E).map(([id,e])=>`<option value="${id}">${e.name}</option>`).join('')}
+        </select>
+        <button class="btn btn-gold" onclick="importChars()">선택 캐릭터 가져오기</button>
+        <span style="font-size:11px;color:var(--text-muted)">※전투력은 추정값, 수동 수정 가능</span>
+      </div>`;
+  }catch(e){res.innerHTML=`<div class="alert alert-warn">❌ ${e.message}<br><span style="font-size:11px">CORS 오류 시 서버 프록시가 필요합니다.</span></div>`;}
 };
-
-// ── REALTIME LISTENERS ──
-onValue(ref(db,'expeditions'), snap => {
-  window._expeditions = snap.val() || {};
-  renderExpeditions();
-  updateExpeditionSelect();
-});
-
-onValue(ref(db,'raids'), snap => {
-  window._raids = snap.val() || {};
-  renderRaids();
-  updateRaidSelect();
-});
-
-// ── RENDER EXPEDITIONS ──
-function renderExpeditions() {
-  const el = document.getElementById('expeditionList');
-  const exps = window._expeditions;
-  if(!Object.keys(exps).length) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">⚔️</div>등록된 원정대가 없습니다</div>';
-    return;
+window.importChars=async()=>{
+  const eid=document.getElementById('impExpId')?.value;
+  if(!eid)return toast('원정대를 선택하세요','error');
+  const boxes=document.querySelectorAll('[id^="ic-"]');let cnt=0;
+  for(const b of boxes){
+    if(!b.checked)continue;
+    const nm=b.dataset.name,lv=+b.dataset.lv,cp=+b.dataset.cp;
+    const role=document.getElementById(`ir-${nm}`)?.value||'dealer';
+    await set(push(ref(db,`expeditions/${eid}/chars`)),{nick:nm,level:lv,cp,role});cnt++;
   }
-  el.innerHTML = Object.entries(exps).map(([id, exp]) => {
-    const chars = exp.chars || {};
-    const charList = Object.entries(chars);
-    const dealers  = charList.filter(([,c])=>c.role==='dealer').length;
-    const supports = charList.filter(([,c])=>c.role==='support').length;
+  toast(`${cnt}개 캐릭터 가져오기 완료`);document.getElementById('loaApiResult').innerHTML='';
+};
 
-    const rows = charList.length ? charList.map(([cid,c]) => `
-      <tr>
-        <td><span class="badge ${c.role==='dealer'?'badge-dealer':'badge-support'}">${c.role==='dealer'?'딜러':'서폿'}</span></td>
-        <td style="font-weight:500">${c.nick}</td>
-        <td><span class="badge badge-level">Lv.${c.level}</span></td>
-        <td style="color:var(--gold);font-weight:700">${Number(c.cp).toLocaleString()}</td>
-        <td><button class="btn btn-red" style="padding:4px 10px;font-size:11px" onclick="deleteChar('${id}','${cid}')">삭제</button></td>
-      </tr>
-    `).join('') : `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:16px">캐릭터가 없습니다</td></tr>`;
+onValue(ref(db,'expeditions'),snap=>{window._E=snap.val()||{};renderExp();updExpSel();});
+onValue(ref(db,'raids'),snap=>{window._R=snap.val()||{};renderRaids();updRaidSel();});
 
-    return `
-    <div class="expedition-group">
-      <div class="expedition-header">
-        <div class="expedition-name">⚔ ${exp.name}</div>
-        <span class="expedition-chars" style="color:var(--dealer)">딜러 ${dealers}</span>
-        <span class="expedition-chars" style="color:var(--support);margin-left:8px">서폿 ${supports}</span>
-        <span class="expedition-chars" style="margin-left:16px">총 ${charList.length}캐릭</span>
-        <button class="btn btn-red btn-ghost" style="margin-left:12px;padding:4px 10px;font-size:11px"
-          onclick="deleteExpedition('${id}')">원정대 삭제</button>
+window.renderExp=()=>{
+  const el=document.getElementById('expList'),exps=window._E;
+  if(!Object.keys(exps).length){el.innerHTML='<div class="empty"><div class="empty-icon">⚔️</div>등록된 원정대가 없습니다</div>';return;}
+  el.innerHTML=Object.entries(exps).map(([id,exp])=>{
+    const chars=exp.chars||{},list=Object.entries(chars);
+    const nd=list.filter(([,c])=>c.role==='dealer').length,ns=list.filter(([,c])=>c.role==='support').length;
+    const rows=list.length?list.map(([cid,c])=>`<tr>
+      <td><span class="badge ${c.role==='dealer'?'badge-d':'badge-s'}">${c.role==='dealer'?'딜러':'서폿'}</span></td>
+      <td style="font-weight:500">${c.nick}</td>
+      <td><span class="badge badge-lv">Lv.${c.level}</span></td>
+      <td style="color:var(--gold);font-weight:700">${Number(c.cp).toLocaleString()}</td>
+      <td><button class="btn btn-red btn-sm" onclick="delChar('${id}','${cid}')">삭제</button></td>
+    </tr>`).join(''):`<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:12px">캐릭터 없음</td></tr>`;
+    return `<div class="exp-group">
+      <div class="exp-header">
+        <span id="en-${id}" class="exp-name">${exp.name}</span>
+        <div id="ea-${id}" style="display:flex;gap:6px;align-items:center">
+          <button class="btn btn-ghost btn-sm" onclick="startEditExp('${id}','${exp.name.replace(/'/g,'').replace(/"/g,'')}')">✏ 이름 수정</button>
+          <button class="btn btn-red btn-sm" onclick="delExp('${id}')">삭제</button>
+        </div>
+        <span style="font-size:11px;color:var(--dealer);margin-left:10px">딜러 ${nd}</span>
+        <span style="font-size:11px;color:var(--support);margin-left:6px">서폿 ${ns}</span>
+        <span style="font-size:11px;color:var(--text-muted);margin-left:6px">총 ${list.length}캐</span>
       </div>
-      <div class="expedition-body">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>역할</th><th>닉네임</th><th>레벨</th><th>전투력</th><th></th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
+      <div class="exp-body"><table class="data-table">
+        <thead><tr><th>역할</th><th>닉네임</th><th>레벨</th><th>전투력</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>
     </div>`;
   }).join('');
-}
+};
 
-// ── RENDER RAIDS ──
-function renderRaids() {
-  const el = document.getElementById('raidTableWrap');
-  const raids = window._raids;
-  if(!Object.keys(raids).length) {
-    el.innerHTML='<div class="empty"><div class="empty-icon">🗡️</div>등록된 레이드가 없습니다</div>';
-    return;
-  }
-  el.innerHTML = `<table class="data-table">
-    <thead><tr>
-      <th>레이드 이름</th><th>입장 레벨</th><th>파티 규모</th><th>딜러</th><th>서폿</th><th></th>
-    </tr></thead>
-    <tbody>
-    ${Object.entries(raids).map(([id,r])=>`
-      <tr>
-        <td style="font-weight:700;color:var(--gold-light)">${r.name}</td>
-        <td><span class="badge badge-level">Lv.${r.level}</span></td>
-        <td style="color:var(--text-muted)">${r.dealers+r.supports}인</td>
-        <td><span style="color:var(--dealer);font-weight:700">딜러 ${r.dealers}명</span></td>
-        <td><span style="color:var(--support);font-weight:700">서폿 ${r.supports}명</span></td>
-        <td><button class="btn btn-red" style="padding:4px 10px;font-size:11px" onclick="deleteRaid('${id}')">삭제</button></td>
-      </tr>
-    `).join('')}
-    </tbody>
-  </table>`;
-}
-
-// ── SELECT UPDATES ──
-function updateExpeditionSelect() {
-  const sel = document.getElementById('charExpedition');
-  const cur = sel.value;
-  const exps = window._expeditions;
-  sel.innerHTML = '<option value="">원정대 선택</option>' +
-    Object.entries(exps).map(([id,e])=>`<option value="${id}" ${id===cur?'selected':''}>${e.name}</option>`).join('');
-}
-
-function updateRaidSelect() {
-  const sel = document.getElementById('composeRaid');
-  const cur = sel.value;
-  const raids = window._raids;
-  sel.innerHTML = '<option value="">레이드를 선택하세요</option>' +
-    Object.entries(raids).map(([id,r])=>`<option value="${id}" ${id===cur?'selected':''}>${r.name} (Lv.${r.level} / ${r.dealers}딜+${r.supports}서폿)</option>`).join('');
-}
-
-// ── TAB SWITCH ──
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.tab).classList.add('active');
+function renderRaids(){
+  const el=document.getElementById('raidWrap'),raids=window._R;
+  if(!Object.keys(raids).length){el.innerHTML='<div class="empty"><div class="empty-icon">🗡️</div>등록된 레이드가 없습니다</div>';return;}
+  const grp={};Object.entries(raids).forEach(([id,r])=>{const b=r.baseName||r.name;if(!grp[b])grp[b]=[];grp[b].push([id,r]);});
+  let html='';
+  Object.entries(grp).forEach(([base,entries])=>{
+    html+=`<div style="margin-bottom:16px">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);padding:6px 11px;border-bottom:1px solid var(--border);font-weight:700">${base}</div>
+      <table class="data-table"><thead><tr><th>이름/단계</th><th>입장 레벨</th><th>딜러</th><th>서폿</th><th>규모</th><th></th></tr></thead><tbody>
+      ${entries.map(([id,r])=>{
+        const tc=/하드|hard/i.test(r.tier)?'t-h':/노말|normal/i.test(r.tier)?'t-n':'t-c';
+        return `<tr>
+          <td style="font-weight:700">${r.baseName||r.name}${r.tier?`<span class="tier-badge ${tc}">${r.tier}</span>`:''}</td>
+          <td><span class="badge badge-lv">Lv.${r.level}</span></td>
+          <td style="color:var(--dealer);font-weight:700">${r.dealers}명</td>
+          <td style="color:var(--support);font-weight:700">${r.supports}명</td>
+          <td style="color:var(--text-muted)">${r.dealers+r.supports}인</td>
+          <td><button class="btn btn-red btn-sm" onclick="delRaid('${id}')">삭제</button></td>
+        </tr>`;
+      }).join('')}
+      </tbody></table></div>`;
   });
-});
+  el.innerHTML=html;
+}
 
-// ── PARTY COMPOSE ALGORITHM ──
-window.composeParties = () => {
-  const raidId = document.getElementById('composeRaid').value;
-  if(!raidId) return toast('레이드를 선택하세요','error');
+function updExpSel(){
+  const s=document.getElementById('charExp'),cur=s.value;
+  s.innerHTML='<option value="">원정대 선택</option>'+Object.entries(window._E).map(([id,e])=>`<option value="${id}" ${id===cur?'selected':''}>${e.name}</option>`).join('');
+}
+function updRaidSel(){
+  const s=document.getElementById('compRaid'),cur=s.value;
+  s.innerHTML='<option value="">레이드를 선택하세요</option>'+Object.entries(window._R).map(([id,r])=>`<option value="${id}" ${id===cur?'selected':''}>${r.name} (Lv.${r.level}/딜${r.dealers}+서${r.supports})</option>`).join('');
+}
 
-  const raid = window._raids[raidId];
-  const exps = window._expeditions;
+window.showChips=()=>{
+  const id=document.getElementById('compRaid').value,chips=document.getElementById('chips');
+  if(!id){chips.style.display='none';return;}
+  const r=window._R[id];if(!r){chips.style.display='none';return;}
+  chips.style.display='flex';
+  chips.innerHTML=`<div class="stat-chip"><div class="val">${r.level}</div><div class="lbl">입장 레벨</div></div>
+    <div class="stat-chip"><div class="val" style="color:var(--dealer)">${r.dealers}</div><div class="lbl">딜러 인원</div></div>
+    <div class="stat-chip"><div class="val" style="color:var(--support)">${r.supports}</div><div class="lbl">서폿 인원</div></div>
+    <div class="stat-chip"><div class="val">${r.dealers+r.supports}인</div><div class="lbl">파티 규모</div></div>`;
+};
 
-  // Collect all chars grouped by expedition
-  // rule: 한 파티에 한 원정대 캐릭터만 1명
-  let allChars = []; // {expId, charId, nick, level, cp, role}
-  Object.entries(exps).forEach(([expId, exp])=>{
-    const chars = exp.chars || {};
-    Object.entries(chars).forEach(([cid,c])=>{
-      if(c.level >= raid.level) {
-        allChars.push({ expId, charId:cid, expName:exp.name, nick:c.nick, level:c.level, cp:c.cp, role:c.role });
-      }
+window.compose=()=>{
+  const raidId=document.getElementById('compRaid').value;
+  if(!raidId)return toast('레이드를 선택하세요','error');
+  const raid=window._R[raidId],exps=window._E;
+  let all=[];
+  Object.entries(exps).forEach(([eid,exp])=>{
+    Object.entries(exp.chars||{}).forEach(([cid,c])=>{
+      if(Number(c.level)>=Number(raid.level))
+        all.push({expId:eid,charId:cid,expName:exp.name,nick:c.nick,level:c.level,cp:Number(c.cp),role:c.role});
     });
   });
+  const dealers=all.filter(c=>c.role==='dealer');
+  const supports=all.filter(c=>c.role==='support');
+  showChips();
 
-  const dealers  = allChars.filter(c=>c.role==='dealer');
-  const supports = allChars.filter(c=>c.role==='support');
-
-  const partySize = raid.dealers + raid.supports;
-  const infoEl = document.getElementById('raidInfoChips');
-  infoEl.style.display='flex';
-  infoEl.innerHTML = `
-    <div class="stat-chip"><div class="val">${dealers.length}</div><div class="lbl">참여 딜러</div></div>
-    <div class="stat-chip"><div class="val">${supports.length}</div><div class="lbl">참여 서폿</div></div>
-    <div class="stat-chip"><div class="val">${partySize}인</div><div class="lbl">파티 규모</div></div>
-    <div class="stat-chip"><div class="val">${raid.level}</div><div class="lbl">입장 레벨</div></div>
-  `;
-
-  // 1) Sort dealers by CP desc → split into groups of raid.dealers
-  const sortedDealers = [...dealers].sort((a,b)=>b.cp-a.cp);
-  const dealerGroups = [];
-  for(let i=0; i<sortedDealers.length; i+=raid.dealers) {
-    const grp = sortedDealers.slice(i, i+raid.dealers);
-    if(grp.length === raid.dealers) dealerGroups.push(grp);
+  const usedD=new Set(),usedS=new Set(),parties=[];
+  const sortedD=[...dealers].sort((a,b)=>b.cp-a.cp);
+  const dGroups=[];
+  for(let i=0;i<sortedD.length;i+=raid.dealers){
+    const g=sortedD.slice(i,i+raid.dealers);
+    if(g.length===raid.dealers)dGroups.push(g);
+  }
+  dGroups.forEach(dg=>{
+    const expIds=new Set(dg.map(c=>c.expId));
+    const avg=Math.round(dg.reduce((s,c)=>s+c.cp,0)/dg.length);
+    const avail=supports.filter(s=>!usedS.has(s.charId)&&!expIds.has(s.expId));
+    const picked=[...avail].sort((a,b)=>Math.abs(a.cp-avg)-Math.abs(b.cp-avg)).slice(0,raid.supports);
+    picked.forEach(s=>usedS.add(s.charId));dg.forEach(d=>usedD.add(d.charId));
+    parties.push({idx:parties.length+1,dealers:dg,supports:picked,avg,type:'mixed'});
+  });
+  if(raid.supports>0){
+    const rem=supports.filter(s=>!usedS.has(s.charId)).sort((a,b)=>b.cp-a.cp);
+    for(let i=0;i<rem.length;i+=raid.supports){
+      const g=rem.slice(i,i+raid.supports);
+      if(g.length===raid.supports){
+        const avg=Math.round(g.reduce((s,c)=>s+c.cp,0)/g.length);
+        parties.push({idx:parties.length+1,dealers:[],supports:g,avg,type:'support-only'});
+        g.forEach(s=>usedS.add(s.charId));
+      }
+    }
   }
 
-  // 2) For each dealer group, compute avg CP; assign supports closest to that avg
-  //    constraint: 한 파티에 같은 원정대 캐릭 2명 이상 불가
-  const usedSupports = new Set();
-  const parties = [];
-
-  dealerGroups.forEach((dGrp, idx) => {
-    const usedExpIds = new Set(dGrp.map(c=>c.expId));
-    const avgCP = Math.round(dGrp.reduce((s,c)=>s+Number(c.cp),0)/dGrp.length);
-
-    // Pick supports not yet used, not from same expedition
-    const available = supports.filter(s=>
-      !usedSupports.has(s.charId) && !usedExpIds.has(s.expId)
-    );
-
-    // Sort by CP closest to avg
-    const sorted = [...available].sort((a,b)=>
-      Math.abs(a.cp-avgCP) - Math.abs(b.cp-avgCP)
-    );
-    const picked = sorted.slice(0, raid.supports);
-    picked.forEach(s=>usedSupports.add(s.charId));
-
-    const allMembers = [...dGrp, ...picked];
-    const fullAvg = allMembers.length
-      ? Math.round(allMembers.reduce((s,c)=>s+Number(c.cp),0)/allMembers.length)
-      : avgCP;
-
-    parties.push({ idx:idx+1, dealers:dGrp, supports:picked, avgCP, fullAvg });
-  });
-
-  // Render result
-  const resultEl = document.getElementById('composeResult');
-  if(!parties.length) {
-    resultEl.innerHTML=`<div class="card"><div class="alert alert-warn">
-      ⚠️ 레이드 레벨 조건(Lv.${raid.level})을 충족하는 딜러가 충분하지 않습니다.<br>
-      딜러 최소 ${raid.dealers}명 필요 / 현재 적합 딜러: ${dealers.length}명
-    </div></div>`;
+  const re=document.getElementById('compResult');
+  if(!parties.length){
+    re.innerHTML=`<div class="card"><div class="alert alert-warn">⚠️ 레벨(${raid.level}) 조건 충족 캐릭터가 없습니다.<br>딜러: ${dealers.length}명 / 서폿: ${supports.length}명</div></div>`;
     return;
   }
-
-  const incomplete = parties.filter(p=>p.supports.length < raid.supports);
-  const warningHtml = incomplete.length ? `<div class="alert alert-warn" style="margin-bottom:16px">
-    ⚠️ ${incomplete.length}개 파티에 서폿 인원이 부족합니다. (조건 충족 서폿 부족)
-  </div>` : '';
-
-  resultEl.innerHTML = `
-    <div class="section-title" style="margin-top:8px">${raid.name} — 자동 조합 결과</div>
-    ${warningHtml}
+  const warnP=parties.filter(p=>p.supports.length<raid.supports&&p.type==='mixed');
+  const warnH=warnP.length?`<div class="alert alert-warn" style="margin-bottom:12px">⚠️ ${warnP.length}개 파티에 서폿이 부족합니다</div>`:'';
+  const soC=parties.filter(p=>p.type==='support-only').length;
+  const tD=parties.reduce((s,p)=>s+p.dealers.length,0);
+  const tS=parties.reduce((s,p)=>s+p.supports.length,0);
+  re.innerHTML=`
+    <div style="display:flex;align-items:center;margin-bottom:8px">
+      <div class="section-title" style="margin-bottom:0;flex:1">${raid.name} — 자동 조합 결과</div>
+    </div>${warnH}
     <div class="party-grid">
-    ${parties.map(p => {
-      const allM = [...p.dealers, ...p.supports];
-      const supportShort = raid.supports - p.supports.length;
-      return `
-      <div class="party-card">
+    ${parties.map(p=>{
+      const isS=p.type==='support-only';
+      const sh=Math.max(0,raid.supports-p.supports.length);
+      return `<div class="party-card">
         <div class="party-header">
-          <div class="party-name">PARTY ${p.idx}</div>
-          <div class="party-avg">딜러 평균 전투력 <strong>${p.avgCP.toLocaleString()}</strong></div>
+          <div class="party-name">PARTY ${p.idx}${isS?' <span style="font-size:9px;color:var(--support);letter-spacing:0">서폿전용</span>':''}</div>
+          <div class="party-avg">${isS?'서폿 평균':'딜러 평균'} <strong>${p.avg.toLocaleString()}</strong></div>
         </div>
         <div class="party-members">
-          ${p.dealers.map(c=>`
-            <div class="member-row">
-              <div class="member-icon d">D</div>
-              <div>
-                <div class="member-name">${c.nick}</div>
-                <div style="font-size:11px;color:var(--text-muted)">${c.expName}</div>
-              </div>
-              <div class="member-meta">
-                <div class="cp">${Number(c.cp).toLocaleString()}</div>
-                <div>Lv.${c.level}</div>
-              </div>
-            </div>
-          `).join('')}
-          ${p.supports.map(c=>`
-            <div class="member-row">
-              <div class="member-icon s">S</div>
-              <div>
-                <div class="member-name">${c.nick}</div>
-                <div style="font-size:11px;color:var(--text-muted)">${c.expName}</div>
-              </div>
-              <div class="member-meta">
-                <div class="cp" style="color:var(--support)">${Number(c.cp).toLocaleString()}</div>
-                <div>Lv.${c.level}</div>
-              </div>
-            </div>
-          `).join('')}
-          ${supportShort > 0 ? `<div class="member-row" style="opacity:.4">
-            <div class="member-icon s" style="opacity:.4">?</div>
-            <div style="color:var(--text-muted);font-size:12px">서폿 ${supportShort}명 부족</div>
-          </div>`.repeat(supportShort) : ''}
+          ${p.dealers.map(c=>`<div class="member-row">
+            <div class="mi d">D</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500">${c.nick}</div><div style="font-size:11px;color:var(--text-muted)">${c.expName}</div></div>
+            <div style="text-align:right"><div style="font-weight:700;font-size:13px;color:var(--gold)">${c.cp.toLocaleString()}</div><div style="font-size:11px;color:var(--text-muted)">Lv.${c.level}</div></div>
+          </div>`).join('')}
+          ${p.supports.map(c=>`<div class="member-row">
+            <div class="mi s">S</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500">${c.nick}</div><div style="font-size:11px;color:var(--text-muted)">${c.expName}</div></div>
+            <div style="text-align:right"><div style="font-weight:700;font-size:13px;color:var(--support)">${c.cp.toLocaleString()}</div><div style="font-size:11px;color:var(--text-muted)">Lv.${c.level}</div></div>
+          </div>`).join('')}
+          ${Array(sh).fill(0).map(()=>`<div class="member-row" style="opacity:.3"><div class="mi s">?</div><div style="font-size:11px;color:var(--text-muted)">서폿 부족</div></div>`).join('')}
         </div>
       </div>`;
     }).join('')}
     </div>
-    <div style="margin-top:20px">
-      <div class="alert alert-info">
-        💡 총 <strong>${parties.length}개 파티</strong> 조합 완료 
-        (참여 딜러 ${parties.reduce((s,p)=>s+p.dealers.length,0)}명 / 서폿 ${parties.reduce((s,p)=>s+p.supports.length,0)}명)
-        <br>조합 기준: 전투력 높은 딜러순 그룹 → 딜러 평균 전투력에 가장 근접한 서폿 배정 (동일 원정대 중복 제한)
-      </div>
-    </div>
-  `;
+    <div style="margin-top:12px"><div class="alert alert-info">
+      ✅ 총 <strong>${parties.length}개 파티</strong> (딜러 ${tD}명 / 서폿 ${tS}명)${soC?` — 서폿 전용 파티 ${soC}개 포함`:''}
+      <br>조합 기준: 전투력 높은 딜러 순 그룹 → 딜러 평균에 가장 근접한 서폿 배정 (같은 원정대 중복 제한)
+    </div></div>`;
   toast(`${parties.length}개 파티 조합 완료!`);
 };
 
+document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');document.getElementById(btn.dataset.tab).classList.add('active');
+}));
 </script>
 </body>
 </html>
