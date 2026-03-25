@@ -7,165 +7,363 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#c9a84c;--gold-light:#f0d080;--gold-dark:#8a6e2f;--dealer:#e05a5a;--dealer-bg:rgba(224,90,90,0.12);--support:#5ab8e0;--support-bg:rgba(90,184,224,0.12);}
-body{--bg-deep:#f4f1eb;--bg-card:#ffffff;--bg-card2:#f9f7f2;--bg-panel:#ede9e0;--border:rgba(140,110,50,0.18);--border-hover:rgba(140,110,50,0.45);--text:#2a2318;--text-muted:#9a8e78;--shadow:0 4px 24px rgba(0,0,0,0.08);--input-bg:#ffffff;--table-alt:rgba(201,168,76,0.04);}
-body.dark{--bg-deep:#080c14;--bg-card:#0e1520;--bg-card2:#121c2a;--bg-panel:#0a1018;--border:rgba(201,168,76,0.18);--border-hover:rgba(201,168,76,0.5);--text:#d4c8a8;--text-muted:#7a7060;--shadow:0 8px 40px rgba(0,0,0,0.7);--input-bg:#0a1018;--table-alt:rgba(201,168,76,0.03);}
+/* ─── TOKENS ─── */
+:root{
+  --gold:#c9a84c;--gold-dark:#8a6e2f;
+  --dealer:#e05a5a;--dealer-bg:rgba(224,90,90,0.12);
+  --support:#5ab8e0;--support-bg:rgba(90,184,224,0.12);
+}
+body{
+  --bg:#f4f1eb;--card:#fff;--card2:#f9f7f2;--panel:#ede9e0;
+  --border:rgba(140,110,50,0.18);--border-h:rgba(140,110,50,0.45);
+  --text:#2a2318;--muted:#9a8e78;
+  --shadow:0 4px 24px rgba(0,0,0,0.08);--inp:#fff;
+  --talt:rgba(201,168,76,0.04);--ov:rgba(0,0,0,0.42);
+}
+body.dark{
+  --bg:#080c14;--card:#0e1520;--card2:#121c2a;--panel:#0a1018;
+  --border:rgba(201,168,76,0.18);--border-h:rgba(201,168,76,0.5);
+  --text:#d4c8a8;--muted:#7a7060;
+  --shadow:0 8px 40px rgba(0,0,0,0.7);--inp:#0a1018;
+  --talt:rgba(201,168,76,0.03);--ov:rgba(0,0,0,0.72);
+}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg-deep);color:var(--text);font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .25s,color .25s;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .25s,color .25s;}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(201,168,76,0.05) 0%,transparent 60%);pointer-events:none;z-index:0;}
-header{position:relative;z-index:10;border-bottom:1px solid var(--border);background:var(--bg-card);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:58px;}
+
+/* ─── HEADER ─── */
+header{position:relative;z-index:10;border-bottom:1px solid var(--border);background:var(--card);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:58px;}
 .logo{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--gold);letter-spacing:3px;}
 .logo span{color:var(--text);}
-.header-right{display:flex;align-items:center;gap:12px;}
-.header-sub{font-size:11px;color:var(--text-muted);letter-spacing:2px;}
-.theme-toggle{width:44px;height:24px;background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;cursor:pointer;position:relative;transition:background .25s;flex-shrink:0;}
-.theme-toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--gold);transition:transform .25s;}
-body.dark .theme-toggle::after{transform:translateX(20px);}
-.theme-label{font-size:11px;color:var(--text-muted);}
-nav{position:relative;z-index:10;display:flex;border-bottom:1px solid var(--border);background:var(--bg-panel);padding:0 28px;gap:4px;}
-.tab-btn{padding:12px 20px;background:none;border:none;color:var(--text-muted);font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;cursor:pointer;position:relative;transition:color .2s;}
+.hdr-r{display:flex;align-items:center;gap:10px;}
+.toggle{width:44px;height:24px;background:var(--panel);border:1px solid var(--border);border-radius:12px;cursor:pointer;position:relative;flex-shrink:0;}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--gold);transition:transform .25s;}
+body.dark .toggle::after{transform:translateX(20px);}
+.theme-lbl{font-size:11px;color:var(--muted);}
+
+/* ─── NAV ─── */
+nav{position:relative;z-index:10;display:flex;border-bottom:1px solid var(--border);background:var(--panel);padding:0 28px;gap:4px;}
+.tab-btn{padding:12px 20px;background:none;border:none;color:var(--muted);font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;cursor:pointer;position:relative;transition:color .2s;}
 .tab-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .25s;}
 .tab-btn.active{color:var(--gold);}
 .tab-btn.active::after{transform:scaleX(1);}
 .tab-btn:hover:not(.active){color:var(--text);}
-main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:26px 22px;}
-.tab-pane{display:none;}
-.tab-pane.active{display:block;}
-.section-title{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
-.section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border) 0%,transparent 100%);}
-.card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:14px;box-shadow:var(--shadow);transition:border-color .2s;}
-.card:hover{border-color:var(--border-hover);}
-.form-row{display:grid;gap:10px;margin-bottom:10px;}
-.fr-2{grid-template-columns:1fr auto;}
-.fr-raidbase{
-  grid-template-columns:1fr 1fr auto;
-}
-.fr-3{grid-template-columns:1fr 1fr 1fr auto;}
-.fr-4{grid-template-columns:1fr 1fr 1fr 1fr auto;}
-.fr-5{grid-template-columns:1fr 1fr 1fr 1fr 1fr auto;}
+
+/* ─── LAYOUT ─── */
+main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:24px 22px;}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+.sec-title{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px;}
+.sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border) 0%,transparent 100%);}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:14px;box-shadow:var(--shadow);transition:border-color .2s;}
+.card:hover{border-color:var(--border-h);}
+
+/* ─── FORM ─── */
+.frow{display:grid;gap:10px;margin-bottom:10px;}
+.fr2{grid-template-columns:1fr auto;}
+.fr3{grid-template-columns:1fr 1fr auto;}
+.fr-char{grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr auto;}
 .fr-raid{grid-template-columns:1.4fr 1fr 1fr 1fr 1fr auto;}
-.fr-api{grid-template-columns:1.2fr 1fr auto auto;}
-label{display:block;font-size:11px;color:var(--text-muted);letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;}
-input,select{width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:4px;color:var(--text);padding:8px 11px;font-family:'Noto Sans KR',sans-serif;font-size:13px;transition:border-color .2s;outline:none;}
+label{display:block;font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;}
+input,select{width:100%;background:var(--inp);border:1px solid var(--border);border-radius:4px;color:var(--text);padding:8px 11px;font-family:'Noto Sans KR',sans-serif;font-size:13px;transition:border-color .2s;outline:none;}
 input:focus,select:focus{border-color:var(--gold-dark);box-shadow:0 0 0 2px rgba(201,168,76,0.1);}
-input::placeholder{color:var(--text-muted);}
-select option{background:var(--bg-card);color:var(--text);}
-input.input-error{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90,90,0.15)!important;}
-.field-error{font-size:11px;color:var(--dealer);margin-top:3px;display:none;}
-.field-error.show{display:block;}
-.btn{padding:8px 15px;border:none;border-radius:4px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;transition:all .2s;white-space:nowrap;}
+input::placeholder{color:var(--muted);}
+select option{background:var(--card);color:var(--text);}
+input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90,90,0.15)!important;}
+.ferr{font-size:11px;color:var(--dealer);margin-top:3px;display:none;}.ferr.show{display:block;}
+.ff{min-width:0;}.fe{display:flex;align-items:flex-end;}
+
+/* ─── BUTTONS (uniform sizes) ─── */
+/* Primary action btn */
+.btn{padding:8px 16px;border:none;border-radius:4px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;transition:all .2s;white-space:nowrap;height:36px;display:inline-flex;align-items:center;justify-content:center;}
 .btn-gold{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#080c14;}
 .btn-gold:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 4px 14px rgba(201,168,76,0.3);}
 .btn-red{background:var(--dealer-bg);border:1px solid rgba(224,90,90,0.3);color:var(--dealer);}
 .btn-red:hover{background:rgba(224,90,90,0.2);}
-.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-muted);font-size:12px;padding:5px 11px;}
-.btn-ghost:hover{border-color:var(--border-hover);color:var(--text);}
-.btn-sm{padding:4px 10px;font-size:11px;}
-.ff{min-width:0;}
-.fe{display:flex;align-items:flex-end;}
-.data-table{width:100%;border-collapse:collapse;font-size:13px;}
+.btn-blue{background:var(--support-bg);border:1px solid rgba(90,184,224,0.3);color:var(--support);}
+.btn-blue:hover{background:rgba(90,184,224,0.2);}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}.btn-ghost:hover{border-color:var(--border-h);color:var(--text);}
+/* Row action buttons — fixed equal width */
+.btn-act{padding:0 10px;font-size:12px;font-weight:700;height:28px;min-width:52px;}
+.btn-cell{display:flex;justify-content:center;gap:4px;}
 
-.data-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:13px;
-  table-layout:fixed;
-}
+/* ─── TABLE ─── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl th{text-align:center;font-size:10px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);padding:8px 8px;border-bottom:1px solid var(--border);font-weight:500;}
+.tbl td{padding:8px 8px;border-bottom:1px solid var(--border);vertical-align:middle;text-align:center;}
+.tbl tbody tr:hover td{background:var(--talt);}
+.tbl tbody tr:last-child td{border-bottom:none;}
+.tbl tbody tr.drag-over td{border-top:2px solid var(--gold);}
+.tbl tbody tr.dragging{opacity:.35;}
 
-.btn-cell{
-display:flex;
-justify-content:center;
-gap:4px;
-}
+/* char table */
+.ctbl{table-layout:fixed;}
+.ctbl th:nth-child(1),.ctbl td:nth-child(1){width:58px;}
+.ctbl th:nth-child(2),.ctbl td:nth-child(2){width:auto;text-align:left;padding-left:4px;}
+.ctbl th:nth-child(3),.ctbl td:nth-child(3){width:72px;}
+.ctbl th:nth-child(4),.ctbl td:nth-child(4){width:56px;}
+.ctbl th:nth-child(5),.ctbl td:nth-child(5){width:106px;}
+.ctbl th:nth-child(6),.ctbl td:nth-child(6){width:120px;}
 
-/* 컬럼 고정 width */
-.data-table th:nth-child(1),
-.data-table td:nth-child(1){width:70px;text-align:center;}   /* 역할 */
+/* raid list table */
+.rtbl{table-layout:fixed;}
+.rtbl th:nth-child(1),.rtbl td:nth-child(1){width:32px;}
+.rtbl th:nth-child(2),.rtbl td:nth-child(2){width:auto;text-align:left;}
+.rtbl th:nth-child(3),.rtbl td:nth-child(3){width:auto;text-align:center;}
+.rtbl th:nth-child(4),.rtbl td:nth-child(4){width:84px;}
+.rtbl th:nth-child(5),.rtbl td:nth-child(5){width:62px;}
+.rtbl th:nth-child(6),.rtbl td:nth-child(6){width:62px;}
+.rtbl th:nth-child(7),.rtbl td:nth-child(7){width:54px;}
+.rtbl th:nth-child(8),.rtbl td:nth-child(8){width:64px;}
 
-.data-table th:nth-child(2),
-.data-table td:nth-child(2){width:120px;text-align:center;}   /* 닉네임 */
+/* settings exp table */
+.setbl{table-layout:fixed;}
+.setbl th:nth-child(1),.setbl td:nth-child(1){width:32px;}
+.setbl th:nth-child(2),.setbl td:nth-child(2){width:auto;text-align:left;}
+.setbl th:nth-child(3),.setbl td:nth-child(3){width:120px;}
 
-.data-table th:nth-child(3),
-.data-table td:nth-child(3){width:90px;text-align:center;}  /* 레벨 */
+/* settings raidbase table */
+.srbtbl{table-layout:fixed;}
+.srbtbl th:nth-child(1),.srbtbl td:nth-child(1){width:32px;}
+.srbtbl th:nth-child(2),.srbtbl td:nth-child(2){width:130px;text-align:left;}
+.srbtbl th:nth-child(3),.srbtbl td:nth-child(3){width:auto;text-align:left;}
+.srbtbl th:nth-child(4),.srbtbl td:nth-child(4){width:64px;}
 
-.data-table th:nth-child(4),
-.data-table td:nth-child(4){width:90px;text-align:center;}  /* 종류 */
+/* ─── BADGES ─── */
+.badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;}
+.bd{background:var(--dealer-bg);color:var(--dealer);border:1px solid rgba(224,90,90,0.3);}
+.bs{background:var(--support-bg);color:var(--support);border:1px solid rgba(90,184,224,0.3);}
+.blv{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.25);}
+.tier-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:700;gap:4px;}
 
-.data-table th:nth-child(5),
-.data-table td:nth-child(5){width:120px;text-align:center;} /* 전투력 */
-
-.data-table th:nth-child(6),
-.data-table td:nth-child(6){width:110px;text-align:center;} /* 버튼 */
-
-.data-table th{
-  text-align:center;
-  font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);padding:8px 11px;border-bottom:1px solid var(--border);font-weight:500;}
-.data-table td{padding:9px 11px;border-bottom:1px solid var(--border);vertical-align:middle;}
-.data-table tbody tr:hover td{background:var(--table-alt);}
-.data-table tbody tr:last-child td{border-bottom:none;}
-.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;}
-.badge-d{background:var(--dealer-bg);color:var(--dealer);border:1px solid rgba(224,90,90,0.3);}
-.badge-s{background:var(--support-bg);color:var(--support);border:1px solid rgba(90,184,224,0.3);}
-.badge-lv{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.25);}
-.tier-badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:10px;font-weight:700;margin-left:6px;}
-.t-n{background:rgba(90,224,160,0.12);color:#5ae0a0;border:1px solid rgba(90,224,160,0.3);}
-.t-h{background:rgba(224,90,90,0.12);color:var(--dealer);border:1px solid rgba(224,90,90,0.3);}
-.t-c{background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3);}
+/* ─── EXP GROUP ─── */
 .exp-group{margin-bottom:14px;}
-.exp-header{background:linear-gradient(90deg,rgba(201,168,76,0.08),transparent);border:1px solid var(--border);border-radius:6px 6px 0 0;padding:9px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.exp-name{font-weight:700;font-size:14px;color:var(--gold);}
-.exp-body{border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;overflow:hidden;}
-.exp-name-input{background:var(--input-bg);border:1px solid var(--gold-dark);border-radius:4px;color:var(--text);padding:3px 8px;font-size:14px;font-weight:700;font-family:'Noto Sans KR',sans-serif;width:180px;}
+.exp-hd{background:linear-gradient(90deg,rgba(201,168,76,0.08),transparent);border:1px solid var(--border);border-radius:6px 6px 0 0;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.exp-nm{font-weight:700;font-size:14px;color:var(--gold);}
+.exp-bd{border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;overflow:hidden;}
+.exp-nm-inp{background:var(--inp);border:1px solid var(--gold-dark);border-radius:4px;color:var(--text);padding:3px 8px;font-size:14px;font-weight:700;font-family:'Noto Sans KR',sans-serif;width:180px;}
+
+/* ─── DRAG SORT LIST ─── */
+.sort-list{list-style:none;padding:0;}
+.sort-item{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--card2);border:1px solid var(--border);border-radius:6px;margin-bottom:6px;cursor:grab;user-select:none;}
+.sort-item:active{cursor:grabbing;}
+.sort-item.dragging{opacity:.4;}
+.sort-item.drag-over{border-top:2px solid var(--gold);}
+.sh{color:var(--muted);font-size:16px;flex-shrink:0;}
+.sr{font-size:11px;font-weight:700;padding:2px 7px;border-radius:12px;flex-shrink:0;}
+.sr.d{background:var(--dealer-bg);color:var(--dealer);}
+.sr.s{background:var(--support-bg);color:var(--support);}
+.sn{flex:1;font-weight:600;font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sm{font-size:11px;color:var(--muted);white-space:nowrap;}
+
+/* ─── TIER items in settings ─── */
+.tier-item{display:inline-flex;align-items:center;gap:4px;cursor:grab;user-select:none;}
+.tier-item:active{cursor:grabbing;}
+.tier-item.drag-over .tier-badge{outline:2px dashed var(--gold);border-radius:6px;}
+.tiers-cell{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+
+/* ─── PARTY ─── */
 .party-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:8px;}
-.party-card{background:var(--bg-card2);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:var(--shadow);transition:border-color .2s,transform .2s;}
-.party-card:hover{border-color:var(--border-hover);transform:translateY(-2px);}
-.party-header{background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(201,168,76,0.03));padding:11px 15px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
-.party-name{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1px;}
-.party-avg{font-size:11px;color:var(--text-muted);}
+.party-card{background:var(--card2);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:var(--shadow);transition:border-color .2s,transform .2s;}
+.party-card:hover{border-color:var(--border-h);transform:translateY(-2px);}
+.party-hd{background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(201,168,76,0.03));padding:11px 15px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
+.party-nm{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1px;}
+.party-avg{font-size:11px;color:var(--muted);}
 .party-avg strong{color:var(--gold);font-size:13px;}
-.party-members{padding:11px 15px;}
-.member-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(201,168,76,0.05);}
-.member-row:last-child{border-bottom:none;}
+.party-mbs{padding:11px 15px;}
+.mb-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(201,168,76,0.05);}
+.mb-row:last-child{border-bottom:none;}
 .mi{width:25px;height:25px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
 .mi.d{background:var(--dealer-bg);color:var(--dealer);}
 .mi.s{background:var(--support-bg);color:var(--support);}
 .stat-row{display:flex;gap:10px;flex-wrap:wrap;}
-.stat-chip{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:9px 16px;}
+.stat-chip{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:9px 16px;}
 .stat-chip .val{font-family:'Orbitron',sans-serif;font-size:19px;font-weight:700;color:var(--gold);}
-.stat-chip .lbl{font-size:10px;letter-spacing:1.5px;color:var(--text-muted);text-transform:uppercase;}
+.stat-chip .lbl{font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;}
+
+/* ─── ALERTS ─── */
 .alert{padding:10px 14px;border-radius:6px;font-size:13px;margin-bottom:12px;line-height:1.6;}
 .alert-info{background:rgba(90,184,224,0.07);border:1px solid rgba(90,184,224,0.2);color:var(--support);}
 .alert-warn{background:rgba(224,180,90,0.07);border:1px solid rgba(224,180,90,0.2);color:#c9943c;}
-.api-section{background:linear-gradient(135deg,rgba(90,184,224,0.05),rgba(201,168,76,0.04));border:1px dashed rgba(90,184,224,0.3);border-radius:8px;padding:16px;margin-bottom:14px;}
-.api-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--support);font-weight:700;margin-bottom:8px;}
-.api-notice{font-size:12px;color:var(--text-muted);margin-bottom:11px;line-height:1.65;}
-.api-notice strong{color:var(--text);}
-.toast-container{position:fixed;bottom:18px;right:18px;z-index:1000;display:flex;flex-direction:column;gap:6px;}
-.toast{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:9px 15px;font-size:13px;box-shadow:var(--shadow);animation:slideIn .22s ease;display:flex;align-items:center;gap:8px;max-width:310px;}
-.toast.success{border-color:rgba(90,224,160,0.4);}
-.toast.error{border-color:rgba(224,90,90,0.4);color:var(--dealer);}
+
+/* ─── TOAST ─── */
+.toast-wrap{position:fixed;bottom:18px;right:18px;z-index:3000;display:flex;flex-direction:column;gap:6px;}
+.toast{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:9px 15px;font-size:13px;box-shadow:var(--shadow);animation:slideIn .22s ease;display:flex;align-items:center;gap:8px;max-width:310px;}
+.toast.ok{border-color:rgba(90,224,160,0.4);}
+.toast.err{border-color:rgba(224,90,90,0.4);color:var(--dealer);}
 @keyframes slideIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}60%{transform:translateX(5px)}}
-.empty{text-align:center;padding:38px 18px;color:var(--text-muted);font-size:13px;}
-.empty-icon{font-size:34px;margin-bottom:9px;opacity:.4;}
+
+/* ─── MODAL ─── */
+.ov{display:none;position:fixed;inset:0;background:var(--ov);z-index:1000;align-items:center;justify-content:center;}
+.ov.show{display:flex;}
+.mbox{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 16px 60px rgba(0,0,0,0.5);width:min(760px,96vw);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;}
+.mbox.sm{width:min(460px,96vw);}
+.mbox.lg{width:min(700px,96vw);}
+.mhd{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.mtitle{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:var(--gold);letter-spacing:2px;}
+.mclose{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:2px 6px;border-radius:4px;line-height:1;}
+.mclose:hover{color:var(--text);background:var(--talt);}
+.mbody{padding:20px;overflow-y:auto;flex:1;}
+.mft{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;flex-shrink:0;align-items:center;}
+
+/* ─── SETTINGS MODAL TABS ─── */
+.set-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.set-tab{padding:10px 20px;background:none;border:none;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;position:relative;transition:color .2s;}
+.set-tab::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .2s;}
+.set-tab.active{color:var(--gold);}
+.set-tab.active::after{transform:scaleX(1);}
+.set-pane{display:none;}.set-pane.active{display:block;}
+
+/* ─── API MODAL ─── */
+.api-nb{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:11px 14px;font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:12px;}
+.api-nb strong{color:var(--text);}
+.api-nb a{color:var(--gold);}
+.api-qrow{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-bottom:12px;}
+.sel-ctrl{display:flex;gap:7px;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ─── COLOR SWATCHES ─── */
+.swatch-row{display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
+.swatch{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s,border-color .15s;flex-shrink:0;}
+.swatch:hover{transform:scale(1.2);}
+.swatch.selected{border-color:var(--text);}
+
+/* ─── SORT MODAL TOP ─── */
+.sort-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+
+/* ─── MISC ─── */
+.empty{text-align:center;padding:32px 16px;color:var(--muted);font-size:13px;}
+.empty-icon{font-size:32px;margin-bottom:8px;opacity:.4;}
+
 @media(max-width:720px){
-.fr-2,.fr-3,.fr-4,.fr-5,.fr-raid,.fr-api{grid-template-columns:1fr 1fr;}
-.form-row>*:last-child{grid-column:1/-1;}
-main{padding:12px 9px;}nav{padding:0 4px;}header{padding:0 12px;}
-.tab-btn{padding:10px 10px;font-size:12px;}
+  .fr3,.fr-char,.fr-raid,.fr2{grid-template-columns:1fr 1fr;}
+  .frow>*:last-child{grid-column:1/-1;}
+  main{padding:12px 9px;}nav{padding:0 4px;}header{padding:0 12px;}
+  .tab-btn{padding:10px 10px;font-size:12px;}
+  .api-qrow{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
+<div class="toast-wrap" id="toastWrap"></div>
 
-<div class="toast-container" id="toastContainer"></div>
+<!-- ══════ API MODAL ══════ -->
+<div class="ov" id="apiModal">
+<div class="mbox lg">
+  <div class="mhd"><div class="mtitle">🎮 인게임 원정대 불러오기</div><button class="mclose" onclick="closeM('apiModal')">✕</button></div>
+  <div class="mbody">
+    <div class="api-nb">
+      <strong>로스트아크 공식 Open API</strong>로 원정대 캐릭터를 자동으로 가져옵니다.<br>
+      API 키: <a href="https://developer-lostark.game.onstove.com/" target="_blank">developer-lostark.game.onstove.com</a> (무료 발급)<br>
+      ※ CORS 오류 시 서버 프록시가 필요합니다.
+    </div>
+    <div class="api-qrow">
+      <div class="ff"><label>API 키</label><input id="loaApiKey" type="password" placeholder="bearer 토큰"></div>
+      <div class="ff"><label>대표 캐릭터명</label><input id="loaCharName" type="text" placeholder="인게임 캐릭터명" onkeydown="if(event.key==='Enter')fetchLoaChar()"></div>
+      <div class="ff fe"><button class="btn btn-gold" onclick="fetchLoaChar()" style="align-self:flex-end">🔍 조회</button></div>
+    </div>
+    <div id="loaApiResult"></div>
+  </div>
+  <div class="mft">
+    <button class="btn btn-ghost" onclick="closeM('apiModal')">닫기</button>
+    <button class="btn btn-gold" id="importBtn" onclick="importChars()" style="display:none">✅ 선택 캐릭터 가져오기</button>
+  </div>
+</div>
+</div>
 
+<!-- ══════ CHAR SORT MODAL ══════ -->
+<div class="ov" id="sortModal">
+<div class="mbox sm">
+  <div class="mhd"><div class="mtitle">📋 캐릭터 순서변경</div><button class="mclose" onclick="closeM('sortModal')">✕</button></div>
+  <div class="mbody">
+    <div class="sort-topbar">
+      <span style="font-size:12px;color:var(--muted)">드래그하여 순서를 변경하세요</span>
+      <button class="btn btn-ghost btn-act" onclick="autoSortChars()">자동정렬</button>
+    </div>
+    <ul class="sort-list" id="sortList"></ul>
+  </div>
+  <div class="mft">
+    <button class="btn btn-ghost" onclick="closeM('sortModal')">취소</button>
+    <button class="btn btn-gold" onclick="confirmSort()">✅ 확인</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════ EXP ORDER MODAL ══════ -->
+<div class="ov" id="expOrderModal">
+<div class="mbox sm">
+  <div class="mhd"><div class="mtitle">🏰 원정대 순서변경</div><button class="mclose" onclick="closeM('expOrderModal')">✕</button></div>
+  <div class="mbody">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px">드래그하여 순서를 변경하세요</div>
+    <ul class="sort-list" id="expOrderList"></ul>
+  </div>
+  <div class="mft">
+    <button class="btn btn-ghost" onclick="closeM('expOrderModal')">취소</button>
+    <button class="btn btn-gold" onclick="confirmExpOrder()">✅ 확인</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════ RAID ORDER MODAL ══════ -->
+<div class="ov" id="raidOrderModal">
+<div class="mbox sm">
+  <div class="mhd"><div class="mtitle">🗡 레이드 순서변경</div><button class="mclose" onclick="closeM('raidOrderModal')">✕</button></div>
+  <div class="mbody">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px">드래그하여 순서를 변경하세요</div>
+    <ul class="sort-list" id="raidOrderList"></ul>
+  </div>
+  <div class="mft">
+    <button class="btn btn-ghost" onclick="closeM('raidOrderModal')">취소</button>
+    <button class="btn btn-gold" onclick="confirmRaidOrder()">✅ 확인</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════ SETTINGS MODAL ══════ -->
+<div class="ov" id="settingsModal">
+<div class="mbox lg">
+  <div class="mhd"><div class="mtitle">⚙ 설정</div><button class="mclose" onclick="closeM('settingsModal')">✕</button></div>
+  <div class="mbody">
+    <div class="set-tabs">
+      <button class="set-tab active" onclick="setTab(0)">🏰 원정대 이름 관리</button>
+      <button class="set-tab" onclick="setTab(1)">🗡 레이드 이름 / 난이도</button>
+    </div>
+    <!-- 원정대 설정 -->
+    <div class="set-pane active" id="sp0">
+      <div class="card" style="margin-bottom:12px">
+        <div class="frow fr3">
+          <div class="ff" style="grid-column:1/-1">
+            <label>원정대 이름</label>
+            <input id="expNameS" type="text" placeholder="ex) 홍길동 원정대" onkeydown="if(event.key==='Enter')addExpS()">
+          </div>
+          <div class="ff fe"><button class="btn btn-gold" onclick="addExpS()" style="width:100%">추가</button></div>
+        </div>
+      </div>
+      <div id="settingsExpList"><div class="empty" style="padding:16px"><div class="empty-icon">🏰</div>원정대 없음</div></div>
+    </div>
+    <!-- 레이드 설정 -->
+    <div class="set-pane" id="sp1">
+      <div class="card" style="margin-bottom:12px">
+        <div class="frow fr3">
+          <div class="ff"><label>레이드 이름</label><input id="raidBaseNameS" placeholder="ex) 카제로스" onkeydown="if(event.key==='Enter')addRBs()"></div>
+          <div class="ff"><label>난이도</label><input id="raidBaseTierS" placeholder="ex) 노말" onkeydown="if(event.key==='Enter')addRBs()"></div>
+          <div class="ff fe"><button class="btn btn-gold" onclick="addRBs()" style="width:100%">추가</button></div>
+        </div>
+      </div>
+      <div id="settingsRBList"><div class="empty" style="padding:16px"><div class="empty-icon">🗡️</div>레이드 없음</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════ HEADER ══════ -->
 <header>
   <div class="logo">LOA <span>PARTY</span> MATCH</div>
-  <div class="header-right">
-    <span class="header-sub"></span>
-    <span class="theme-label" id="themeLabel">라이트</span>
-    <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="다크/라이트 모드"></div>
+  <div class="hdr-r">
+    <span class="theme-lbl" id="themeLabel">라이트</span>
+    <div class="toggle" onclick="toggleTheme()" title="다크/라이트 모드"></div>
+    <button class="btn btn-ghost" onclick="openM('settingsModal')" style="font-size:13px;height:36px;padding:0 14px">⚙ 설정</button>
   </div>
 </header>
 
@@ -177,241 +375,162 @@ main{padding:12px 9px;}nav{padding:0 4px;}header{padding:0 12px;}
 
 <main>
 
+<!-- ══ TAB1: 원정대 ══ -->
 <div class="tab-pane active" id="t1">
-  <div class="card">
-    <div class="section-title">원정대 등록</div>
-    <div class="form-row fr-raidbase">
-      <div class="ff"><label>원정대 이름</label>
-        <input id="expName" type="text" placeholder="ex) 홍길동 원정대" onkeydown="if(event.key==='Enter')addExpedition()"></div>
-      <div class="ff fe"><button class="btn btn-gold" onclick="addExpedition()">원정대 추가</button></div>
-    </div>
-  </div>
 
-  <div class="api-section">
-    <div class="api-tag">🎮 인게임 정보 자동 불러오기 (로스트아크 Open API)</div>
-    <div class="api-notice">
-      <strong>로스트아크 공식 Open API</strong>로 캐릭터명 입력 시 클래스·아이템레벨을 자동 가져옵니다.<br>
-      전투력은 가져온 후 캐릭터별로 직접 입력하면 됩니다.<br>
-      API 키 발급: <a href="https://developer-lostark.game.onstove.com/" target="_blank" style="color:var(--gold)">developer-lostark.game.onstove.com</a> (무료)
-    </div>
-    <div class="form-row fr-api">
-      <div class="ff"><label>API 키</label>
-        <input id="loaApiKey" type="password" placeholder="발급받은 API 키 입력"></div>
-      <div class="ff"><label>대표 캐릭터명 (원정대 조회)</label>
-        <input id="loaCharName" type="text" placeholder="인게임 캐릭터명" onkeydown="if(event.key==='Enter')fetchLoaChar()"></div>
-      <div class="ff fe"><button class="btn btn-ghost" onclick="fetchLoaChar()">🔍 조회</button></div>
-      <div class="ff fe"><button class="btn btn-ghost" onclick="window.open('https://developer-lostark.game.onstove.com/','_blank')">🔑 키 발급</button></div>
-    </div>
-    <div id="loaApiResult" style="margin-top:10px"></div>
-  </div>
-
+  <!-- 캐릭터 직접 추가 -->
   <div class="card">
-    <div class="section-title">캐릭터 직접 추가</div>
-    <div class="form-row fr-raid">
-      <div class="ff"><label>원정대</label>
-        <select id="charExp" onchange="clearCharFields()"><option value="">원정대 선택</option></select></div>
-      <div class="ff"><label>닉네임</label>
-        <input id="charNick" type="text" placeholder="캐릭터명" onkeydown="if(event.key==='Enter')addChar()"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div class="sec-title" style="margin-bottom:0;flex:1">캐릭터 직접 추가</div>
+      <button class="btn btn-blue" onclick="openM('apiModal')" style="font-size:12px;height:32px;padding:0 12px;margin-left:12px">🎮 인게임 불러오기</button>
+    </div>
+    <div class="frow fr-char">
+      <div class="ff"><label>원정대</label><select id="charExp" onchange="clearCharFields()"><option value="">원정대 선택</option></select></div>
+      <div class="ff"><label>닉네임</label><input id="charNick" type="text" placeholder="캐릭터명" onkeydown="if(event.key==='Enter')addChar()"></div>
       <div class="ff"><label>레벨</label>
         <input id="charLv" type="text" inputmode="numeric" placeholder="1640" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addChar()">
-        <div class="field-error" id="err-charLv">숫자만 입력해주세요!</div></div>
+        <div class="ferr" id="err-charLv">숫자만 입력해주세요!</div>
+      </div>
       <div class="ff"><label>전투력 종류</label>
-	<select id="charCPType">
-	<option value="cp">전투력</option>
-	<option value="lopek">로펙</option>
-	</select>
+        <select id="charCPType"><option value="cp">전투력</option><option value="lopek">로펙</option></select>
       </div>
       <div class="ff"><label>전투력/로펙</label>
         <input id="charCP" type="text" inputmode="numeric" placeholder="100000" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addChar()">
-        <div class="field-error" id="err-charCP">숫자만 입력해주세요!</div></div>
+        <div class="ferr" id="err-charCP">숫자만 입력해주세요!</div>
+      </div>
       <div class="ff"><label>역할</label>
-        <select id="charRole"><option value="dealer">딜러</option><option value="support">서폿</option></select></div>
+        <select id="charRole"><option value="dealer">딜러</option><option value="support">서폿</option></select>
+      </div>
       <div class="ff fe"><button class="btn btn-gold" onclick="addChar()" style="width:100%">추가</button></div>
     </div>
   </div>
 
-  <div id="expList"><div class="empty"><div class="empty-icon">⚔️</div>등록된 원정대가 없습니다</div></div>
+  <div id="expList"><div class="empty"><div class="empty-icon">🏰</div>등록된 원정대가 없습니다<br><span style="font-size:12px">⚙ 설정에서 원정대를 추가하세요</span></div></div>
 </div>
 
+<!-- ══ TAB2: 레이드 ══ -->
 <div class="tab-pane" id="t2">
-
-  <!-- 레이드 이름 관리 -->
   <div class="card">
-    <div class="section-title">레이드 이름 / 난이도 관리</div>
-	<div class="form-row fr-raidbase">
-      <div class="ff">
-        <label>레이드 이름</label>
-        <input id="raidBaseName" placeholder="ex) 카제로스">
-      </div>
-      <div class="ff">
-        <label>난이도</label>
-        <input id="raidBaseTier" placeholder="ex) 노말">
-      </div>
-	<div class="ff fe" style="justify-content:flex-end">
-        <button class="btn btn-gold" onclick="addRaidBase()">추가</button>
-      </div>
-    </div>
-    <div id="raidBaseList"></div>
-  </div>
-  <!-- 기존 레이드 등록 -->
-  <div class="card">
-    <div class="section-title">레이드 등록</div>
-    <div class="form-row fr-raid">
-      <div class="ff"><label>레이드 이름</label>
-	<select id="raidName" onchange="updateTierSelect()"></select>
-      </div>
-      <div class="ff"><label>단계/난이도</label>
-	<select id="raidTier"></select>
-      </div>
+    <div class="sec-title">레이드 등록</div>
+    <div class="frow fr-raid">
+      <div class="ff"><label>레이드 이름</label><select id="raidName" onchange="updateTierSelect()"></select></div>
+      <div class="ff"><label>단계/난이도</label><select id="raidTier"></select></div>
       <div class="ff"><label>입장 레벨</label>
         <input id="raidLv" type="text" inputmode="numeric" placeholder="1620" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addRaid()">
-        <div class="field-error" id="err-raidLv">숫자만 입력해주세요!</div></div>
+        <div class="ferr" id="err-raidLv">숫자만 입력해주세요!</div>
+      </div>
       <div class="ff"><label>딜러 인원</label>
         <input id="raidD" type="text" inputmode="numeric" placeholder="6" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addRaid()">
-        <div class="field-error" id="err-raidD">숫자만 입력해주세요!</div></div>
+        <div class="ferr" id="err-raidD">숫자만 입력해주세요!</div>
+      </div>
       <div class="ff"><label>서폿 인원</label>
         <input id="raidS" type="text" inputmode="numeric" placeholder="2" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addRaid()">
-        <div class="field-error" id="err-raidS">숫자만 입력해주세요!</div></div>
+        <div class="ferr" id="err-raidS">숫자만 입력해주세요!</div>
+      </div>
       <div class="ff fe"><button class="btn btn-gold" onclick="addRaid()">등록</button></div>
     </div>
-    <div class="alert alert-info" style="margin-top:10px;margin-bottom:0">
-      💡 같은 레이드의 노말/하드는 각각 별도 등록하세요. 예) "에키드나 노말" / "에키드나 하드"
-    </div>
   </div>
+
   <div class="card">
-    <div class="section-title">등록된 레이드</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div class="sec-title" style="margin-bottom:0;flex:1">등록된 레이드</div>
+      <button class="btn btn-ghost" onclick="openRaidOrder()" style="font-size:12px;height:32px;padding:0 14px;margin-left:12px">↕ 순서변경</button>
+    </div>
     <div id="raidWrap"><div class="empty"><div class="empty-icon">🗡️</div>등록된 레이드가 없습니다</div></div>
   </div>
 </div>
 
+<!-- ══ TAB3: 파티 조합 ══ -->
 <div class="tab-pane" id="t3">
   <div class="card">
-    <div class="section-title">레이드 선택</div>
-    <div class="form-row fr-2">
-      <div class="ff"><label>레이드</label>
-        <select id="compRaid" onchange="showChips()"><option value="">레이드를 선택하세요</option></select></div>
-      <div class="ff fe">
-        <button class="btn btn-gold" style="padding:9px 26px" onclick="compose()">✨ 파티 자동 조합</button></div>
+    <div class="sec-title">레이드 선택</div>
+    <div class="frow fr2">
+      <div class="ff"><label>레이드</label><select id="compRaid" onchange="showChips()"><option value="">레이드를 선택하세요</option></select></div>
+      <div class="ff fe"><button class="btn btn-gold" style="padding:0 26px" onclick="compose()">✨ 파티 자동 조합</button></div>
     </div>
     <div id="chips" style="display:none;margin-top:12px" class="stat-row"></div>
   </div>
   <div id="compResult"></div>
 </div>
-
 </main>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getDatabase,ref,set,remove,push,update,onValue,get}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{getDatabase,ref,set,get,remove,push,update,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 const app=initializeApp({apiKey:"AIzaSyDPIMLD5b4RO5SxSUbZgUu12xUxiUGmS9s",authDomain:"lostark-party-build.firebaseapp.com",databaseURL:"https://lostark-party-build-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"lostark-party-build",storageBucket:"lostark-party-build.firebasestorage.app",messagingSenderId:"495176787080",appId:"1:495176787080:web:5adec7a58add53176deb3d"});
 const db=getDatabase(app);
-window._E={};
-window._R={};
-window._RB={}; 
+window._E={};window._R={};window._RB={};
 
-window.addRaidBase = async()=>{
+const SUP_CLS=new Set(['바드','홀리나이트','도화가','발키리']);
 
-  const name=document.getElementById('raidBaseName').value.trim();
-  const tier=document.getElementById('raidBaseTier').value.trim();
-
-  if(!name || !tier)
-    return toast("레이드 이름 / 난이도 입력","error");
-
-  const baseRef = ref(db,`raidBase/${name}`);
-
-  const snap = await get(baseRef);
-
-  let data = snap.val() || {tiers:[]};
-
-  if(!data.tiers.includes(tier))
-      data.tiers.push(tier);
-
-  await set(baseRef,data);
-
-  document.getElementById("raidBaseName").value="";
-  document.getElementById("raidBaseTier").value="";
-
-  toast("레이드 난이도 추가 완료");
-
-  updateRaidSelect();   // ⭐ 추가
-  updateTierSelect();   // ⭐ 추가
-
+/* ─── PRESET COLORS ─── */
+const PRESET_COLORS=['#e05a5a','#e08a3a','#d4c03a','#5ae080','#3ab8e0','#5a5ae0','#b05ae0','#e05aaa','#888888','#c9a84c'];
+function swatchHtml(name,tier,curColor){
+  return`<div class="swatch-row">${PRESET_COLORS.map(c=>`<span class="swatch${curColor===c?' selected':''}" style="background:${c}" title="${c}" onclick="setTierColor('${name}','${tier}','${c}')"></span>`).join('')}<span class="swatch${!curColor?' selected':''}" style="background:var(--muted);position:relative" title="기본" onclick="setTierColor('${name}','${tier}','')">✕</span></div>`;
 }
 
-window.delRaidBase = async(name)=>{
-  if(!confirm(`${name} 레이드를 삭제하시겠습니까?`)) return;
-  await remove(ref(db,`raidBase/${name}`));
-  toast("레이드 삭제 완료");
-}
-
-window.editRaidBase = (name)=>{
-  const newName = prompt("레이드 이름 수정",name);
-  if(!newName || newName===name) return;
-  const data = window._RB[name];
-  set(ref(db,`raidBase/${newName}`),data);
-  remove(ref(db,`raidBase/${name}`));
-  toast("레이드 이름 수정 완료");
-}
-
-window.editRaidTier = async(name,tier)=>{
-  const newTier = prompt("난이도 수정",tier);
-  if(!newTier || newTier===tier) return;
-  const data = window._RB[name];
-  const tiers = data.tiers.map(t => t===tier ? newTier : t);
-  await set(ref(db,`raidBase/${name}`),{
-    tiers:tiers
-  });
-  toast("난이도 수정 완료");
-}
-
-window.toast=(msg,type='success')=>{
-  const c=document.getElementById('toastContainer'),t=document.createElement('div');
-  t.className=`toast ${type}`;t.innerHTML=`<span>${type==='success'?'✓':'✕'}</span> ${msg}`;
+/* ─── TOAST ─── */
+window.toast=(msg,type='ok')=>{
+  const c=document.getElementById('toastWrap'),t=document.createElement('div');
+  t.className=`toast ${type}`;t.innerHTML=`<span>${type==='ok'?'✓':'✕'}</span> ${msg}`;
   c.appendChild(t);setTimeout(()=>t.remove(),2800);
 };
 
-window.toggleTheme=()=>{
-  document.body.classList.toggle('dark');
-  const d=document.body.classList.contains('dark');
-  document.getElementById('themeLabel').textContent=d?'다크':'라이트';
-  localStorage.setItem('loa_th',d?'dark':'light');
-};
+/* ─── THEME ─── */
+window.toggleTheme=()=>{document.body.classList.toggle('dark');const d=document.body.classList.contains('dark');document.getElementById('themeLabel').textContent=d?'다크':'라이트';localStorage.setItem('loa_th',d?'dark':'light');};
 (()=>{if(localStorage.getItem('loa_th')==='dark'){document.body.classList.add('dark');document.getElementById('themeLabel').textContent='다크';}})();
 
+/* ─── MODAL ─── */
+window.openM=(id)=>document.getElementById(id).classList.add('show');
+window.closeM=(id)=>document.getElementById(id).classList.remove('show');
+document.querySelectorAll('.ov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show');}));
+
+/* ─── SETTINGS TABS ─── */
+window.setTab=(idx)=>{
+  document.querySelectorAll('.set-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  document.querySelectorAll('.set-pane').forEach((p,i)=>p.classList.toggle('active',i===idx));
+};
+
+/* ─── NUM ONLY ─── */
 window.numOnly=(el)=>{
   const raw=el.value,clean=raw.replace(/[^0-9]/g,'');
   const e=document.getElementById('err-'+el.id);
-  if(raw!==clean){el.classList.add('input-error');if(e)e.classList.add('show');el.value=clean;el.style.animation='none';el.offsetHeight;el.style.animation='shake .3s ease';}
-  else{el.classList.remove('input-error');if(e)e.classList.remove('show');}
+  if(raw!==clean){el.classList.add('ierr');if(e)e.classList.add('show');el.value=clean;el.style.animation='none';el.offsetHeight;el.style.animation='shake .3s ease';}
+  else{el.classList.remove('ierr');if(e)e.classList.remove('show');}
 };
 
+/* ─── CLEAR CHAR FIELDS ─── */
 window.clearCharFields=()=>{
-  ['charNick','charLv','charCP'].forEach(id=>{const el=document.getElementById(id);el.value='';el.classList.remove('input-error');});
+  ['charNick','charLv','charCP'].forEach(id=>{const el=document.getElementById(id);if(el){el.value='';el.classList.remove('ierr');}});
   ['err-charLv','err-charCP'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('show');});
-  document.getElementById('charRole').value='dealer';
+  const r=document.getElementById('charRole');if(r)r.value='dealer';
+  const ct=document.getElementById('charCPType');if(ct)ct.value='cp';
 };
 
-window.addExpedition=async()=>{
-  const n=document.getElementById('expName').value.trim();
-  if(!n)return toast('원정대 이름을 입력하세요','error');
-  await set(push(ref(db,'expeditions')),{name:n,chars:{}});
-  document.getElementById('expName').value='';toast(`"${n}" 원정대 등록 완료`);
+/* ─── EXPEDITION ─── */
+async function _addExp(name){
+  if(!name)return toast('원정대 이름을 입력하세요','err');
+  const snap=await get(ref(db,'expeditions'));
+  const ord=Object.keys(snap.val()||{}).length;
+  await set(push(ref(db,'expeditions')),{name,chars:{},order:ord});
+  toast(`"${name}" 원정대 등록 완료`);
+}
+window.addExpS=async()=>{const el=document.getElementById('expNameS');await _addExp(el.value.trim());el.value='';};
+window.delExp=async(id)=>{if(!confirm('원정대를 삭제하시겠습니까? 소속 캐릭터도 모두 삭제됩니다.'))return;await remove(ref(db,`expeditions/${id}`));toast('원정대 삭제 완료');};
+window.startEditExpS=(id,cur)=>{
+  const td=document.getElementById(`se-nm-${id}`);
+  const ac=document.getElementById(`se-ac-${id}`);
+  td.innerHTML=`<input class="exp-nm-inp" id="sei-${id}" value="${cur}" style="width:100%" onkeydown="if(event.key==='Enter')saveExpS('${id}');if(event.key==='Escape')renderSExpList()">`;
+  ac.innerHTML=`<button class="btn btn-gold btn-act" onclick="saveExpS('${id}')">저장</button><button class="btn btn-ghost btn-act" onclick="renderSExpList()">취소</button>`;
+  document.getElementById(`sei-${id}`)?.focus();
 };
-window.delExp=async(id)=>{
-  if(!confirm('원정대를 삭제하시겠습니까? 소속 캐릭터도 모두 삭제됩니다.'))return;
-  await remove(ref(db,`expeditions/${id}`));toast('원정대 삭제 완료');
-};
-window.startEditExp=(id,cur)=>{
-  document.getElementById(`en-${id}`).innerHTML=`<input class="exp-name-input" id="ei-${id}" value="${cur}" onkeydown="if(event.key==='Enter')saveExp('${id}');if(event.key==='Escape')renderExp()">`;
-  document.getElementById(`ea-${id}`).innerHTML=`<button class="btn btn-gold btn-sm" onclick="saveExp('${id}')">저장</button><button class="btn btn-ghost btn-sm" onclick="renderExp()">취소</button>`;
-  document.getElementById(`ei-${id}`)?.focus();
-};
-window.saveExp=async(id)=>{
-  const inp=document.getElementById(`ei-${id}`);if(!inp)return;
-  const v=inp.value.trim();if(!v)return toast('이름을 입력하세요','error');
+window.saveExpS=async(id)=>{
+  const inp=document.getElementById(`sei-${id}`);if(!inp)return;
+  const v=inp.value.trim();if(!v)return toast('이름을 입력하세요','err');
   await update(ref(db,`expeditions/${id}`),{name:v});toast('원정대 이름 수정 완료');
 };
 
+/* ─── CHAR ─── */
 window.addChar=async()=>{
   const eid=document.getElementById('charExp').value;
   const nick=document.getElementById('charNick').value.trim();
@@ -419,374 +538,476 @@ window.addChar=async()=>{
   const cp=document.getElementById('charCP').value;
   const cpType=document.getElementById('charCPType').value;
   const role=document.getElementById('charRole').value;
-  if(!eid)return toast('원정대를 선택하세요','error');
-  if(!nick)return toast('닉네임을 입력하세요','error');
+  if(!eid)return toast('원정대를 선택하세요','err');
+  if(!nick)return toast('닉네임을 입력하세요','err');
   let ok=true;
-  if(!lv||!/^\d+$/.test(lv)){document.getElementById('charLv').classList.add('input-error');document.getElementById('err-charLv').classList.add('show');ok=false;}
-  if(!cp||!/^\d+$/.test(cp)){document.getElementById('charCP').classList.add('input-error');document.getElementById('err-charCP').classList.add('show');ok=false;}
-  if(!ok)return toast('숫자만 입력해주세요!','error');
-  await set(push(ref(db,`expeditions/${eid}/chars`)),{
-nick,
-level:+lv,
-cp:+cp,
-cpType,
-role
-});
+  if(!lv||!/^\d+$/.test(lv)){document.getElementById('charLv').classList.add('ierr');document.getElementById('err-charLv').classList.add('show');ok=false;}
+  if(!cp||!/^\d+$/.test(cp)){document.getElementById('charCP').classList.add('ierr');document.getElementById('err-charCP').classList.add('show');ok=false;}
+  if(!ok)return toast('숫자만 입력해주세요!','err');
+  const snap=await get(ref(db,`expeditions/${eid}/chars`));
+  const ord=Object.keys(snap.val()||{}).length;
+  await set(push(ref(db,`expeditions/${eid}/chars`)),{nick,level:+lv,cp:+cp,cpType,role,order:ord});
   document.getElementById('charNick').value='';document.getElementById('charLv').value='';document.getElementById('charCP').value='';
   toast(`"${nick}" 추가 완료`);
 };
-window.delChar=async(eid,cid)=>{
-	if(!confirm('해당 캐릭터를 삭제하시겠습니까?')) return;
-  await remove(ref(db,`expeditions/${eid}/chars/${cid}`));
-  toast('캐릭터 삭제');
-};
+window.delChar=async(eid,cid)=>{if(!confirm('해당 캐릭터를 삭제하시겠습니까?'))return;await remove(ref(db,`expeditions/${eid}/chars/${cid}`));toast('캐릭터 삭제');};
 window.editChar=(eid,cid)=>{
-  const c = window._E[eid].chars[cid];
-
-  const row = event.target.closest("tr");
-
-  row.innerHTML = `
-    <td>
-      <select id="er-role-${cid}" style="padding:3px 6px;font-size:12px">
-        <option value="dealer" ${c.role==='dealer'?'selected':''}>딜러</option>
-        <option value="support" ${c.role==='support'?'selected':''}>서폿</option>
-      </select>
-    </td>
-
-    <td>
-      <input id="er-nick-${cid}" value="${c.nick}" style="width:120px">
-    </td>
-
-    <td>
-      <input id="er-lv-${cid}" value="${c.level}" style="width:70px">
-    </td>
-
-    <td>
-  	<select id="er-type-${cid}">
-    	<option value="cp" ${c.cpType==='cp'?'selected':''}>전투력</option>
-    	<option value="lopek" ${c.cpType==='lopek'?'selected':''}>로펙</option>
-  	</select>
-   </td>
-
-<td>
-  <input id="er-cp-${cid}" value="${c.cp}" style="width:90px">
-</td>
-
+  const c=window._E[eid]?.chars?.[cid];if(!c)return;
+  const row=event.target.closest('tr');
+  row.innerHTML=`
+    <td><select id="er-role-${cid}" style="padding:3px 5px;font-size:12px;width:56px">
+      <option value="dealer" ${c.role==='dealer'?'selected':''}>딜러</option>
+      <option value="support" ${c.role==='support'?'selected':''}>서폿</option>
+    </select></td>
+    <td style="text-align:left"><input id="er-nick-${cid}" value="${c.nick}" style="width:100%"></td>
+    <td><input id="er-lv-${cid}" value="${c.level}" style="width:56px"></td>
+    <td><select id="er-type-${cid}" style="padding:3px 4px;font-size:11px;width:56px">
+      <option value="cp" ${c.cpType==='cp'?'selected':''}>전투력</option>
+      <option value="lopek" ${c.cpType==='lopek'?'selected':''}>로펙</option>
+    </select></td>
+    <td><input id="er-cp-${cid}" value="${c.cp}" style="width:90px"></td>
     <td class="btn-cell">
-      <button class="btn btn-gold btn-sm" onclick="saveChar('${eid}','${cid}')">저장</button>
-      <button class="btn btn-ghost btn-sm" onclick="renderExp()">취소</button>
-    </td>
-  `;
+      <button class="btn btn-gold btn-act" onclick="saveChar('${eid}','${cid}')">저장</button>
+      <button class="btn btn-ghost btn-act" onclick="renderExp()">취소</button>
+    </td>`;
 };
-
 window.saveChar=async(eid,cid)=>{
-
-  const nick = document.getElementById(`er-nick-${cid}`).value.trim();
-  const level = document.getElementById(`er-lv-${cid}`).value;
-  const cp = document.getElementById(`er-cp-${cid}`).value;
-  const role = document.getElementById(`er-role-${cid}`).value;
-
-  if(!nick) return toast("닉네임 입력","error");
-  if(!/^\d+$/.test(level)) return toast("레벨 숫자만 입력","error");
-  if(!/^\d+$/.test(cp)) return toast("전투력/로펙 숫자만 입력","error");
-
-  await update(ref(db,`expeditions/${eid}/chars/${cid}`),{
-    nick:nick,
-    level:+level,
-    cp:+cp,
-    role:role
-  });
-
-  toast("캐릭터 수정 완료");
-  renderExp();
+  const nick=document.getElementById(`er-nick-${cid}`).value.trim();
+  const level=document.getElementById(`er-lv-${cid}`).value;
+  const cp=document.getElementById(`er-cp-${cid}`).value;
+  const role=document.getElementById(`er-role-${cid}`).value;
+  const cpType=document.getElementById(`er-type-${cid}`).value;
+  if(!nick)return toast('닉네임 입력','err');
+  if(!/^\d+$/.test(level))return toast('레벨: 숫자만','err');
+  if(!/^\d+$/.test(cp))return toast('전투력: 숫자만','err');
+  await update(ref(db,`expeditions/${eid}/chars/${cid}`),{nick,level:+level,cp:+cp,role,cpType});
+  toast('캐릭터 수정 완료');
 };
 
+/* ─── CHAR SORT MODAL ─── */
+let _sortEid=null;
+window.openCharSort=(eid)=>{
+  _sortEid=eid;
+  const exp=window._E[eid];if(!exp)return;
+  buildSortList(exp.chars||{});
+  openM('sortModal');
+};
+function buildSortList(chars){
+  const list=Object.entries(chars).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
+  const ul=document.getElementById('sortList');
+  ul.innerHTML=list.map(([cid,c])=>`
+    <li class="sort-item" draggable="true" data-cid="${cid}" data-lv="${c.level||0}">
+      <span class="sh">⠿</span>
+      <span class="sr ${c.role==='dealer'?'d':'s'}">${c.role==='dealer'?'딜':'서'}</span>
+      <span class="sn">${c.nick}</span>
+      <span class="sm">Lv.${c.level} · ${Number(c.cp||0).toLocaleString()}</span>
+    </li>`).join('');
+  initDragList(ul);
+}
+window.autoSortChars=()=>{
+  const ul=document.getElementById('sortList');
+  const items=[...ul.querySelectorAll('.sort-item')];
+  items.sort((a,b)=>+b.dataset.lv - +a.dataset.lv);
+  items.forEach(i=>ul.appendChild(i));
+};
+window.confirmSort=async()=>{
+  if(!_sortEid)return;
+  const items=document.querySelectorAll('#sortList .sort-item');
+  const upd={};items.forEach((item,i)=>{upd[`expeditions/${_sortEid}/chars/${item.dataset.cid}/order`]=i;});
+  await update(ref(db),upd);toast('캐릭터 순서 저장');closeM('sortModal');
+};
 
+/* ─── EXP ORDER MODAL ─── */
+window.openExpOrder=()=>{
+  const sorted=Object.entries(window._E).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
+  const ul=document.getElementById('expOrderList');
+  ul.innerHTML=sorted.map(([id,e])=>`
+    <li class="sort-item" draggable="true" data-eid="${id}">
+      <span class="sh">⠿</span>
+      <span style="font-size:13px">🏰</span>
+      <span class="sn">${e.name}</span>
+    </li>`).join('');
+  initDragList(ul);
+  openM('expOrderModal');
+};
+window.confirmExpOrder=async()=>{
+  const items=document.querySelectorAll('#expOrderList .sort-item');
+  const upd={};items.forEach((item,i)=>{upd[`expeditions/${item.dataset.eid}/order`]=i;});
+  await update(ref(db),upd);toast('원정대 순서 저장');closeM('expOrderModal');
+};
+
+/* ─── RAID ORDER MODAL ─── */
+window.openRaidOrder=()=>{
+  const sorted=Object.entries(window._R).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
+  const ul=document.getElementById('raidOrderList');
+  ul.innerHTML=sorted.map(([id,r])=>`
+    <li class="sort-item" draggable="true" data-rid="${id}">
+      <span class="sh">⠿</span>
+      <span class="sn">${r.name}</span>
+      <span class="sm">Lv.${r.level} · 딜${r.dealers}+서${r.supports}</span>
+    </li>`).join('');
+  initDragList(ul);
+  openM('raidOrderModal');
+};
+window.confirmRaidOrder=async()=>{
+  const items=document.querySelectorAll('#raidOrderList .sort-item');
+  const upd={};items.forEach((item,i)=>{upd[`raids/${item.dataset.rid}/order`]=i;});
+  await update(ref(db),upd);toast('레이드 순서 저장');closeM('raidOrderModal');
+};
+
+/* ─── DRAG LIST HELPER ─── */
+function initDragList(ul){
+  let drag=null;
+  ul.querySelectorAll('.sort-item').forEach(item=>{
+    item.addEventListener('dragstart',()=>{drag=item;setTimeout(()=>item.classList.add('dragging'),0);});
+    item.addEventListener('dragend',()=>{item.classList.remove('dragging');ul.querySelectorAll('.sort-item').forEach(i=>i.classList.remove('drag-over'));drag=null;});
+    item.addEventListener('dragover',e=>{e.preventDefault();if(!drag||drag===item)return;ul.querySelectorAll('.sort-item').forEach(i=>i.classList.remove('drag-over'));item.classList.add('drag-over');const rc=item.getBoundingClientRect();if(e.clientY<rc.top+rc.height/2)ul.insertBefore(drag,item);else item.after(drag);});
+  });
+}
+
+/* ─── RAID BASE ─── */
+async function _addRB(name,tier){
+  if(!name||!tier)return toast('레이드 이름/난이도 입력','err');
+  const baseRef=ref(db,`raidBase/${name}`);
+  const snap=await get(baseRef);
+  let data=snap.val()||{tiers:[],tierColors:{},order:Object.keys(window._RB).length};
+  if(!data.tiers)data.tiers=[];
+  if(!data.tierColors)data.tierColors={};
+  if(!data.tiers.includes(tier))data.tiers.push(tier);
+  await set(baseRef,data);
+  toast('레이드 난이도 추가 완료');
+}
+window.addRBs=async()=>{const n=document.getElementById('raidBaseNameS').value.trim();const t=document.getElementById('raidBaseTierS').value.trim();await _addRB(n,t);document.getElementById('raidBaseNameS').value='';document.getElementById('raidBaseTierS').value='';};
+window.delRB=async(name)=>{if(!confirm(`"${name}" 레이드를 삭제하시겠습니까?`))return;await remove(ref(db,`raidBase/${name}`));toast('레이드 삭제 완료');};
+window.delRBTier=async(name,tier)=>{
+  const data=window._RB[name];if(!data)return;
+  const tiers=data.tiers.filter(t=>t!==tier);
+  const tc={...(data.tierColors||{})};delete tc[tier];
+  await set(ref(db,`raidBase/${name}`),{...data,tiers,tierColors:tc});toast('난이도 삭제');
+};
+window.editRBName=async(name)=>{
+  const newName=prompt('레이드 이름 수정',name);
+  if(!newName||newName===name)return;
+  const data=window._RB[name];
+  await set(ref(db,`raidBase/${newName}`),{...data});
+  await remove(ref(db,`raidBase/${name}`));toast('레이드 이름 수정 완료');
+};
+window.editRBTier=async(name,tier)=>{
+  const newT=prompt('난이도 수정',tier);
+  if(!newT||newT===tier)return;
+  const data=window._RB[name];
+  const tiers=data.tiers.map(t=>t===tier?newT:t);
+  const tc={...(data.tierColors||{})};if(tc[tier]){tc[newT]=tc[tier];delete tc[tier];}
+  await set(ref(db,`raidBase/${name}`),{...data,tiers,tierColors:tc});toast('난이도 수정 완료');
+};
+window.setTierColor=async(name,tier,color)=>{
+  const data=window._RB[name];if(!data)return;
+  const tc={...(data.tierColors||{}),[tier]:color||null};
+  if(!color)delete tc[tier];
+  await update(ref(db,`raidBase/${name}`),{tierColors:tc});
+};
+/* inline edit for raidbase name in settings */
+window.startEditRBName=(name)=>{
+  const el=document.getElementById(`rb-nm-${name}`);if(!el)return;
+  el.innerHTML=`<input class="exp-nm-inp" id="rbi-${name}" value="${name}" style="width:120px" onkeydown="if(event.key==='Enter')saveRBName('${name}');if(event.key==='Escape')renderSRBList()">`;
+  document.getElementById(`rbi-${name}`)?.focus();
+};
+window.saveRBName=async(oldName)=>{
+  const inp=document.getElementById(`rbi-${oldName}`);if(!inp)return;
+  const v=inp.value.trim();if(!v)return toast('이름을 입력하세요','err');
+  if(v===oldName)return renderSRBList();
+  const data=window._RB[oldName];
+  await set(ref(db,`raidBase/${v}`),{...data});
+  await remove(ref(db,`raidBase/${oldName}`));
+  toast('레이드 이름 수정 완료');
+};
+
+/* ─── RAID ─── */
 window.addRaid=async()=>{
   const name=document.getElementById('raidName').value;
   const tier=document.getElementById('raidTier').value;
   const lv=document.getElementById('raidLv').value;
   const d=document.getElementById('raidD').value;
   const s=document.getElementById('raidS').value;
-  if(!name)return toast('레이드 이름을 입력하세요','error');
+  if(!name)return toast('레이드 이름을 입력하세요','err');
   let ok=true;
-  [['raidLv',lv],['raidD',d],['raidS',s]].forEach(([id,v])=>{
-    if(!v||!/^\d+$/.test(v)){document.getElementById(id).classList.add('input-error');document.getElementById('err-'+id).classList.add('show');ok=false;}
-  });
-  if(!ok)return toast('숫자만 입력해주세요!','error');
+  [['raidLv',lv],['raidD',d],['raidS',s]].forEach(([id,v])=>{if(!v||!/^\d+$/.test(v)){document.getElementById(id).classList.add('ierr');document.getElementById('err-'+id).classList.add('show');ok=false;}});
+  if(!ok)return toast('숫자만 입력해주세요!','err');
   const full=tier?`${name} ${tier}`:name;
-  await set(push(ref(db,'raids')),{name:full,baseName:name,tier:tier||'',level:+lv,dealers:+d,supports:+s});
-  ['raidName','raidTier','raidLv','raidD','raidS'].forEach(id=>{const el=document.getElementById(id);el.value='';el.classList.remove('input-error');});
+  const snap=await get(ref(db,'raids'));const ord=Object.keys(snap.val()||{}).length;
+  await set(push(ref(db,'raids')),{name:full,baseName:name,tier:tier||'',level:+lv,dealers:+d,supports:+s,order:ord});
+  ['raidLv','raidD','raidS'].forEach(id=>{const el=document.getElementById(id);el.value='';el.classList.remove('ierr');});
   ['err-raidLv','err-raidD','err-raidS'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('show');});
   toast(`"${full}" 레이드 등록 완료`);
 };
 window.delRaid=async(id)=>{if(!confirm('레이드를 삭제하시겠습니까?'))return;await remove(ref(db,`raids/${id}`));toast('레이드 삭제 완료');};
 
+/* ─── LOA API ─── */
 window.fetchLoaChar=async()=>{
   const key=document.getElementById('loaApiKey').value.trim();
   const name=document.getElementById('loaCharName').value.trim();
   const res=document.getElementById('loaApiResult');
-  if(!name)return toast('캐릭터명을 입력하세요','error');
-  if(!key){
-    res.innerHTML=`<div class="alert alert-warn">⚠️ API 키를 먼저 입력해주세요. <a href="https://developer-lostark.game.onstove.com/" target="_blank" style="color:var(--gold)">키 발급 →</a></div>`;
-    return;
-  }
-  res.innerHTML=`<div style="color:var(--text-muted);font-size:13px">🔍 원정대 캐릭터 조회 중...</div>`;
+  if(!name)return toast('캐릭터명을 입력하세요','err');
+  if(!key){res.innerHTML=`<div class="alert alert-warn">⚠️ API 키를 먼저 입력해주세요.</div>`;return;}
+  res.innerHTML=`<div style="color:var(--muted);font-size:13px"><span class="spin"></span>원정대 조회 중...</div>`;
+  document.getElementById('importBtn').style.display='none';
   try{
     const r=await fetch(`https://developer-lostark.game.onstove.com/characters/${encodeURIComponent(name)}/siblings`,{headers:{accept:'application/json',authorization:`bearer ${key}`}});
     if(!r.ok)throw new Error(r.status===401?'API 키가 올바르지 않습니다':r.status===404?'캐릭터를 찾을 수 없습니다':`오류 ${r.status}`);
     const data=await r.json();
     if(!Array.isArray(data)||!data.length)throw new Error('캐릭터 정보 없음');
-
-    const SUPPORT=new Set(['바드','홀리나이트','도화가','발키리']);
     const parsed=data.map(c=>{
       const lv=Math.floor(parseFloat((c.ItemAvgLevel||'0').replace(/,/g,''))||0);
-      const role=SUPPORT.has(c.CharacterClassName||'')?'support':'dealer';
-      return{name:c.CharacterName,lv,cls:c.CharacterClassName||'',role};
-    }).sort((a,b)=>b.lv-a.lv);
-
-    const autoSel=new Set(parsed.slice(0,6).map(c=>c.name));
-
-    const rows=parsed.map(c=>`<tr>
-      <td><input type="checkbox" class="api-chk" id="ic-${c.name}"
-        data-name="${c.name}" data-lv="${c.lv}" data-role="${c.role}"
-        ${autoSel.has(c.name)?'checked':''}
-        style="accent-color:var(--gold);width:14px;height:14px"></td>
-      <td style="font-weight:600;text-align:left">${c.name}</td>
-      <td style="text-align:left;color:var(--text-muted);font-size:12px">${c.cls||'-'}</td>
-      <td><span class="badge badge-lv">Lv.${c.lv}</span></td>
-      <td>
-        <input type="text" id="icp-${c.name}" inputmode="numeric"
-          placeholder="직접 입력"
-          style="width:90px;padding:3px 6px;font-size:12px;text-align:right"
-          oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-      </td>
-      <td>
-        <select id="ict-${c.name}" style="padding:3px 6px;font-size:11px;width:64px">
-          <option value="cp">전투력</option>
-          <option value="lopek">로펙</option>
-        </select>
-      </td>
-      <td>
-        <select id="ir-${c.name}" style="padding:3px 6px;font-size:11px;width:64px">
-          <option value="dealer" ${c.role==='dealer'?'selected':''}>딜러</option>
-          <option value="support" ${c.role==='support'?'selected':''}>서폿</option>
-        </select>
-      </td>
-    </tr>`).join('');
-
+      return{...c,_lv:lv,_role:SUP_CLS.has(c.CharacterClassName||'')?'support':'dealer'};
+    }).sort((a,b)=>b._lv-a._lv);
+    const autoSel=new Set(parsed.slice(0,6).map(c=>c.CharacterName));
     const expOpts=Object.entries(window._E).sort((a,b)=>(a[1].order??999)-(b[1].order??999)).map(([id,e])=>`<option value="${id}">${e.name}</option>`).join('');
-
+    const rows=parsed.map(c=>`
+      <tr>
+        <td><input type="checkbox" class="api-chk" id="ic-${c.CharacterName}" data-name="${c.CharacterName}" data-lv="${c._lv}" data-role="${c._role}" ${autoSel.has(c.CharacterName)?'checked':''} style="accent-color:var(--gold);width:14px;height:14px"></td>
+        <td style="text-align:left;font-weight:600">${c.CharacterName}</td>
+        <td style="text-align:left;color:var(--muted);font-size:12px">${c.CharacterClassName||'-'}</td>
+        <td><span class="badge blv">Lv.${c._lv}</span></td>
+        <td>
+          <select id="ir-${c.CharacterName}" style="padding:3px 5px;font-size:11px;width:62px">
+            <option value="dealer" ${c._role==='dealer'?'selected':''}>딜러</option>
+            <option value="support" ${c._role==='support'?'selected':''}>서폿</option>
+          </select>
+        </td>
+      </tr>`).join('');
     res.innerHTML=`
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap">
-        <span style="font-size:12px;color:var(--text-muted)">총 ${parsed.length}캐릭터 조회됨 · 딜/폿 자동 감지 · 전투력 직접 입력</span>
-        <button class="btn btn-ghost btn-sm" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=true)">전체선택</button>
-        <button class="btn btn-ghost btn-sm" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=false)">전체해제</button>
-        <button class="btn btn-ghost btn-sm" onclick="[...document.querySelectorAll('.api-chk')].forEach((b,i)=>b.checked=i<6)">상위6개</button>
+      <div style="background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:12px">
+        <label style="display:block;margin-bottom:5px">가져올 원정대</label>
+        <select id="impExpId" style="padding:7px 10px;font-size:13px;width:100%"><option value="">원정대 선택</option>${expOpts}</select>
       </div>
-      <div style="overflow-x:auto;margin-bottom:12px">
-        <table class="data-table" style="table-layout:auto;font-size:12px">
-          <thead><tr>
-            <th style="width:32px">선택</th>
-            <th style="text-align:left">닉네임</th>
-            <th style="text-align:left">클래스</th>
-            <th>아이템레벨</th>
-            <th>전투력/로펙</th>
-            <th>종류</th>
-            <th>역할</th>
-          </tr></thead>
+      <div class="sel-ctrl">
+        <span style="font-size:12px;color:var(--muted)">총 ${parsed.length}캐릭터</span>
+        <button class="btn btn-ghost btn-act" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=true)">전체선택</button>
+        <button class="btn btn-ghost btn-act" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=false)">전체해제</button>
+        <button class="btn btn-ghost btn-act" onclick="[...document.querySelectorAll('.api-chk')].forEach((b,i)=>b.checked=i<6)">상위6개</button>
+        <span style="font-size:11px;color:var(--muted)">※ 닉네임/클래스/레벨/역할 가져오기 · 전투력은 수동 입력</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="tbl" style="table-layout:auto;font-size:12px">
+          <thead><tr><th style="width:32px">선택</th><th style="text-align:left">닉네임</th><th style="text-align:left">클래스</th><th>아이템Lv</th><th>역할</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <label style="font-size:12px;margin-bottom:0;white-space:nowrap">가져올 원정대:</label>
-        <select id="impExpId" style="padding:7px 10px;font-size:13px;flex:1;min-width:140px">
-          <option value="">원정대 선택</option>${expOpts}
-        </select>
-        <button class="btn btn-gold" onclick="importChars()">✅ 선택 캐릭터 가져오기</button>
       </div>`;
-  }catch(e){
-    res.innerHTML=`<div class="alert alert-warn">❌ ${e.message}<br><span style="font-size:11px">CORS 오류 시 서버 프록시가 필요합니다.</span></div>`;
-  }
+    document.getElementById('importBtn').style.display='';
+  }catch(e){res.innerHTML=`<div class="alert alert-warn">❌ ${e.message}<br><span style="font-size:11px">CORS 오류 시 서버 프록시가 필요합니다.</span></div>`;}
 };
-
 window.importChars=async()=>{
   const eid=document.getElementById('impExpId')?.value;
-  if(!eid)return toast('원정대를 선택하세요','error');
-  const boxes=document.querySelectorAll('.api-chk');
-  let cnt=0,warn=0;
+  if(!eid)return toast('원정대를 선택하세요','err');
+  /* 기존 닉네임 목록 */
+  const existingNicks=new Set(Object.values(window._E[eid]?.chars||{}).map(c=>c.nick));
+  const boxes=document.querySelectorAll('.api-chk');let cnt=0,skip=0;
   for(const b of boxes){
     if(!b.checked)continue;
     const nm=b.dataset.name,lv=+b.dataset.lv;
-    const cpRaw=document.getElementById(`icp-${nm}`)?.value||'0';
-    const cp=parseInt(cpRaw.replace(/[^0-9]/g,''))||0;
+    if(existingNicks.has(nm)){skip++;continue;}
     const role=document.getElementById(`ir-${nm}`)?.value||'dealer';
-    const cpType=document.getElementById(`ict-${nm}`)?.value||'cp';
-    if(cp===0)warn++;
     const snap=await get(ref(db,`expeditions/${eid}/chars`));
     const ord=Object.keys(snap.val()||{}).length;
-    await set(push(ref(db,`expeditions/${eid}/chars`)),{nick:nm,level:lv,cp,role,cpType,order:ord});
-    cnt++;
+    await set(push(ref(db,`expeditions/${eid}/chars`)),{nick:nm,level:lv,cp:0,cpType:'cp',role,order:ord});cnt++;
   }
-  if(warn>0)toast(`${cnt}개 추가 완료 (전투력 0인 캐릭터 ${warn}개 — 수동 입력 필요)`, 'success');
-  else toast(`${cnt}개 캐릭터 가져오기 완료`);
-  document.getElementById('loaApiResult').innerHTML='';
+  let msg=`${cnt}개 캐릭터 가져오기 완료`;
+  if(skip>0)msg+=` (중복 ${skip}개 제외)`;
+  toast(msg);closeM('apiModal');
 };
 
-onValue(ref(db,'expeditions'),snap=>
-{window._E=snap.val()||{};renderExp();updExpSel();});
+/* ─── FIREBASE LISTENERS ─── */
+onValue(ref(db,'expeditions'),snap=>{window._E=snap.val()||{};renderExp();renderSExpList();updExpSel();});
+onValue(ref(db,'raids'),snap=>{window._R=snap.val()||{};renderRaids();updRaidSel();});
+onValue(ref(db,'raidBase'),snap=>{window._RB=snap.val()||{};renderSRBList();updateRaidSelect();});
 
-onValue(ref(db,'raids'),snap=>{
-  window._R=snap.val()||{};
-  renderRaids();
-  updRaidSel();
-});
+/* ═══ RENDER: Settings Exp List ═══ */
+window.renderSExpList=()=>{
+  const el=document.getElementById('settingsExpList');if(!el)return;
+  const exps=window._E;
+  if(!Object.keys(exps).length){el.innerHTML='<div class="empty" style="padding:14px"><div class="empty-icon">🏰</div>원정대 없음</div>';return;}
+  const sorted=Object.entries(exps).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
+  el.innerHTML=`
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+      <button class="btn btn-ghost" onclick="openExpOrder()" style="font-size:12px;height:32px;padding:0 14px">↕ 순서변경</button>
+    </div>
+    <table class="tbl setbl">
+      <thead><tr><th>#</th><th style="text-align:left">원정대 이름</th><th>관리</th></tr></thead>
+      <tbody>
+      ${sorted.map(([id,exp],i)=>`
+        <tr>
+          <td style="color:var(--muted);font-size:12px">${i+1}</td>
+          <td id="se-nm-${id}" style="text-align:left"><span style="font-weight:600">${exp.name}</span></td>
+          <td id="se-ac-${id}" class="btn-cell">
+            <button class="btn btn-ghost btn-act" onclick="startEditExpS('${id}','${exp.name.replace(/'/g,"\\'")}')">수정</button>
+            <button class="btn btn-red btn-act" onclick="delExp('${id}')">삭제</button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+};
 
-onValue(ref(db,'raidBase'),snap=>{
-  window._RB = snap.val() || {};
-  renderRaidBase();
-  updateRaidSelect();
-});
+/* ═══ RENDER: Settings RaidBase List ═══ */
+window.renderSRBList=()=>{
+  const el=document.getElementById('settingsRBList');if(!el)return;
+  const rb=window._RB;
+  if(!Object.keys(rb).length){el.innerHTML='<div class="empty" style="padding:14px"><div class="empty-icon">🗡️</div>레이드 없음</div>';return;}
+  const sorted=Object.entries(rb).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
+  el.innerHTML=`<table class="tbl srbtbl">
+    <thead><tr><th>#</th><th style="text-align:left">레이드</th><th style="text-align:left">난이도 (색상 선택 가능)</th><th>관리</th></tr></thead>
+    <tbody>
+    ${sorted.map(([name,data],i)=>{
+      const tiers=data.tiers||[];const tc=data.tierColors||{};
+      const tierHtml=tiers.map(t=>{
+        const col=tc[t]||null;
+        const bStyle=col?`background:${col}20;color:${col};border:1px solid ${col}60`:'background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3)';
+        return`<div style="margin-bottom:6px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+            <span class="tier-badge" style="${bStyle}">${t}</span>
+            <button class="btn btn-ghost btn-act" onclick="editRBTier('${name}','${t}')" style="font-size:10px;min-width:40px;height:22px;padding:0 7px">수정</button>
+            <button class="btn btn-red btn-act" onclick="delRBTier('${name}','${t}')" style="font-size:10px;min-width:40px;height:22px;padding:0 7px">삭제</button>
+          </div>
+          ${swatchHtml(name,t,col)}
+        </div>`;
+      }).join('');
+      return`<tr>
+        <td style="color:var(--muted);font-size:12px">${i+1}</td>
+        <td id="rb-nm-${name}" style="text-align:left">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-weight:700;color:var(--gold)">${name}</span>
+            <button class="btn btn-ghost btn-act" onclick="startEditRBName('${name}')" style="font-size:10px;min-width:40px;height:22px;padding:0 7px">수정</button>
+          </div>
+        </td>
+        <td style="text-align:left">${tierHtml||'<span style="color:var(--muted);font-size:11px">난이도 없음</span>'}</td>
+        <td class="btn-cell"><button class="btn btn-red btn-act" onclick="delRB('${name}')">삭제</button></td>
+      </tr>`;
+    }).join('')}
+    </tbody>
+  </table>`;
+};
 
+/* ─── TIER COLOR HELPER ─── */
+function tierStyle(baseName,tier){
+  const data=window._RB[baseName];
+  const c=data?.tierColors?.[tier];
+  if(c)return`background:${c}20;color:${c};border:1px solid ${c}60`;
+  if(/하드|hard/i.test(tier))return'background:rgba(224,90,90,0.12);color:var(--dealer);border:1px solid rgba(224,90,90,0.3)';
+  if(/노말|normal/i.test(tier))return'background:rgba(90,224,160,0.12);color:#5ae0a0;border:1px solid rgba(90,224,160,0.3)';
+  return'background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3)';
+}
+
+/* ═══ RENDER: Tab1 Exp List ═══ */
 window.renderExp=()=>{
   const el=document.getElementById('expList'),exps=window._E;
-  if(!Object.keys(exps).length){el.innerHTML='<div class="empty"><div class="empty-icon">⚔️</div>등록된 원정대가 없습니다</div>';return;}
-  el.innerHTML=Object.entries(exps).map(([id,exp])=>{
+  if(!Object.keys(exps).length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">🏰</div>등록된 원정대가 없습니다<br><span style="font-size:12px">⚙ 설정 → 원정대 이름 관리에서 추가하세요</span></div>';
+    return;
+  }
+  const sorted=Object.entries(exps).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
+  /* 원정대 목록 상단에 순서변경 버튼 */
+  const orderBtn=`<div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+    <button class="btn btn-ghost" onclick="openExpOrder()" style="font-size:12px;height:32px;padding:0 14px">↕ 원정대 순서변경</button>
+  </div>`;
+  el.innerHTML=orderBtn+sorted.map(([id,exp])=>{
     const chars=exp.chars||{};
-    const list = Object.entries(chars).sort((a,b)=> (b[1].level || 0) - (a[1].level || 0));
-    const nd=list.filter(([,c])=>c.role==='dealer').length,ns=list.filter(([,c])=>c.role==='support').length;
+    const list=Object.entries(chars).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
+    const nd=list.filter(([,c])=>c.role==='dealer').length;
+    const ns=list.filter(([,c])=>c.role==='support').length;
     const rows=list.length?list.map(([cid,c])=>`<tr>
-      <td><span class="badge ${c.role==='dealer'?'badge-d':'badge-s'}">${c.role==='dealer'?'딜러':'서폿'}</span></td>
-      <td style="font-weight:500">${c.nick}</td>
-      <td><span class="badge badge-lv">Lv.${c.level}</span></td>
-      <td>
-	${c.cpType === 'lopek' ? '로펙' : '전투력'}
+      <td><span class="badge ${c.role==='dealer'?'bd':'bs'}" style="font-size:10px">${c.role==='dealer'?'딜러':'서폿'}</span></td>
+      <td style="text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:1px" title="${c.nick}">
+        <span style="font-weight:600;font-size:13px">${c.nick}</span>
       </td>
-      <td style="color:${c.role==='dealer'?'var(--dealer)':'var(--support)'};font-weight:700">
-  	${Number(c.cp).toLocaleString()}
-      </td>
+      <td><span class="badge blv" style="font-size:10px">Lv.${c.level}</span></td>
+      <td style="font-size:11px;color:var(--muted)">${c.cpType==='lopek'?'로펙':'전투력'}</td>
+      <td style="color:${c.role==='dealer'?'var(--dealer)':'var(--support)'};font-weight:700;font-size:13px">${Number(c.cp||0).toLocaleString()}</td>
       <td class="btn-cell">
-  	<button class="btn btn-ghost btn-sm" onclick="editChar('${id}','${cid}')">수정</button>
-  	<button class="btn btn-red btn-sm" onclick="delChar('${id}','${cid}')">삭제</button>
+        <button class="btn btn-ghost btn-act" onclick="editChar('${id}','${cid}')">수정</button>
+        <button class="btn btn-red btn-act" onclick="delChar('${id}','${cid}')">삭제</button>
       </td>
-    </tr>`).join(''):`<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:12px">캐릭터 없음</td></tr>`;
-    return `<div class="exp-group">
-      <div class="exp-header">
-        <span id="en-${id}" class="exp-name">${exp.name}</span>
-        <div id="ea-${id}" style="display:flex;gap:6px;align-items:center">
-          <button class="btn btn-ghost btn-sm" onclick="startEditExp('${id}','${exp.name.replace(/'/g,'').replace(/"/g,'')}')">✏ 이름 수정</button>
-          <button class="btn btn-red btn-sm" onclick="delExp('${id}')">삭제</button>
-        </div>
-        <span style="font-size:11px;color:var(--dealer);margin-left:10px">딜러 ${nd}</span>
-        <span style="font-size:11px;color:var(--support);margin-left:6px">서폿 ${ns}</span>
-        <span style="font-size:11px;color:var(--text-muted);margin-left:6px">총 ${list.length}캐</span>
+    </tr>`).join('')
+    :`<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:12px">캐릭터 없음</td></tr>`;
+
+    return`<div class="exp-group">
+      <div class="exp-hd">
+        <span style="font-size:18px">🏰</span>
+        <span class="exp-nm">${exp.name}</span>
+        <span style="font-size:11px;color:var(--dealer)">딜 ${nd}</span>
+        <span style="font-size:11px;color:var(--support);margin-left:4px">서 ${ns}</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:4px">총 ${list.length}</span>
+        <button class="btn btn-ghost btn-act" onclick="openCharSort('${id}')" style="margin-left:auto">↕ 순서변경</button>
       </div>
-      <div class="exp-body"><table class="data-table">
-        <thead><tr><th>역할</th><th>닉네임</th><th>레벨</th><th>종류</th><th>전투력/로펙</th><th></th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table></div>
+      <div class="exp-bd">
+        <table class="tbl ctbl">
+          <thead><tr><th>역할</th><th style="text-align:left">닉네임</th><th>레벨</th><th>종류</th><th>전투력/로펙</th><th></th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
     </div>`;
   }).join('');
 };
 
-function renderRaidBase(){
-  const el = document.getElementById("raidBaseList");
-  if(!Object.keys(window._RB).length){
-    el.innerHTML = `<div class="empty">등록된 레이드 이름이 없습니다</div>`;
-    return;
-  }
-
-  let html = `
-  <table class="data-table">
-  <thead>
-  <tr>
-    <th>레이드</th>
-    <th>난이도</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>  `;
-
-  Object.entries(window._RB).forEach(([name,data])=>{
-    html += `
-    <tr>
-	<td style="font-weight:700;cursor:pointer" onclick="editRaidBase('${name}')">${name}</td>
-      <td>
-        ${data.tiers.map(t=>`
-		<span class="tier-badge t-c" style="margin-right:6px;cursor:pointer" onclick="editRaidTier('${name}','${t}')">
-	${t}
-	</span>
-	`).join("")}
-      </td>
-      <td class="btn-cell">
-        <button class="btn btn-red btn-sm" onclick="delRaidBase('${name}')">삭제</button>
-      </td>
-    </tr>
-    `;
-  });
-  html += `</tbody></table>`;
-  el.innerHTML = html;
-}
+/* ═══ RENDER: Tab2 Raid List ═══ */
 function renderRaids(){
   const el=document.getElementById('raidWrap'),raids=window._R;
   if(!Object.keys(raids).length){el.innerHTML='<div class="empty"><div class="empty-icon">🗡️</div>등록된 레이드가 없습니다</div>';return;}
-  const grp={};Object.entries(raids).forEach(([id,r])=>{const b=r.baseName||r.name;if(!grp[b])grp[b]=[];grp[b].push([id,r]);});
-  let html='';
-  Object.entries(grp).forEach(([base,entries])=>{
-    html+=`<div style="margin-bottom:16px">
-      <div style="font-size:14px;letter-spacing:1px;color:var(--gold);padding:8px 12px;border-bottom:1px solid var(--border);font-weight:700">${base}</div>
-      <table class="data-table"><thead><tr><th>단계</th><th>입장 레벨</th><th>딜러</th><th>서폿</th><th>규모</th><th></th></tr></thead><tbody>
-      ${entries.map(([id,r])=>{
-        const tc=/하드|hard/i.test(r.tier)?'t-h':/노말|normal/i.test(r.tier)?'t-n':'t-c';
-        return `<tr>
-          <td style="font-weight:700;text-align:center">
-${r.tier ? `<span class="tier-badge ${tc}" style="font-size:12px;padding:3px 8px">${r.tier}</span>` : r.name}
-</td>
-          <td><span class="badge badge-lv">Lv.${r.level}</span></td>
-          <td style="color:var(--dealer);font-weight:700">${r.dealers}명</td>
-          <td style="color:var(--support);font-weight:700">${r.supports}명</td>
-          <td style="color:var(--text-muted)">${r.dealers+r.supports}인</td>
-          <td><button class="btn btn-red btn-sm" onclick="delRaid('${id}')">삭제</button></td>
-        </tr>`;
-      }).join('')}
-      </tbody></table></div>`;
-  });
-  el.innerHTML=html;
+  const sorted=Object.entries(raids).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
+  el.innerHTML=`<table class="tbl rtbl">
+    <thead><tr>
+      <th>#</th>
+      <th style="text-align:left">레이드</th>
+      <th>단계</th>
+      <th>입장 레벨</th>
+      <th>딜러</th>
+      <th>서폿</th>
+      <th>규모</th>
+      <th></th>
+    </tr></thead>
+    <tbody>
+    ${sorted.map(([id,r],i)=>{
+      const ts=tierStyle(r.baseName||r.name,r.tier);
+      return`<tr>
+        <td style="color:var(--muted);font-size:12px">${i+1}</td>
+        <td style="text-align:left;font-weight:700">${r.baseName||r.name}</td>
+        <td>${r.tier?`<span class="tier-badge" style="${ts};padding:3px 10px;font-size:11px">${r.tier}</span>`:'-'}</td>
+        <td><span class="badge blv">Lv.${r.level}</span></td>
+        <td style="color:var(--dealer);font-weight:700">${r.dealers}명</td>
+        <td style="color:var(--support);font-weight:700">${r.supports}명</td>
+        <td style="color:var(--muted)">${r.dealers+r.supports}인</td>
+        <td class="btn-cell"><button class="btn btn-red btn-act" onclick="delRaid('${id}')">삭제</button></td>
+      </tr>`;
+    }).join('')}
+    </tbody>
+  </table>`;
 }
 
+/* ─── SELECTS ─── */
 function updExpSel(){
   const s=document.getElementById('charExp'),cur=s.value;
-  s.innerHTML='<option value="">원정대 선택</option>'+Object.entries(window._E).map(([id,e])=>`<option value="${id}" ${id===cur?'selected':''}>${e.name}</option>`).join('');
+  const sorted=Object.entries(window._E).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
+  s.innerHTML='<option value="">원정대 선택</option>'+sorted.map(([id,e])=>`<option value="${id}" ${id===cur?'selected':''}>${e.name}</option>`).join('');
 }
 function updRaidSel(){
   const s=document.getElementById('compRaid'),cur=s.value;
-  s.innerHTML='<option value="">레이드를 선택하세요</option>'+Object.entries(window._R).map(([id,r])=>`<option value="${id}" ${id===cur?'selected':''}>${r.name} (Lv.${r.level}/딜${r.dealers}+서${r.supports})</option>`).join('');
+  const sorted=Object.entries(window._R).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
+  s.innerHTML='<option value="">레이드를 선택하세요</option>'+sorted.map(([id,r])=>`<option value="${id}" ${id===cur?'selected':''}>${r.name} (Lv.${r.level}/딜${r.dealers}+서${r.supports})</option>`).join('');
 }
-
 function updateRaidSelect(){
-  const sel=document.getElementById("raidName");
-  if(!sel) return;
-  sel.innerHTML =
-    '<option value="">레이드 선택</option>' +
-    Object.keys(window._RB)
-      .map(n=>`<option value="${n}">${n}</option>`)
-      .join("");
+  const sel=document.getElementById('raidName');if(!sel)return;
+  const sorted=Object.entries(window._RB).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
+  const cur=sel.value;
+  sel.innerHTML='<option value="">레이드 선택</option>'+sorted.map(([n])=>`<option value="${n}" ${n===cur?'selected':''}>${n}</option>`).join('');
+  updateTierSelect();
 }
-
 window.updateTierSelect=()=>{
-  const name=document.getElementById("raidName").value;
-  const tierSel=document.getElementById("raidTier");
+  const name=document.getElementById('raidName').value;
+  const ts=document.getElementById('raidTier');
   const data=window._RB[name];
-  if(!data){
-    tierSel.innerHTML="";
-    return;
-  }
-  tierSel.innerHTML =
-    data.tiers
-      .map(t=>`<option value="${t}">${t}</option>`)
-      .join("");
-}
+  if(!data){ts.innerHTML='';return;}
+  ts.innerHTML=(data.tiers||[]).map(t=>`<option value="${t}">${t}</option>`).join('');
+};
 
+/* ─── CHIPS ─── */
 window.showChips=()=>{
   const id=document.getElementById('compRaid').value,chips=document.getElementById('chips');
   if(!id){chips.style.display='none';return;}
@@ -798,94 +1019,61 @@ window.showChips=()=>{
     <div class="stat-chip"><div class="val">${r.dealers+r.supports}인</div><div class="lbl">파티 규모</div></div>`;
 };
 
+/* ─── COMPOSE ─── */
 window.compose=()=>{
   const raidId=document.getElementById('compRaid').value;
-  if(!raidId)return toast('레이드를 선택하세요','error');
+  if(!raidId)return toast('레이드를 선택하세요','err');
   const raid=window._R[raidId],exps=window._E;
   let all=[];
-  Object.entries(exps).forEach(([eid,exp])=>{
-    Object.entries(exp.chars||{}).forEach(([cid,c])=>{
-      if(Number(c.level)>=Number(raid.level))
-        all.push({expId:eid,charId:cid,expName:exp.name,nick:c.nick,level:c.level,cp:Number(c.cp),role:c.role});
-    });
-  });
+  Object.entries(exps).forEach(([eid,exp])=>{Object.entries(exp.chars||{}).forEach(([cid,c])=>{if(Number(c.level)>=Number(raid.level))all.push({expId:eid,charId:cid,expName:exp.name,nick:c.nick,level:c.level,cp:Number(c.cp||0),role:c.role});});});
   const dealers=all.filter(c=>c.role==='dealer');
   const supports=all.filter(c=>c.role==='support');
   showChips();
-
-  const usedD=new Set(),usedS=new Set(),parties=[];
-  const sortedD=[...dealers].sort((a,b)=>b.cp-a.cp);
-  const dGroups=[];
-  for(let i=0;i<sortedD.length;i+=raid.dealers){
-    const g=sortedD.slice(i,i+raid.dealers);
-    if(g.length===raid.dealers)dGroups.push(g);
-  }
-  dGroups.forEach(dg=>{
+  const usedS=new Set(),parties=[];
+  const sD=[...dealers].sort((a,b)=>b.cp-a.cp);
+  const dG=[];for(let i=0;i<sD.length;i+=raid.dealers){const g=sD.slice(i,i+raid.dealers);if(g.length===raid.dealers)dG.push(g);}
+  dG.forEach(dg=>{
     const expIds=new Set(dg.map(c=>c.expId));
     const avg=Math.round(dg.reduce((s,c)=>s+c.cp,0)/dg.length);
     const avail=supports.filter(s=>!usedS.has(s.charId)&&!expIds.has(s.expId));
     const picked=[...avail].sort((a,b)=>Math.abs(a.cp-avg)-Math.abs(b.cp-avg)).slice(0,raid.supports);
-    picked.forEach(s=>usedS.add(s.charId));dg.forEach(d=>usedD.add(d.charId));
+    picked.forEach(s=>usedS.add(s.charId));
     parties.push({idx:parties.length+1,dealers:dg,supports:picked,avg,type:'mixed'});
   });
   if(raid.supports>0){
     const rem=supports.filter(s=>!usedS.has(s.charId)).sort((a,b)=>b.cp-a.cp);
-    for(let i=0;i<rem.length;i+=raid.supports){
-      const g=rem.slice(i,i+raid.supports);
-      if(g.length===raid.supports){
-        const avg=Math.round(g.reduce((s,c)=>s+c.cp,0)/g.length);
-        parties.push({idx:parties.length+1,dealers:[],supports:g,avg,type:'support-only'});
-        g.forEach(s=>usedS.add(s.charId));
-      }
-    }
+    for(let i=0;i<rem.length;i+=raid.supports){const g=rem.slice(i,i+raid.supports);if(g.length===raid.supports){const avg=Math.round(g.reduce((s,c)=>s+c.cp,0)/g.length);parties.push({idx:parties.length+1,dealers:[],supports:g,avg,type:'support-only'});g.forEach(s=>usedS.add(s.charId));}}
   }
-
   const re=document.getElementById('compResult');
-  if(!parties.length){
-    re.innerHTML=`<div class="card"><div class="alert alert-warn">⚠️ 레벨(${raid.level}) 조건 충족 캐릭터가 없습니다.<br>딜러: ${dealers.length}명 / 서폿: ${supports.length}명</div></div>`;
-    return;
-  }
-  const warnP=parties.filter(p=>p.supports.length<raid.supports&&p.type==='mixed');
-  const warnH=warnP.length?`<div class="alert alert-warn" style="margin-bottom:12px">⚠️ ${warnP.length}개 파티에 서폿이 부족합니다</div>`:'';
+  if(!parties.length){re.innerHTML=`<div class="card"><div class="alert alert-warn">⚠️ 레벨(${raid.level}) 조건 충족 캐릭터가 없습니다.<br>딜러: ${dealers.length}명 / 서폿: ${supports.length}명</div></div>`;return;}
+  const wH=parties.filter(p=>p.supports.length<raid.supports&&p.type==='mixed').length?`<div class="alert alert-warn" style="margin-bottom:12px">⚠️ 서폿이 부족한 파티가 있습니다</div>`:'';
   const soC=parties.filter(p=>p.type==='support-only').length;
-  const tD=parties.reduce((s,p)=>s+p.dealers.length,0);
-  const tS=parties.reduce((s,p)=>s+p.supports.length,0);
+  const tD=parties.reduce((s,p)=>s+p.dealers.length,0),tS=parties.reduce((s,p)=>s+p.supports.length,0);
   re.innerHTML=`
-    <div style="display:flex;align-items:center;margin-bottom:8px">
-      <div class="section-title" style="margin-bottom:0;flex:1">${raid.name} — 자동 조합 결과</div>
-    </div>${warnH}
+    <div style="display:flex;align-items:center;margin-bottom:10px">
+      <div class="sec-title" style="margin-bottom:0;flex:1">${raid.name} — 자동 조합 결과</div>
+    </div>${wH}
     <div class="party-grid">
     ${parties.map(p=>{
-      const isS=p.type==='support-only';
-      const sh=Math.max(0,raid.supports-p.supports.length);
-      return `<div class="party-card">
-        <div class="party-header">
-          <div class="party-name">PARTY ${p.idx}${isS?' <span style="font-size:9px;color:var(--support);letter-spacing:0">서폿전용</span>':''}</div>
+      const isS=p.type==='support-only';const sh=Math.max(0,raid.supports-p.supports.length);
+      return`<div class="party-card">
+        <div class="party-hd">
+          <div class="party-nm">PARTY ${p.idx}${isS?' <span style="font-size:9px;color:var(--support);letter-spacing:0">서폿전용</span>':''}</div>
           <div class="party-avg">${isS?'서폿 평균':'딜러 평균'} <strong>${p.avg.toLocaleString()}</strong></div>
         </div>
-        <div class="party-members">
-          ${p.dealers.map(c=>`<div class="member-row">
-            <div class="mi d">D</div>
-            <div style="flex:1"><div style="font-size:13px;font-weight:500">${c.nick}</div><div style="font-size:11px;color:var(--text-muted)">${c.expName}</div></div>
-            <div style="text-align:right"><div style="font-weight:700;font-size:13px;color:var(--gold)">${c.cp.toLocaleString()}</div><div style="font-size:11px;color:var(--text-muted)">Lv.${c.level}</div></div>
-          </div>`).join('')}
-          ${p.supports.map(c=>`<div class="member-row">
-            <div class="mi s">S</div>
-            <div style="flex:1"><div style="font-size:13px;font-weight:500">${c.nick}</div><div style="font-size:11px;color:var(--text-muted)">${c.expName}</div></div>
-            <div style="text-align:right"><div style="font-weight:700;font-size:13px;color:var(--support)">${c.cp.toLocaleString()}</div><div style="font-size:11px;color:var(--text-muted)">Lv.${c.level}</div></div>
-          </div>`).join('')}
-          ${Array(sh).fill(0).map(()=>`<div class="member-row" style="opacity:.3"><div class="mi s">?</div><div style="font-size:11px;color:var(--text-muted)">서폿 부족</div></div>`).join('')}
+        <div class="party-mbs">
+          ${p.dealers.map(c=>`<div class="mb-row"><div class="mi d">D</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.nick}</div><div style="font-size:11px;color:var(--muted)">${c.expName}</div></div><div style="text-align:right;flex-shrink:0"><div style="font-weight:700;font-size:13px;color:var(--gold)">${c.cp.toLocaleString()}</div><div style="font-size:11px;color:var(--muted)">Lv.${c.level}</div></div></div>`).join('')}
+          ${p.supports.map(c=>`<div class="mb-row"><div class="mi s">S</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.nick}</div><div style="font-size:11px;color:var(--muted)">${c.expName}</div></div><div style="text-align:right;flex-shrink:0"><div style="font-weight:700;font-size:13px;color:var(--support)">${c.cp.toLocaleString()}</div><div style="font-size:11px;color:var(--muted)">Lv.${c.level}</div></div></div>`).join('')}
+          ${Array(sh).fill(0).map(()=>`<div class="mb-row" style="opacity:.3"><div class="mi s">?</div><div style="font-size:11px;color:var(--muted)">서폿 부족</div></div>`).join('')}
         </div>
       </div>`;
     }).join('')}
     </div>
-    <div style="margin-top:12px"><div class="alert alert-info">
-      ✅ 총 <strong>${parties.length}개 파티</strong> (딜러 ${tD}명 / 서폿 ${tS}명)${soC?` — 서폿 전용 파티 ${soC}개 포함`:''}
-      <br>조합 기준: 전투력 높은 딜러 순 그룹 → 딜러 평균에 가장 근접한 서폿 배정 (같은 원정대 중복 제한)
-    </div></div>`;
+    <div style="margin-top:12px"><div class="alert alert-info">✅ 총 <strong>${parties.length}개 파티</strong> (딜러 ${tD}명 / 서폿 ${tS}명)${soC?` — 서폿 전용 파티 ${soC}개 포함`:''}<br>조합 기준: 전투력 높은 딜러 순 그룹 → 딜러 평균에 가장 근접한 서폿 배정 (같은 원정대 중복 제한)</div></div>`;
   toast(`${parties.length}개 파티 조합 완료!`);
 };
 
+/* ─── TABS ─── */
 document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
