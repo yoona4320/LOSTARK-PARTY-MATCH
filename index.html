@@ -97,12 +97,12 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 
 /* char table */
 .ctbl{table-layout:fixed;}
-.ctbl th:nth-child(1),.ctbl td:nth-child(1){width:58px;}
-.ctbl th:nth-child(2),.ctbl td:nth-child(2){width:auto;text-align:left;padding-left:4px;}
-.ctbl th:nth-child(3),.ctbl td:nth-child(3){width:72px;}
-.ctbl th:nth-child(4),.ctbl td:nth-child(4){width:56px;}
-.ctbl th:nth-child(5),.ctbl td:nth-child(5){width:106px;}
-.ctbl th:nth-child(6),.ctbl td:nth-child(6){width:120px;}
+.ctbl th:nth-child(1),.ctbl td:nth-child(1){width:12%;}
+.ctbl th:nth-child(2),.ctbl td:nth-child(2){width:21%;text-align:left;padding-left:8px;}
+.ctbl th:nth-child(3),.ctbl td:nth-child(3){width:10%;text-align:center;}
+.ctbl th:nth-child(4),.ctbl td:nth-child(4){width:13%;text-align:center;}
+.ctbl th:nth-child(5),.ctbl td:nth-child(5){width:24%;text-align:center;}
+.ctbl th:nth-child(6),.ctbl td:nth-child(6){width:20%;text-align:center;}
 
 /* raid list table */
 .rtbl{table-layout:fixed;}
@@ -117,9 +117,9 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 
 /* settings exp table */
 .setbl{table-layout:fixed;}
-.setbl th:nth-child(1),.setbl td:nth-child(1){width:32px;}
-.setbl th:nth-child(2),.setbl td:nth-child(2){width:auto;text-align:left;}
-.setbl th:nth-child(3),.setbl td:nth-child(3){width:120px;}
+.setbl th:nth-child(1),.setbl td:nth-child(1){width:10%;text-align:center;}
+.setbl th:nth-child(2),.setbl td:nth-child(2){width:60%;text-align:left;padding-left:8px;}
+.setbl th:nth-child(3),.setbl td:nth-child(3){width:30%;text-align:center;}
 
 /* settings raidbase table */
 .srbtbl{table-layout:fixed;}
@@ -273,7 +273,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 </div>
 
 <!-- ══════ CHAR SORT MODAL ══════ -->
-<div class="ov" id="sortModal">
+<div class="ov" id="sortModal" style="z-index:2000">
 <div class="mbox sm">
   <div class="mhd"><div class="mtitle">📋 캐릭터 순서변경</div><button class="mclose" onclick="closeM('sortModal')">✕</button></div>
   <div class="mbody">
@@ -291,7 +291,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 </div>
 
 <!-- ══════ EXP ORDER MODAL ══════ -->
-<div class="ov" id="expOrderModal">
+<div class="ov" id="expOrderModal" style="z-index:2000">
 <div class="mbox sm">
   <div class="mhd"><div class="mtitle">🏰 원정대 순서변경</div><button class="mclose" onclick="closeM('expOrderModal')">✕</button></div>
   <div class="mbody">
@@ -306,7 +306,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 </div>
 
 <!-- ══════ RAID ORDER MODAL ══════ -->
-<div class="ov" id="raidOrderModal">
+<div class="ov" id="raidOrderModal" style="z-index:2000">
 <div class="mbox sm">
   <div class="mhd"><div class="mtitle">🗡 레이드 순서변경</div><button class="mclose" onclick="closeM('raidOrderModal')">✕</button></div>
   <div class="mbody">
@@ -415,7 +415,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
       <button class="btn btn-blue" onclick="openApiModal()" style="font-size:12px;height:32px;padding:0 12px;margin-left:12px">🔑 API 키로 불러오기</button>
     </div>
     <!-- 원정대-닉네임-레벨-종류-전투력-역할-추가 한줄 -->
-    <div style="display:grid;grid-template-columns:0.9fr 1.3fr 0.6fr 0.7fr 0.9fr 0.7fr auto;gap:8px;align-items:end">
+    <div style="display:grid;grid-template-columns:1.0fr 1.0fr 0.6fr 0.8fr 0.6fr 0.6fr auto;gap:8px;align-items:end">
       <div class="ff"><label>원정대</label><select id="charExp" onchange="clearCharFields()"><option value="">원정대 선택</option></select></div>
       <div class="ff"><label>닉네임</label><input id="charNick" type="text" placeholder="캐릭터명" onkeydown="if(event.key==='Enter')addChar()"></div>
       <div class="ff"><label>레벨</label>
@@ -816,7 +816,7 @@ window.fetchLoaChar=async()=>{
           style="accent-color:var(--gold);width:14px;height:14px"></td>
         <td style="text-align:left;font-weight:600">${c.name}</td>
         <td style="text-align:left;color:var(--muted);font-size:12px">${c.className||'-'}</td>
-        <td><span class="badge blv">Lv.${c.level}<span style="font-size:10px;margin-left:2px">(${c.itemLevel})</span></span></td>
+        <td><span class="badge blv">${c.itemLevel}</span></td>
         <td style="font-weight:700;color:${c.role==='support'?'var(--support)':'var(--dealer)'}">
           ${c.combatPower>0?c.combatPower.toLocaleString():'<span style="color:var(--muted);font-size:11px">비공개</span>'}
         </td>
@@ -851,7 +851,7 @@ window.fetchLoaChar=async()=>{
             <th style="width:32px">선택</th>
             <th style="text-align:left">닉네임</th>
             <th style="text-align:left">클래스</th>
-            <th>레벨(아이템Lv)</th>
+            <th>아이템레벨</th>
             <th>⚡전투력 실값</th>
             <th>역할</th>
             <th>종류</th>
@@ -959,7 +959,7 @@ window.importChars=async()=>{
 /* ─── FIREBASE LISTENERS ─── */
 onValue(ref(db,'expeditions'),snap=>{window._E=snap.val()||{};renderExp();renderSExpList();updExpSel();});
 onValue(ref(db,'raids'),snap=>{window._R=snap.val()||{};renderRaids();updRaidSel();});
-onValue(ref(db,'raidBase'),snap=>{window._RB=snap.val()||{};renderSRBList();updateRaidSelect();});
+onValue(ref(db,'raidBase'),snap=>{window._RB=snap.val()||{};renderSRBList();updateRaidSelect();renderRaids();});
 
 /* ═══ RENDER: Settings Exp List ═══ */
 window.renderSExpList=()=>{
@@ -1000,9 +1000,9 @@ window.renderSRBList=()=>{
   </div>
   <table class="tbl" style="table-layout:fixed;width:100%">
     <thead><tr>
-      <th style="width:32px">#</th>
-      <th style="width:110px;text-align:center">레이드</th>
-      <th style="text-align:left;padding-left:10px">난이도</th>
+      <th style="width:10%;text-align:center">#</th>
+      <th style="width:30%;text-align:center">레이드</th>
+      <th style="width:60%;text-align:left;padding-left:10px">난이도</th>
     </tr></thead>
     <tbody>
     ${sorted.map(([name,data],i)=>{
@@ -1020,10 +1020,10 @@ window.renderSRBList=()=>{
           }).join('')
         : '<span style="color:var(--muted);font-size:11px">없음</span>';
       return`<tr>
-        <td style="color:var(--muted);font-size:12px;text-align:center">${i+1}</td>
+        <td style="color:var(--muted);font-size:12px;text-align:center;vertical-align:middle">${i+1}</td>
         <td id="rb-nm-${name}" style="text-align:center;vertical-align:middle;padding:8px 4px">
-          <div style="font-weight:700;color:var(--gold);margin-bottom:5px">${name}</div>
-          <div style="display:flex;justify-content:center;gap:4px;flex-wrap:wrap">
+          <div style="font-weight:700;color:var(--gold);margin-bottom:4px">${name}</div>
+          <div style="display:flex;justify-content:center;gap:4px">
             <button class="btn btn-ghost btn-act" onclick="startEditRBName('${name}')" style="font-size:9px;height:20px;padding:0 7px">수정</button>
             <button class="btn btn-red btn-act" onclick="delRB('${name}')" style="font-size:9px;height:20px;padding:0 7px">삭제</button>
           </div>
@@ -1084,9 +1084,9 @@ window.renderExp=()=>{
       <div class="exp-hd">
         <span style="font-size:18px">🏰</span>
         <span class="exp-nm">${exp.name}</span>
-        <span style="font-size:11px;color:var(--dealer)">딜 ${nd}</span>
-        <span style="font-size:11px;color:var(--support);margin-left:4px">서 ${ns}</span>
-        <span style="font-size:11px;color:var(--muted);margin-left:4px">총 ${list.length}</span>
+        <span style="font-size:11px;color:var(--dealer)">딜러 ${nd}명</span>
+        <span style="font-size:11px;color:var(--support);margin-left:4px">서폿 ${ns}명</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:4px">총 ${list.length}명</span>
         <button class="btn btn-ghost btn-act" onclick="openCharSort('${id}')" style="margin-left:auto">↕ 순서변경</button>
       </div>
       <div class="exp-bd">
@@ -1106,26 +1106,26 @@ function renderRaids(){
   const sorted=Object.entries(raids).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
   el.innerHTML=`<table class="tbl rtbl">
     <thead><tr>
-      <th>#</th>
-      <th style="text-align:left">레이드</th>
-      <th>난이도</th>
-      <th>입장 레벨</th>
-      <th>딜러</th>
-      <th>서폿</th>
-      <th>규모</th>
-      <th></th>
+      <th style="width:5%">#</th>
+      <th style="width:22%;text-align:left;padding-left:8px">레이드</th>
+      <th style="width:18%;text-align:center">난이도</th>
+      <th style="width:14%;text-align:center">입장 레벨</th>
+      <th style="width:9%;text-align:center">딜러</th>
+      <th style="width:9%;text-align:center">서폿</th>
+      <th style="width:9%;text-align:center">규모</th>
+      <th style="width:14%;text-align:center"></th>
     </tr></thead>
     <tbody>
     ${sorted.map(([id,r],i)=>{
       const ts=tierStyle(r.baseName||r.name,r.tier);
       return`<tr>
-        <td style="color:var(--muted);font-size:12px">${i+1}</td>
-        <td style="text-align:left;font-weight:700">${r.baseName||r.name}</td>
-        <td>${r.tier?`<span class="tier-badge" style="${ts};padding:3px 10px;font-size:11px">${r.tier}</span>`:'-'}</td>
-        <td><span class="tier-badge" style="${ts};padding:3px 8px;font-size:11px">Lv.${r.level}</span></td>
-        <td style="color:var(--dealer);font-weight:700">${r.dealers}명</td>
-        <td style="color:var(--support);font-weight:700">${r.supports}명</td>
-        <td style="color:var(--muted)">${r.dealers+r.supports}인</td>
+        <td style="color:var(--muted);font-size:12px;text-align:center">${i+1}</td>
+        <td style="text-align:left;font-weight:700;padding-left:8px">${r.baseName||r.name}</td>
+        <td style="text-align:center">${r.tier?`<span class="tier-badge" style="${ts};padding:3px 10px;font-size:11px">${r.tier}</span>`:'-'}</td>
+        <td style="text-align:center"><span class="tier-badge" style="${ts};padding:3px 8px;font-size:11px">Lv.${r.level}</span></td>
+        <td style="color:var(--dealer);font-weight:700;text-align:center">${r.dealers}명</td>
+        <td style="color:var(--support);font-weight:700;text-align:center">${r.supports}명</td>
+        <td style="color:var(--muted);text-align:center">${r.dealers+r.supports}인</td>
         <td class="btn-cell"><button class="btn btn-red btn-act" onclick="delRaid('${id}')">삭제</button></td>
       </tr>`;
     }).join('')}
