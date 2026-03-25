@@ -743,35 +743,49 @@ window.addRaid=async()=>{
 window.delRaid=async(id)=>{if(!confirm('레이드를 삭제하시겠습니까?'))return;await remove(ref(db,`raids/${id}`));toast('레이드 삭제 완료');};
 
 /* ─── LOA API ─── */
+// Netlify Function 상대경로 (같은 도메인)
+const FUNC_PATH = '/api/getExpedition';
+
 window.fetchLoaChar=async()=>{
   const key=document.getElementById('loaApiKey').value.trim();
   const name=document.getElementById('loaCharName').value.trim();
   const res=document.getElementById('loaApiResult');
   if(!name)return toast('캐릭터명을 입력하세요','err');
-  if(!key){res.innerHTML=`<div class="alert alert-warn">⚠️ API 키를 먼저 입력해주세요.</div>`;return;}
-  res.innerHTML=`<div style="color:var(--muted);font-size:13px"><span class="spin"></span>원정대 조회 중...</div>`;
+  res.innerHTML=`<div style="color:var(--muted);font-size:13px"><span class="spin"></span>전투력 실값 수집 중... (10~20초 소요)</div>`;
   document.getElementById('importBtn').style.display='none';
   try{
-    const r=await fetch(`https://developer-lostark.game.onstove.com/characters/${encodeURIComponent(name)}/siblings`,{headers:{accept:'application/json',authorization:`bearer ${key}`}});
-    if(!r.ok)throw new Error(r.status===401?'API 키가 올바르지 않습니다':r.status===404?'캐릭터를 찾을 수 없습니다':`오류 ${r.status}`);
+    // Netlify Function 호출 (전정실 스크래핑 → 전투력 실값)
+    let url=`${FUNC_PATH}?name=${encodeURIComponent(name)}`;
+    if(key)url+=`&key=${encodeURIComponent(key)}`;
+    const r=await fetch(url);
+    if(!r.ok){const e=await r.json().catch(()=>({error:`HTTP ${r.status}`}));throw new Error(e.error||`오류 ${r.status}`);}
     const data=await r.json();
-    if(!Array.isArray(data)||!data.length)throw new Error('캐릭터 정보 없음');
-    const parsed=data.map(c=>{
-      const lv=Math.floor(parseFloat((c.ItemAvgLevel||'0').replace(/,/g,''))||0);
-      return{...c,_lv:lv,_role:SUP_CLS.has(c.CharacterClassName||'')?'support':'dealer'};
-    }).sort((a,b)=>b._lv-a._lv);
-    const autoSel=new Set(parsed.slice(0,6).map(c=>c.CharacterName));
+    if(!data.characters||!data.characters.length)throw new Error('캐릭터 정보를 가져올 수 없습니다');
+    const chars=data.characters;
+    const autoSel=new Set(chars.slice(0,6).map(c=>c.name));
     const expOpts=Object.entries(window._E).sort((a,b)=>(a[1].order??999)-(b[1].order??999)).map(([id,e])=>`<option value="${id}">${e.name}</option>`).join('');
-    const rows=parsed.map(c=>`
+    const rows=chars.map(c=>`
       <tr>
-        <td><input type="checkbox" class="api-chk" id="ic-${c.CharacterName}" data-name="${c.CharacterName}" data-lv="${c._lv}" data-role="${c._role}" ${autoSel.has(c.CharacterName)?'checked':''} style="accent-color:var(--gold);width:14px;height:14px"></td>
-        <td style="text-align:left;font-weight:600">${c.CharacterName}</td>
-        <td style="text-align:left;color:var(--muted);font-size:12px">${c.CharacterClassName||'-'}</td>
-        <td><span class="badge blv">Lv.${c._lv}</span></td>
+        <td><input type="checkbox" class="api-chk" id="ic-${c.name}"
+          data-name="${c.name}" data-lv="${c.level}" data-cp="${c.combatPower}" data-role="${c.role}"
+          ${autoSel.has(c.name)?'checked':''}
+          style="accent-color:var(--gold);width:14px;height:14px"></td>
+        <td style="text-align:left;font-weight:600">${c.name}</td>
+        <td style="text-align:left;color:var(--muted);font-size:12px">${c.className||'-'}</td>
+        <td><span class="badge blv">Lv.${c.level}<span style="font-size:10px;margin-left:2px">(${c.itemLevel})</span></span></td>
+        <td style="font-weight:700;color:${c.role==='support'?'var(--support)':'var(--dealer)'}">
+          ${c.combatPower>0?c.combatPower.toLocaleString():'<span style="color:var(--muted);font-size:11px">비공개</span>'}
+        </td>
         <td>
-          <select id="ir-${c.CharacterName}" style="padding:3px 5px;font-size:11px;width:62px">
-            <option value="dealer" ${c._role==='dealer'?'selected':''}>딜러</option>
-            <option value="support" ${c._role==='support'?'selected':''}>서폿</option>
+          <select id="ir-${c.name}" style="padding:3px 5px;font-size:11px;width:62px">
+            <option value="dealer" ${c.role==='dealer'?'selected':''}>딜러</option>
+            <option value="support" ${c.role==='support'?'selected':''}>서폿</option>
+          </select>
+        </td>
+        <td>
+          <select id="ict-${c.name}" style="padding:3px 5px;font-size:11px;width:58px">
+            <option value="cp">전투력</option>
+            <option value="lopek">로펙</option>
           </select>
         </td>
       </tr>`).join('');
@@ -781,38 +795,120 @@ window.fetchLoaChar=async()=>{
         <select id="impExpId" style="padding:7px 10px;font-size:13px;width:100%"><option value="">원정대 선택</option>${expOpts}</select>
       </div>
       <div class="sel-ctrl">
-        <span style="font-size:12px;color:var(--muted)">총 ${parsed.length}캐릭터</span>
+        <span style="font-size:12px;color:var(--muted)">총 ${chars.length}캐릭터 · <span style="color:var(--gold);font-weight:700">⚡ 전투력 실값</span></span>
         <button class="btn btn-ghost btn-act" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=true)">전체선택</button>
         <button class="btn btn-ghost btn-act" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=false)">전체해제</button>
         <button class="btn btn-ghost btn-act" onclick="[...document.querySelectorAll('.api-chk')].forEach((b,i)=>b.checked=i<6)">상위6개</button>
-        <span style="font-size:11px;color:var(--muted)">※ 닉네임/클래스/레벨/역할 가져오기 · 전투력은 수동 입력</span>
+        <span style="font-size:11px;color:var(--muted)">※ 딜/폿 자동 감지</span>
       </div>
       <div style="overflow-x:auto">
         <table class="tbl" style="table-layout:auto;font-size:12px">
-          <thead><tr><th style="width:32px">선택</th><th style="text-align:left">닉네임</th><th style="text-align:left">클래스</th><th>아이템Lv</th><th>역할</th></tr></thead>
+          <thead><tr>
+            <th style="width:32px">선택</th>
+            <th style="text-align:left">닉네임</th>
+            <th style="text-align:left">클래스</th>
+            <th>레벨(아이템Lv)</th>
+            <th>⚡전투력 실값</th>
+            <th>역할</th>
+            <th>종류</th>
+          </tr></thead>
           <tbody>${rows}</tbody>
         </table>
       </div>`;
     document.getElementById('importBtn').style.display='';
-  }catch(e){res.innerHTML=`<div class="alert alert-warn">❌ ${e.message}<br><span style="font-size:11px">CORS 오류 시 서버 프록시가 필요합니다.</span></div>`;}
+  }catch(funcErr){
+    // Function 실패 시 → 공식 API 폴백 (전투력 수동 입력)
+    if(!key){
+      res.innerHTML=`<div class="alert alert-warn">❌ ${funcErr.message}<br>
+        <span style="font-size:11px">Function이 아직 배포되지 않았거나 오류가 발생했습니다.<br>
+        API 키를 입력하면 아이템레벨+클래스는 가져올 수 있습니다 (전투력은 수동 입력).</span></div>`;
+      return;
+    }
+    try{
+      res.innerHTML=`<div style="color:var(--muted);font-size:13px"><span class="spin"></span>공식 API로 재시도 중...</div>`;
+      const r2=await fetch(`https://developer-lostark.game.onstove.com/characters/${encodeURIComponent(name)}/siblings`,
+        {headers:{accept:'application/json',authorization:`bearer ${key}`}});
+      if(!r2.ok)throw new Error(r2.status===401?'API 키가 올바르지 않습니다':r2.status===404?'캐릭터 없음':`오류 ${r2.status}`);
+      const data2=await r2.json();
+      if(!Array.isArray(data2)||!data2.length)throw new Error('캐릭터 정보 없음');
+      const parsed=data2.map(c=>{
+        const lv=Math.floor(parseFloat((c.ItemAvgLevel||'0').replace(/,/g,''))||0);
+        return{...c,_lv:lv,_role:SUP_CLS.has(c.CharacterClassName||'')?'support':'dealer'};
+      }).sort((a,b)=>b._lv-a._lv);
+      const autoSel2=new Set(parsed.slice(0,6).map(c=>c.CharacterName));
+      const expOpts2=Object.entries(window._E).sort((a,b)=>(a[1].order??999)-(b[1].order??999)).map(([id,e])=>`<option value="${id}">${e.name}</option>`).join('');
+      const rows2=parsed.map(c=>`
+        <tr>
+          <td><input type="checkbox" class="api-chk" id="ic-${c.CharacterName}"
+            data-name="${c.CharacterName}" data-lv="${c._lv}" data-cp="0" data-role="${c._role}"
+            ${autoSel2.has(c.CharacterName)?'checked':''}
+            style="accent-color:var(--gold);width:14px;height:14px"></td>
+          <td style="text-align:left;font-weight:600">${c.CharacterName}</td>
+          <td style="text-align:left;color:var(--muted);font-size:12px">${c.CharacterClassName||'-'}</td>
+          <td><span class="badge blv">Lv.${c._lv}</span></td>
+          <td><input type="text" id="icp-${c.CharacterName}" inputmode="numeric" placeholder="직접입력"
+            style="width:80px;padding:3px 5px;font-size:11px;text-align:right"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'')"></td>
+          <td>
+            <select id="ir-${c.CharacterName}" style="padding:3px 5px;font-size:11px;width:62px">
+              <option value="dealer" ${c._role==='dealer'?'selected':''}>딜러</option>
+              <option value="support" ${c._role==='support'?'selected':''}>서폿</option>
+            </select>
+          </td>
+          <td>
+            <select id="ict-${c.CharacterName}" style="padding:3px 5px;font-size:11px;width:58px">
+              <option value="cp">전투력</option>
+              <option value="lopek">로펙</option>
+            </select>
+          </td>
+        </tr>`).join('');
+      res.innerHTML=`
+        <div class="alert alert-warn" style="margin-bottom:10px">⚠️ Function 미배포 — 전투력 직접 입력해주세요.</div>
+        <div style="background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:12px">
+          <label style="display:block;margin-bottom:5px">가져올 원정대</label>
+          <select id="impExpId" style="padding:7px 10px;font-size:13px;width:100%"><option value="">원정대 선택</option>${expOpts2}</select>
+        </div>
+        <div class="sel-ctrl">
+          <span style="font-size:12px;color:var(--muted)">총 ${parsed.length}캐릭터 · 딜/폿 자동 감지</span>
+          <button class="btn btn-ghost btn-act" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=true)">전체선택</button>
+          <button class="btn btn-ghost btn-act" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=false)">전체해제</button>
+          <button class="btn btn-ghost btn-act" onclick="[...document.querySelectorAll('.api-chk')].forEach((b,i)=>b.checked=i<6)">상위6개</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="tbl" style="table-layout:auto;font-size:12px">
+            <thead><tr><th style="width:32px">선택</th><th style="text-align:left">닉네임</th><th style="text-align:left">클래스</th><th>아이템Lv</th><th>전투력(직접입력)</th><th>역할</th><th>종류</th></tr></thead>
+            <tbody>${rows2}</tbody>
+          </table>
+        </div>`;
+      document.getElementById('importBtn').style.display='';
+    }catch(e2){res.innerHTML=`<div class="alert alert-warn">❌ ${e2.message}</div>`;}
+  }
 };
+
 window.importChars=async()=>{
   const eid=document.getElementById('impExpId')?.value;
   if(!eid)return toast('원정대를 선택하세요','err');
-  /* 기존 닉네임 목록 */
   const existingNicks=new Set(Object.values(window._E[eid]?.chars||{}).map(c=>c.nick));
-  const boxes=document.querySelectorAll('.api-chk');let cnt=0,skip=0;
+  const boxes=document.querySelectorAll('.api-chk');
+  let cnt=0,skip=0,zeroCp=0;
   for(const b of boxes){
     if(!b.checked)continue;
     const nm=b.dataset.name,lv=+b.dataset.lv;
     if(existingNicks.has(nm)){skip++;continue;}
     const role=document.getElementById(`ir-${nm}`)?.value||'dealer';
+    const cpType=document.getElementById(`ict-${nm}`)?.value||'cp';
+    const cpData=+b.dataset.cp||0;
+    const cpInput=parseInt((document.getElementById(`icp-${nm}`)?.value||'').replace(/[^0-9]/g,''))||0;
+    const cp=cpData>0?cpData:cpInput;
+    if(cp===0)zeroCp++;
     const snap=await get(ref(db,`expeditions/${eid}/chars`));
     const ord=Object.keys(snap.val()||{}).length;
-    await set(push(ref(db,`expeditions/${eid}/chars`)),{nick:nm,level:lv,cp:0,cpType:'cp',role,order:ord});cnt++;
+    await set(push(ref(db,`expeditions/${eid}/chars`)),{nick:nm,level:lv,cp,cpType,role,order:ord});
+    cnt++;
   }
-  let msg=`${cnt}개 캐릭터 가져오기 완료`;
+  let msg=`${cnt}개 가져오기 완료`;
   if(skip>0)msg+=` (중복 ${skip}개 제외)`;
+  if(zeroCp>0)msg+=` · 전투력 0 → ${zeroCp}개 수동입력 필요`;
   toast(msg);closeM('apiModal');
 };
 
