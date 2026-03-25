@@ -96,30 +96,33 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 .tbl tbody tr.dragging{opacity:.35;}
 
 /* char table */
-.ctbl{table-layout:fixed;}
+.ctbl{table-layout:fixed;width:100%;}
+.ctbl th,.ctbl td{text-align:center;vertical-align:middle;}
 .ctbl th:nth-child(1),.ctbl td:nth-child(1){width:12%;}
 .ctbl th:nth-child(2),.ctbl td:nth-child(2){width:21%;text-align:left;padding-left:8px;}
-.ctbl th:nth-child(3),.ctbl td:nth-child(3){width:10%;text-align:center;}
-.ctbl th:nth-child(4),.ctbl td:nth-child(4){width:13%;text-align:center;}
-.ctbl th:nth-child(5),.ctbl td:nth-child(5){width:24%;text-align:center;}
-.ctbl th:nth-child(6),.ctbl td:nth-child(6){width:20%;text-align:center;}
+.ctbl th:nth-child(3),.ctbl td:nth-child(3){width:10%;}
+.ctbl th:nth-child(4),.ctbl td:nth-child(4){width:13%;}
+.ctbl th:nth-child(5),.ctbl td:nth-child(5){width:24%;}
+.ctbl th:nth-child(6),.ctbl td:nth-child(6){width:20%;}
 
 /* raid list table */
-.rtbl{table-layout:fixed;}
-.rtbl th:nth-child(1),.rtbl td:nth-child(1){width:32px;text-align:center;}
-.rtbl th:nth-child(2),.rtbl td:nth-child(2){width:120px;text-align:left;padding-left:8px;}
-.rtbl th:nth-child(3),.rtbl td:nth-child(3){width:auto;text-align:center;}
-.rtbl th:nth-child(4),.rtbl td:nth-child(4){width:90px;text-align:center;}
-.rtbl th:nth-child(5),.rtbl td:nth-child(5){width:58px;text-align:center;}
-.rtbl th:nth-child(6),.rtbl td:nth-child(6){width:58px;text-align:center;}
-.rtbl th:nth-child(7),.rtbl td:nth-child(7){width:50px;text-align:center;}
-.rtbl th:nth-child(8),.rtbl td:nth-child(8){width:60px;text-align:center;}
+.rtbl{table-layout:fixed;width:100%;}
+.rtbl th,.rtbl td{text-align:center;vertical-align:middle;}
+.rtbl th:nth-child(1),.rtbl td:nth-child(1){width:5%;}
+.rtbl th:nth-child(2),.rtbl td:nth-child(2){width:22%;text-align:left;padding-left:8px;}
+.rtbl th:nth-child(3),.rtbl td:nth-child(3){width:16%;}
+.rtbl th:nth-child(4),.rtbl td:nth-child(4){width:14%;}
+.rtbl th:nth-child(5),.rtbl td:nth-child(5){width:9%;}
+.rtbl th:nth-child(6),.rtbl td:nth-child(6){width:9%;}
+.rtbl th:nth-child(7),.rtbl td:nth-child(7){width:9%;}
+.rtbl th:nth-child(8),.rtbl td:nth-child(8){width:16%;}
 
 /* settings exp table */
-.setbl{table-layout:fixed;}
-.setbl th:nth-child(1),.setbl td:nth-child(1){width:10%;text-align:center;}
+.setbl{table-layout:fixed;width:100%;}
+.setbl th,.setbl td{text-align:center;vertical-align:middle;}
+.setbl th:nth-child(1),.setbl td:nth-child(1){width:10%;}
 .setbl th:nth-child(2),.setbl td:nth-child(2){width:60%;text-align:left;padding-left:8px;}
-.setbl th:nth-child(3),.setbl td:nth-child(3){width:30%;text-align:center;}
+.setbl th:nth-child(3),.setbl td:nth-child(3){width:30%;}
 
 /* settings raidbase table */
 .srbtbl{table-layout:fixed;}
@@ -497,7 +500,7 @@ const SUP_CLS=new Set(['바드','홀리나이트','도화가','발키리']);
 /* ─── PRESET COLORS ─── */
 const PRESET_COLORS=['#e05a5a','#e08a3a','#d4c03a','#5ae080','#3ab8e0','#5a5ae0','#b05ae0','#e05aaa','#111111'];
 function swatchHtml(name,tier,curColor){
-  return`<div class="swatch-row">${PRESET_COLORS.map(c=>`<span class="swatch${curColor===c?' selected':''}" style="background:${c}" title="${c}" onclick="setTierColor('${name}','${tier}','${c}')"></span>`).join('')}<span class="swatch${!curColor?' selected':''}" style="background:var(--muted);position:relative" title="기본" onclick="setTierColor('${name}','${tier}','')">✕</span></div>`;
+  return`<div class="swatch-row">${PRESET_COLORS.map(col=>`<span class="swatch${curColor===col?' selected':''}" style="background:${col}" title="${col}" onclick="setTierColor('${name}','${tier}','${curColor===col?'':col}')"></span>`).join('')}</div>`;
 }
 
 /* ─── TOAST ─── */
@@ -697,6 +700,59 @@ window.confirmRaidOrder=async()=>{
   const items=document.querySelectorAll('#raidOrderList .sort-item');
   const upd={};items.forEach((item,i)=>{upd[`raids/${item.dataset.rid}/order`]=i;});
   await update(ref(db),upd);toast('레이드 순서 저장');closeM('raidOrderModal');
+};
+
+/* ─── RB / TIER ORDER ─── */
+let _tierOrderName=null;
+window.openRBOrder=()=>{
+  const sorted=Object.entries(window._RB).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
+  const ul=document.getElementById('rbOrderList');
+  if(!ul)return;
+  ul.innerHTML=sorted.map(([name])=>`
+    <li class="sort-item" draggable="true" data-name="${name}">
+      <span class="sh">⠿</span>
+      <span class="sn" style="color:var(--gold);font-weight:700">${name}</span>
+    </li>`).join('');
+  initDragList(ul);
+  const mo=document.getElementById('rbOrderModal');
+  if(mo){mo.style.zIndex='2000';mo.classList.add('show');}
+};
+window.confirmRBOrder=async()=>{
+  const items=document.querySelectorAll('#rbOrderList .sort-item');
+  const upd={};
+  items.forEach((item,i)=>{upd[`raidBase/${item.dataset.name}/order`]=i;});
+  await update(ref(db),upd);
+  toast('레이드명 순서 저장');
+  document.getElementById('rbOrderModal').classList.remove('show');
+};
+window.openTierOrder=(name)=>{
+  _tierOrderName=name;
+  const data=window._RB[name];if(!data)return;
+  const tiers=data.tiers||[];
+  const tc=data.tierColors||{};
+  const titleEl=document.getElementById('tierOrderTitle');
+  if(titleEl)titleEl.textContent=`"${name}" 난이도 순서변경`;
+  const ul=document.getElementById('tierOrderList');
+  if(!ul)return;
+  ul.innerHTML=tiers.map(t=>{
+    const col=tc[t]||null;
+    const bStyle=col?`background:${col}20;color:${col};border:1px solid ${col}60`:'background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3)';
+    return`<li class="sort-item" draggable="true" data-tier="${t}">
+      <span class="sh">⠿</span>
+      <span class="tier-badge" style="${bStyle}">${t}</span>
+    </li>`;
+  }).join('');
+  initDragList(ul);
+  const mo=document.getElementById('tierOrderModal');
+  if(mo){mo.style.zIndex='2000';mo.classList.add('show');}
+};
+window.confirmTierOrder=async()=>{
+  if(!_tierOrderName)return;
+  const items=document.querySelectorAll('#tierOrderList .sort-item');
+  const tiers=[...items].map(i=>i.dataset.tier);
+  await update(ref(db,`raidBase/${_tierOrderName}`),{tiers});
+  toast('난이도 순서 저장');
+  document.getElementById('tierOrderModal').classList.remove('show');
 };
 
 /* ─── DRAG LIST HELPER ─── */
@@ -1067,9 +1123,7 @@ window.renderExp=()=>{
     const ns=list.filter(([,c])=>c.role==='support').length;
     const rows=list.length?list.map(([cid,c])=>`<tr>
       <td><span class="badge ${c.role==='dealer'?'bd':'bs'}" style="font-size:10px">${c.role==='dealer'?'딜러':'서폿'}</span></td>
-      <td style="text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:1px" title="${c.nick}">
-        <span style="font-weight:600;font-size:13px">${c.nick}</span>
-      </td>
+      <td style="text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span style="font-weight:600;font-size:13px">${c.nick}</span></td>
       <td><span class="badge blv" style="font-size:10px">Lv.${c.level}</span></td>
       <td style="font-size:11px;color:var(--muted)">${c.cpType==='lopek'?'로펙':'전투력'}</td>
       <td style="color:${c.role==='dealer'?'var(--dealer)':'var(--support)'};font-weight:700;font-size:13px">${Number(c.cp||0).toLocaleString()}</td>
@@ -1106,26 +1160,26 @@ function renderRaids(){
   const sorted=Object.entries(raids).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
   el.innerHTML=`<table class="tbl rtbl">
     <thead><tr>
-      <th style="width:5%">#</th>
-      <th style="width:22%;text-align:left;padding-left:8px">레이드</th>
-      <th style="width:18%;text-align:center">난이도</th>
-      <th style="width:14%;text-align:center">입장 레벨</th>
-      <th style="width:9%;text-align:center">딜러</th>
-      <th style="width:9%;text-align:center">서폿</th>
-      <th style="width:9%;text-align:center">규모</th>
-      <th style="width:14%;text-align:center"></th>
+      <th>#</th>
+      <th style="text-align:left;padding-left:8px">레이드</th>
+      <th>난이도</th>
+      <th>입장 레벨</th>
+      <th>딜러</th>
+      <th>서폿</th>
+      <th>규모</th>
+      <th></th>
     </tr></thead>
     <tbody>
     ${sorted.map(([id,r],i)=>{
       const ts=tierStyle(r.baseName||r.name,r.tier);
       return`<tr>
-        <td style="color:var(--muted);font-size:12px;text-align:center">${i+1}</td>
+        <td style="color:var(--muted);font-size:12px">${i+1}</td>
         <td style="text-align:left;font-weight:700;padding-left:8px">${r.baseName||r.name}</td>
-        <td style="text-align:center">${r.tier?`<span class="tier-badge" style="${ts};padding:3px 10px;font-size:11px">${r.tier}</span>`:'-'}</td>
-        <td style="text-align:center"><span class="tier-badge" style="${ts};padding:3px 8px;font-size:11px">Lv.${r.level}</span></td>
-        <td style="color:var(--dealer);font-weight:700;text-align:center">${r.dealers}명</td>
-        <td style="color:var(--support);font-weight:700;text-align:center">${r.supports}명</td>
-        <td style="color:var(--muted);text-align:center">${r.dealers+r.supports}인</td>
+        <td>${r.tier?`<span class="tier-badge" style="${ts};padding:3px 10px;font-size:11px">${r.tier}</span>`:'-'}</td>
+        <td><span class="tier-badge" style="${ts};padding:3px 8px;font-size:11px">Lv.${r.level}</span></td>
+        <td style="color:var(--dealer);font-weight:700">${r.dealers}명</td>
+        <td style="color:var(--support);font-weight:700">${r.supports}명</td>
+        <td style="color:var(--muted)">${r.dealers+r.supports}인</td>
         <td class="btn-cell"><button class="btn btn-red btn-act" onclick="delRaid('${id}')">삭제</button></td>
       </tr>`;
     }).join('')}
