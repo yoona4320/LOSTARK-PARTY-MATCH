@@ -97,12 +97,12 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 
 /* char table */
 .ctbl{table-layout:fixed;}
-.ctbl th:nth-child(1),.ctbl td:nth-child(1){width:58px;}
-.ctbl th:nth-child(2),.ctbl td:nth-child(2){width:auto;text-align:left;padding-left:4px;}
-.ctbl th:nth-child(3),.ctbl td:nth-child(3){width:72px;}
-.ctbl th:nth-child(4),.ctbl td:nth-child(4){width:56px;}
-.ctbl th:nth-child(5),.ctbl td:nth-child(5){width:106px;}
-.ctbl th:nth-child(6),.ctbl td:nth-child(6){width:120px;}
+.ctbl th:nth-child(1),.ctbl td:nth-child(1){width:64px;text-align:center;}
+.ctbl th:nth-child(2),.ctbl td:nth-child(2){width:auto;text-align:left;padding-left:8px;}
+.ctbl th:nth-child(3),.ctbl td:nth-child(3){width:76px;text-align:center;}
+.ctbl th:nth-child(4),.ctbl td:nth-child(4){width:60px;text-align:center;}
+.ctbl th:nth-child(5),.ctbl td:nth-child(5){width:110px;text-align:center;}
+.ctbl th:nth-child(6),.ctbl td:nth-child(6){width:116px;text-align:center;}
 
 /* raid list table */
 .rtbl{table-layout:fixed;}
@@ -293,7 +293,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 <!-- ══════ EXP ORDER MODAL ══════ -->
 <div class="ov" id="expOrderModal">
 <div class="mbox sm">
-  <div class="mhd"><div class="mtitle">🏰 원정대 순서변경</div><button class="mclose" onclick="closeM('expOrderModal')">✕</button></div>
+  <div class="mhd"><div class="mtitle">⚔ 원정대 순서변경</div><button class="mclose" onclick="closeM('expOrderModal')">✕</button></div>
   <div class="mbody">
     <div style="font-size:12px;color:var(--muted);margin-bottom:12px">드래그하여 순서를 변경하세요</div>
     <ul class="sort-list" id="expOrderList"></ul>
@@ -320,13 +320,28 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 </div>
 </div>
 
+<!-- ══════ TIER ORDER MODAL ══════ -->
+<div class="ov" id="tierOrderModal">
+<div class="mbox sm">
+  <div class="mhd"><div class="mtitle" id="tierOrderTitle">난이도 순서변경</div><button class="mclose" onclick="closeM('tierOrderModal')">✕</button></div>
+  <div class="mbody">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px">드래그하여 순서를 변경하세요</div>
+    <ul class="sort-list" id="tierOrderList"></ul>
+  </div>
+  <div class="mft">
+    <button class="btn btn-ghost" onclick="closeM('tierOrderModal')">취소</button>
+    <button class="btn btn-gold" onclick="confirmTierOrder()">✅ 확인</button>
+  </div>
+</div>
+</div>
+
 <!-- ══════ SETTINGS MODAL ══════ -->
 <div class="ov" id="settingsModal">
 <div class="mbox lg">
   <div class="mhd"><div class="mtitle">⚙ 설정</div><button class="mclose" onclick="closeM('settingsModal')">✕</button></div>
   <div class="mbody">
     <div class="set-tabs">
-      <button class="set-tab active" onclick="setTab(0)">🏰 원정대 이름 관리</button>
+      <button class="set-tab active" onclick="setTab(0)">⚔ 원정대 이름 관리</button>
       <button class="set-tab" onclick="setTab(1)">🗡 레이드 이름 / 난이도</button>
     </div>
     <!-- 원정대 설정 -->
@@ -382,15 +397,19 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
   <div class="card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
       <div class="sec-title" style="margin-bottom:0;flex:1">캐릭터 직접 추가</div>
-      <button class="btn btn-blue" onclick="openM('apiModal')" style="font-size:12px;height:32px;padding:0 12px;margin-left:12px">🎮 인게임 불러오기</button>
+      <button class="btn btn-blue" onclick="openApiModal()" style="font-size:12px;height:32px;padding:0 12px;margin-left:12px">🔑 API 키로 불러오기</button>
     </div>
-    <div class="frow fr-char">
+    <!-- 1행: 원정대 / 닉네임 / 레벨 -->
+    <div class="frow" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:8px">
       <div class="ff"><label>원정대</label><select id="charExp" onchange="clearCharFields()"><option value="">원정대 선택</option></select></div>
       <div class="ff"><label>닉네임</label><input id="charNick" type="text" placeholder="캐릭터명" onkeydown="if(event.key==='Enter')addChar()"></div>
       <div class="ff"><label>레벨</label>
         <input id="charLv" type="text" inputmode="numeric" placeholder="1640" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addChar()">
         <div class="ferr" id="err-charLv">숫자만 입력해주세요!</div>
       </div>
+    </div>
+    <!-- 2행: 전투력종류 / 전투력값 / 역할 / 추가버튼 -->
+    <div class="frow" style="grid-template-columns:1fr 1fr 1fr auto;margin-bottom:0">
       <div class="ff"><label>전투력 종류</label>
         <select id="charCPType"><option value="cp">전투력</option><option value="lopek">로펙</option></select>
       </div>
@@ -405,7 +424,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
     </div>
   </div>
 
-  <div id="expList"><div class="empty"><div class="empty-icon">🏰</div>등록된 원정대가 없습니다<br><span style="font-size:12px">⚙ 설정에서 원정대를 추가하세요</span></div></div>
+  <div id="expList"><div class="empty"><div class="empty-icon">⚔</div>등록된 원정대가 없습니다<br><span style="font-size:12px">⚙ 설정에서 원정대를 추가하세요</span></div></div>
 </div>
 
 <!-- ══ TAB2: 레이드 ══ -->
@@ -481,8 +500,20 @@ window.toggleTheme=()=>{document.body.classList.toggle('dark');const d=document.
 (()=>{if(localStorage.getItem('loa_th')==='dark'){document.body.classList.add('dark');document.getElementById('themeLabel').textContent='다크';}})();
 
 /* ─── MODAL ─── */
-window.openM=(id)=>document.getElementById(id).classList.add('show');
+window.openM=(id)=>{
+  document.getElementById(id).classList.add('show');
+  const mb=document.querySelector(`#${id} .mbody`);
+  if(mb)setTimeout(()=>mb.scrollTop=0,10);
+};
 window.closeM=(id)=>document.getElementById(id).classList.remove('show');
+// API 모달 - 입력값 초기화 + 상단 고정
+window.openApiModal=()=>{
+  document.getElementById('loaApiKey').value='';
+  document.getElementById('loaCharName').value='';
+  document.getElementById('loaApiResult').innerHTML='';
+  document.getElementById('importBtn').style.display='none';
+  openM('apiModal');
+};
 document.querySelectorAll('.ov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show');}));
 
 /* ─── SETTINGS TABS ─── */
@@ -554,18 +585,19 @@ window.delChar=async(eid,cid)=>{if(!confirm('해당 캐릭터를 삭제하시겠
 window.editChar=(eid,cid)=>{
   const c=window._E[eid]?.chars?.[cid];if(!c)return;
   const row=event.target.closest('tr');
+  const h='height:28px;padding:3px 6px;font-size:12px;box-sizing:border-box;';
   row.innerHTML=`
-    <td><select id="er-role-${cid}" style="padding:3px 5px;font-size:12px;width:56px">
+    <td><select id="er-role-${cid}" style="${h}width:100%">
       <option value="dealer" ${c.role==='dealer'?'selected':''}>딜러</option>
       <option value="support" ${c.role==='support'?'selected':''}>서폿</option>
     </select></td>
-    <td style="text-align:left"><input id="er-nick-${cid}" value="${c.nick}" style="width:100%"></td>
-    <td><input id="er-lv-${cid}" value="${c.level}" style="width:56px"></td>
-    <td><select id="er-type-${cid}" style="padding:3px 4px;font-size:11px;width:56px">
+    <td style="text-align:left"><input id="er-nick-${cid}" value="${c.nick}" style="${h}width:100%"></td>
+    <td><input id="er-lv-${cid}" value="${c.level}" style="${h}width:100%"></td>
+    <td><select id="er-type-${cid}" style="${h}width:100%">
       <option value="cp" ${c.cpType==='cp'?'selected':''}>전투력</option>
       <option value="lopek" ${c.cpType==='lopek'?'selected':''}>로펙</option>
     </select></td>
-    <td><input id="er-cp-${cid}" value="${c.cp}" style="width:90px"></td>
+    <td><input id="er-cp-${cid}" value="${c.cp}" style="${h}width:100%"></td>
     <td class="btn-cell">
       <button class="btn btn-gold btn-act" onclick="saveChar('${eid}','${cid}')">저장</button>
       <button class="btn btn-ghost btn-act" onclick="renderExp()">취소</button>
@@ -624,7 +656,7 @@ window.openExpOrder=()=>{
   ul.innerHTML=sorted.map(([id,e])=>`
     <li class="sort-item" draggable="true" data-eid="${id}">
       <span class="sh">⠿</span>
-      <span style="font-size:13px">🏰</span>
+      <span style="font-size:13px">⚔</span>
       <span class="sn">${e.name}</span>
     </li>`).join('');
   initDragList(ul);
@@ -653,6 +685,34 @@ window.confirmRaidOrder=async()=>{
   const items=document.querySelectorAll('#raidOrderList .sort-item');
   const upd={};items.forEach((item,i)=>{upd[`raids/${item.dataset.rid}/order`]=i;});
   await update(ref(db),upd);toast('레이드 순서 저장');closeM('raidOrderModal');
+};
+
+/* ─── TIER ORDER MODAL ─── */
+let _tierOrderName=null;
+window.openTierOrder=(name)=>{
+  _tierOrderName=name;
+  const data=window._RB[name];if(!data)return;
+  const tiers=data.tiers||[];const tc=data.tierColors||{};
+  document.getElementById('tierOrderTitle').textContent=`"${name}" 난이도 순서변경`;
+  const ul=document.getElementById('tierOrderList');
+  ul.innerHTML=tiers.map(t=>{
+    const col=tc[t]||null;
+    const bStyle=col?`background:${col}20;color:${col};border:1px solid ${col}60`:'background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3)';
+    return`<li class="sort-item" draggable="true" data-tier="${t}">
+      <span class="sh">⠿</span>
+      <span class="tier-badge" style="${bStyle}">${t}</span>
+    </li>`;
+  }).join('');
+  initDragList(ul);
+  openM('tierOrderModal');
+};
+window.confirmTierOrder=async()=>{
+  if(!_tierOrderName)return;
+  const items=document.querySelectorAll('#tierOrderList .sort-item');
+  const tiers=[...items].map(i=>i.dataset.tier);
+  const data=window._RB[_tierOrderName];
+  await update(ref(db,`raidBase/${_tierOrderName}`),{tiers});
+  toast('난이도 순서 저장');closeM('tierOrderModal');
 };
 
 /* ─── DRAG LIST HELPER ─── */
@@ -958,24 +1018,26 @@ window.renderSRBList=()=>{
         const col=tc[t]||null;
         const bStyle=col?`background:${col}20;color:${col};border:1px solid ${col}60`:'background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3)';
         return`<div style="margin-bottom:6px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
             <span class="tier-badge" style="${bStyle}">${t}</span>
+            ${swatchHtml(name,t,col)}
             <button class="btn btn-ghost btn-act" onclick="editRBTier('${name}','${t}')" style="font-size:10px;min-width:40px;height:22px;padding:0 7px">수정</button>
             <button class="btn btn-red btn-act" onclick="delRBTier('${name}','${t}')" style="font-size:10px;min-width:40px;height:22px;padding:0 7px">삭제</button>
           </div>
-          ${swatchHtml(name,t,col)}
         </div>`;
       }).join('');
       return`<tr>
         <td style="color:var(--muted);font-size:12px">${i+1}</td>
         <td id="rb-nm-${name}" style="text-align:left">
-          <div style="display:flex;align-items:center;gap:6px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
             <span style="font-weight:700;color:var(--gold)">${name}</span>
             <button class="btn btn-ghost btn-act" onclick="startEditRBName('${name}')" style="font-size:10px;min-width:40px;height:22px;padding:0 7px">수정</button>
+            <button class="btn btn-red btn-act" onclick="delRB('${name}')" style="font-size:10px;min-width:40px;height:22px;padding:0 7px">삭제</button>
           </div>
+          <button class="btn btn-ghost btn-act" onclick="openTierOrder('${name}')" style="font-size:10px;height:22px;padding:0 9px;margin-top:2px">↕ 난이도 순서변경</button>
         </td>
         <td style="text-align:left">${tierHtml||'<span style="color:var(--muted);font-size:11px">난이도 없음</span>'}</td>
-        <td class="btn-cell"><button class="btn btn-red btn-act" onclick="delRB('${name}')">삭제</button></td>
+        <td></td>
       </tr>`;
     }).join('')}
     </tbody>
@@ -1026,11 +1088,11 @@ window.renderExp=()=>{
 
     return`<div class="exp-group">
       <div class="exp-hd">
-        <span style="font-size:18px">🏰</span>
+        <span style="font-size:18px">⚔</span>
         <span class="exp-nm">${exp.name}</span>
-        <span style="font-size:11px;color:var(--dealer)">딜 ${nd}</span>
-        <span style="font-size:11px;color:var(--support);margin-left:4px">서 ${ns}</span>
-        <span style="font-size:11px;color:var(--muted);margin-left:4px">총 ${list.length}</span>
+        <span style="font-size:11px;color:var(--dealer)">딜러 ${nd}</span>
+        <span style="font-size:11px;color:var(--support);margin-left:4px">서폿 ${ns}</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:4px">총 ${list.length}캐릭</span>
         <button class="btn btn-ghost btn-act" onclick="openCharSort('${id}')" style="margin-left:auto">↕ 순서변경</button>
       </div>
       <div class="exp-bd">
@@ -1066,7 +1128,7 @@ function renderRaids(){
         <td style="color:var(--muted);font-size:12px">${i+1}</td>
         <td style="text-align:left;font-weight:700">${r.baseName||r.name}</td>
         <td>${r.tier?`<span class="tier-badge" style="${ts};padding:3px 10px;font-size:11px">${r.tier}</span>`:'-'}</td>
-        <td><span class="badge blv">Lv.${r.level}</span></td>
+        <td><span class="tier-badge" style="${ts};padding:3px 10px;font-size:11px">Lv.${r.level}</span></td>
         <td style="color:var(--dealer);font-weight:700">${r.dealers}명</td>
         <td style="color:var(--support);font-weight:700">${r.supports}명</td>
         <td style="color:var(--muted)">${r.dealers+r.supports}인</td>
