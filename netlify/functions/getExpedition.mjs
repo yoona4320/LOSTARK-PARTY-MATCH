@@ -2,18 +2,11 @@
 const SUP = new Set(["바드", "홀리나이트", "도화가", "발키리"]);
 
 function parseCombatPower(html) {
-  // 실제 구조: <span>전투력</span><span>1,925<small>.02</small></span>
+  // <span>전투력</span><span>1,925<small>.02</small></span>
   const m = html.match(/<span>\s*전투력\s*<\/span>\s*<span>([\d,]+)<small>([\d.]*)<\/small><\/span>/);
-  if (m) {
-    const val = parseFloat(m[1].replace(/,/g, "") + m[2]) || 0;
-    if (val > 0) return Math.round(val);
-  }
-  // 소수 없는 경우: <span>전투력</span><span>1,925</span>
+  if (m) return Math.round(parseFloat(m[1].replace(/,/g, "") + m[2]) || 0);
   const m2 = html.match(/<span>\s*전투력\s*<\/span>\s*<span>([\d,]+)<\/span>/);
-  if (m2) {
-    const val = parseFloat(m2[1].replace(/,/g, "")) || 0;
-    if (val > 0) return Math.round(val);
-  }
+  if (m2) return Math.round(parseFloat(m2[1].replace(/,/g, "")) || 0);
   return 0;
 }
 
@@ -23,9 +16,6 @@ function parseItemLevel(html) {
   if (m) return parseFloat(m[1].replace(/,/g, "") + m[2]) || 0;
   const m2 = html.match(/<span>\s*장착 아이템 레벨\s*<\/span>\s*<span>([\d,]+)<\/span>/);
   if (m2) return parseFloat(m2[1].replace(/,/g, "")) || 0;
-  // 폴백
-  const m3 = html.match(/장착 아이템 레벨\s*Lv\.([\d,]+\.?\d*)/);
-  if (m3) return parseFloat(m3[1].replace(/,/g, "")) || 0;
   return 0;
 }
 
@@ -33,8 +23,6 @@ function parseCharLevel(html) {
   // <span>전투 레벨</span><span>70</span>
   const m = html.match(/<span>\s*전투 레벨\s*<\/span>\s*<span>(\d+)<\/span>/);
   if (m) return parseInt(m[1]);
-  const m2 = html.match(/전투 레벨\s*Lv\.(\d+)/);
-  if (m2) return parseInt(m2[1]);
   return 0;
 }
 
@@ -80,18 +68,27 @@ export default async (request) => {
     return new Response(JSON.stringify({ error: "name 파라미터 필요" }), { status: 400, headers });
   }
 
-  // 디버그 모드
+  // 디버그 모드 — 각 항목별 snippet 확인
   if (debug) {
     try {
       const html = await fetchProfile(charName);
-      const idx = html.indexOf("전투력");
-      const snippet = idx >= 0 ? html.slice(Math.max(0, idx - 30), idx + 200) : "전투력 텍스트 없음";
+
+      const cpIdx = html.indexOf("전투력");
+      const cpSnippet = cpIdx >= 0 ? html.slice(Math.max(0, cpIdx - 30), cpIdx + 200) : "없음";
+
+      const ilIdx = html.indexOf("장착 아이템 레벨");
+      const ilSnippet = ilIdx >= 0 ? html.slice(Math.max(0, ilIdx - 30), ilIdx + 200) : "없음";
+
+      const lvIdx = html.indexOf("전투 레벨");
+      const lvSnippet = lvIdx >= 0 ? html.slice(Math.max(0, lvIdx - 30), lvIdx + 200) : "없음";
+
       return new Response(JSON.stringify({
-        debug: true, charName, snippet,
+        debug: true, charName,
         combatPower: parseCombatPower(html),
         level: parseCharLevel(html),
         itemLevel: parseItemLevel(html),
         className: parseClassName(html),
+        snippets: { cp: cpSnippet, il: ilSnippet, lv: lvSnippet },
       }), { status: 200, headers });
     } catch (e) {
       return new Response(JSON.stringify({ debug: true, error: e.message }), { status: 200, headers });
@@ -101,7 +98,6 @@ export default async (request) => {
   try {
     let siblings = [];
 
-    // 1) 공식 API로 원정대 캐릭터 목록
     if (apiKey) {
       try {
         const r = await fetch(
@@ -121,7 +117,6 @@ export default async (request) => {
       } catch (_) {}
     }
 
-    // 2) API 키 없거나 실패 → 전정실에서 보유 캐릭 목록 파싱
     if (!siblings.length) {
       const html = await fetchProfile(charName);
       const seen = new Set();
@@ -138,7 +133,6 @@ export default async (request) => {
     siblings.sort((a, b) => b.itemLevel - a.itemLevel);
     const targets = siblings.slice(0, 20);
 
-    // 3) 각 캐릭터 전정실 → 전투력 실값 병렬 수집
     const results = await Promise.allSettled(
       targets.map(async (c) => {
         try {
