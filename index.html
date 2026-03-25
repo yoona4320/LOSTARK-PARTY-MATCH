@@ -97,23 +97,23 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 
 /* char table */
 .ctbl{table-layout:fixed;}
-.ctbl th:nth-child(1),.ctbl td:nth-child(1){width:68px;text-align:center;}
-.ctbl th:nth-child(2),.ctbl td:nth-child(2){width:130px;text-align:left;padding-left:12px;}
-.ctbl th:nth-child(3),.ctbl td:nth-child(3){width:74px;text-align:center;}
-.ctbl th:nth-child(4),.ctbl td:nth-child(4){width:68px;text-align:center;}
-.ctbl th:nth-child(5),.ctbl td:nth-child(5){width:110px;text-align:center;}
-.ctbl th:nth-child(6),.ctbl td:nth-child(6){width:116px;text-align:center;}
+.ctbl th:nth-child(1),.ctbl td:nth-child(1){width:58px;}
+.ctbl th:nth-child(2),.ctbl td:nth-child(2){width:auto;text-align:left;padding-left:4px;}
+.ctbl th:nth-child(3),.ctbl td:nth-child(3){width:72px;}
+.ctbl th:nth-child(4),.ctbl td:nth-child(4){width:56px;}
+.ctbl th:nth-child(5),.ctbl td:nth-child(5){width:106px;}
+.ctbl th:nth-child(6),.ctbl td:nth-child(6){width:120px;}
 
 /* raid list table */
 .rtbl{table-layout:fixed;}
-.rtbl th:nth-child(1),.rtbl td:nth-child(1){width:32px;}
-.rtbl th:nth-child(2),.rtbl td:nth-child(2){width:auto;text-align:left;}
+.rtbl th:nth-child(1),.rtbl td:nth-child(1){width:32px;text-align:center;}
+.rtbl th:nth-child(2),.rtbl td:nth-child(2){width:120px;text-align:left;padding-left:8px;}
 .rtbl th:nth-child(3),.rtbl td:nth-child(3){width:auto;text-align:center;}
-.rtbl th:nth-child(4),.rtbl td:nth-child(4){width:84px;}
-.rtbl th:nth-child(5),.rtbl td:nth-child(5){width:62px;}
-.rtbl th:nth-child(6),.rtbl td:nth-child(6){width:62px;}
-.rtbl th:nth-child(7),.rtbl td:nth-child(7){width:54px;}
-.rtbl th:nth-child(8),.rtbl td:nth-child(8){width:64px;}
+.rtbl th:nth-child(4),.rtbl td:nth-child(4){width:90px;text-align:center;}
+.rtbl th:nth-child(5),.rtbl td:nth-child(5){width:58px;text-align:center;}
+.rtbl th:nth-child(6),.rtbl td:nth-child(6){width:58px;text-align:center;}
+.rtbl th:nth-child(7),.rtbl td:nth-child(7){width:50px;text-align:center;}
+.rtbl th:nth-child(8),.rtbl td:nth-child(8){width:60px;text-align:center;}
 
 /* settings exp table */
 .setbl{table-layout:fixed;}
@@ -362,12 +362,12 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
     <!-- 원정대 설정 -->
     <div class="set-pane active" id="sp0">
       <div class="card" style="margin-bottom:12px">
-        <div class="frow fr3">
-          <div class="ff" style="grid-column:1/-1">
+        <div style="display:flex;gap:8px;align-items:flex-end">
+          <div style="flex:1">
             <label>원정대 이름</label>
             <input id="expNameS" type="text" placeholder="ex) 홍길동 원정대" onkeydown="if(event.key==='Enter')addExpS()">
           </div>
-          <div class="ff fe"><button class="btn btn-gold" onclick="addExpS()" style="width:100%">추가</button></div>
+          <button class="btn btn-gold" onclick="addExpS()" style="flex-shrink:0;height:36px">추가</button>
         </div>
       </div>
       <div id="settingsExpList"><div class="empty" style="padding:16px"><div class="empty-icon">🏰</div>원정대 없음</div></div>
@@ -414,7 +414,8 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
       <div class="sec-title" style="margin-bottom:0;flex:1">캐릭터 직접 추가</div>
       <button class="btn btn-blue" onclick="openApiModal()" style="font-size:12px;height:32px;padding:0 12px;margin-left:12px">🔑 API 키로 불러오기</button>
     </div>
-    <div class="frow" style="grid-template-columns:1.2fr 1.4fr 0.7fr 0.8fr 1fr 0.8fr auto;gap:8px;align-items:end">
+    <!-- 원정대-닉네임-레벨-종류-전투력-역할-추가 한줄 -->
+    <div style="display:grid;grid-template-columns:0.9fr 1.3fr 0.6fr 0.7fr 0.9fr 0.7fr auto;gap:8px;align-items:end">
       <div class="ff"><label>원정대</label><select id="charExp" onchange="clearCharFields()"><option value="">원정대 선택</option></select></div>
       <div class="ff"><label>닉네임</label><input id="charNick" type="text" placeholder="캐릭터명" onkeydown="if(event.key==='Enter')addChar()"></div>
       <div class="ff"><label>레벨</label>
@@ -444,7 +445,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
     <div class="sec-title">레이드 등록</div>
     <div class="frow fr-raid">
       <div class="ff"><label>레이드 이름</label><select id="raidName" onchange="updateTierSelect()"></select></div>
-      <div class="ff"><label>단계/난이도</label><select id="raidTier"></select></div>
+      <div class="ff"><label>난이도</label><select id="raidTier"></select></div>
       <div class="ff"><label>입장 레벨</label>
         <input id="raidLv" type="text" inputmode="numeric" placeholder="1620" oninput="numOnly(this)" onkeydown="if(event.key==='Enter')addRaid()">
         <div class="ferr" id="err-raidLv">숫자만 입력해주세요!</div>
@@ -512,10 +513,20 @@ window.toggleTheme=()=>{document.body.classList.toggle('dark');const d=document.
 
 /* ─── MODAL ─── */
 window.openM=(id)=>{
-  const el=document.getElementById(id);el.classList.add('show');
-  const mb=el.querySelector('.mbody');if(mb)setTimeout(()=>mb.scrollTop=0,10);
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.add('show');
+  const mb=el.querySelector('.mbody');
+  if(mb)setTimeout(()=>{mb.scrollTop=0;},10);
 };
 window.closeM=(id)=>document.getElementById(id).classList.remove('show');
+window.openApiModal=()=>{
+  const k=document.getElementById('loaApiKey');if(k)k.value='';
+  const n=document.getElementById('loaCharName');if(n)n.value='';
+  const r=document.getElementById('loaApiResult');if(r)r.innerHTML='';
+  const ib=document.getElementById('importBtn');if(ib)ib.style.display='none';
+  openM('apiModal');
+};
 document.querySelectorAll('.ov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show');}));
 
 /* ─── SETTINGS TABS ─── */
@@ -588,17 +599,17 @@ window.editChar=(eid,cid)=>{
   const c=window._E[eid]?.chars?.[cid];if(!c)return;
   const row=event.target.closest('tr');
   row.innerHTML=`
-    <td style="text-align:center"><select id="er-role-${cid}" style="height:28px;padding:0 4px;font-size:12px;width:100%;box-sizing:border-box">
+    <td><select id="er-role-${cid}" style="padding:3px 5px;font-size:12px;width:56px">
       <option value="dealer" ${c.role==='dealer'?'selected':''}>딜러</option>
       <option value="support" ${c.role==='support'?'selected':''}>서폿</option>
     </select></td>
-    <td style="text-align:left;padding-left:12px"><input id="er-nick-${cid}" value="${c.nick}" style="height:28px;padding:0 6px;width:100%;box-sizing:border-box"></td>
-    <td style="text-align:center"><input id="er-lv-${cid}" value="${c.level}" style="height:28px;padding:0 6px;width:100%;box-sizing:border-box;text-align:center"></td>
-    <td style="text-align:center"><select id="er-type-${cid}" style="height:28px;padding:0 4px;font-size:11px;width:100%;box-sizing:border-box">
+    <td style="text-align:left"><input id="er-nick-${cid}" value="${c.nick}" style="width:100%"></td>
+    <td><input id="er-lv-${cid}" value="${c.level}" style="width:56px"></td>
+    <td><select id="er-type-${cid}" style="padding:3px 4px;font-size:11px;width:56px">
       <option value="cp" ${c.cpType==='cp'?'selected':''}>전투력</option>
       <option value="lopek" ${c.cpType==='lopek'?'selected':''}>로펙</option>
     </select></td>
-    <td style="text-align:center"><input id="er-cp-${cid}" value="${c.cp}" style="height:28px;padding:0 6px;width:100%;box-sizing:border-box;text-align:right"></td>
+    <td><input id="er-cp-${cid}" value="${c.cp}" style="width:90px"></td>
     <td class="btn-cell">
       <button class="btn btn-gold btn-act" onclick="saveChar('${eid}','${cid}')">저장</button>
       <button class="btn btn-ghost btn-act" onclick="renderExp()">취소</button>
@@ -989,8 +1000,8 @@ window.renderSRBList=()=>{
   </div>
   <table class="tbl" style="table-layout:fixed;width:100%">
     <thead><tr>
-      <th style="width:36px">#</th>
-      <th style="width:120px;text-align:center">레이드</th>
+      <th style="width:32px">#</th>
+      <th style="width:110px;text-align:center">레이드</th>
       <th style="text-align:left;padding-left:10px">난이도</th>
     </tr></thead>
     <tbody>
@@ -1003,19 +1014,21 @@ window.renderSRBList=()=>{
             return`<span style="display:inline-flex;align-items:center;gap:3px;margin-right:8px;margin-bottom:4px">
               <span class="tier-badge" style="${bStyle};font-size:11px;padding:2px 7px">${t}</span>
               ${swatchHtml(name,t,col)}
-              <button class="btn btn-ghost btn-act" onclick="editRBTier('${name}','${t}')" style="font-size:9px;height:18px;min-width:30px;padding:0 4px">수정</button>
-              <button class="btn btn-red btn-act" onclick="delRBTier('${name}','${t}')" style="font-size:9px;height:18px;min-width:30px;padding:0 4px">삭제</button>
-              <button class="btn btn-ghost btn-act" onclick="openTierOrder('${name}')" style="font-size:9px;height:18px;padding:0 5px">↕ 난이도정렬</button>
+              <button class="btn btn-ghost btn-act" onclick="editRBTier('${name}','${t}')" style="font-size:9px;height:18px;min-width:28px;padding:0 4px">수정</button>
+              <button class="btn btn-red btn-act" onclick="delRBTier('${name}','${t}')" style="font-size:9px;height:18px;min-width:28px;padding:0 4px">삭제</button>
             </span>`;
           }).join('')
-        : '<span style="color:var(--muted);font-size:11px">난이도 없음</span>';
+        : '<span style="color:var(--muted);font-size:11px">없음</span>';
       return`<tr>
         <td style="color:var(--muted);font-size:12px;text-align:center">${i+1}</td>
-        <td id="rb-nm-${name}" style="text-align:center;vertical-align:middle">
+        <td id="rb-nm-${name}" style="text-align:center;vertical-align:middle;padding:8px 4px">
           <div style="font-weight:700;color:var(--gold);margin-bottom:5px">${name}</div>
-          <div style="display:flex;justify-content:center;gap:4px">
-            <button class="btn btn-ghost btn-act" onclick="startEditRBName('${name}')" style="font-size:9px;height:18px;padding:0 6px">수정</button>
-            <button class="btn btn-red btn-act" onclick="delRB('${name}')" style="font-size:9px;height:18px;padding:0 6px">삭제</button>
+          <div style="display:flex;justify-content:center;gap:4px;flex-wrap:wrap">
+            <button class="btn btn-ghost btn-act" onclick="startEditRBName('${name}')" style="font-size:9px;height:20px;padding:0 7px">수정</button>
+            <button class="btn btn-red btn-act" onclick="delRB('${name}')" style="font-size:9px;height:20px;padding:0 7px">삭제</button>
+          </div>
+          <div style="margin-top:4px">
+            <button class="btn btn-ghost btn-act" onclick="openTierOrder('${name}')" style="font-size:9px;height:20px;padding:0 7px">↕ 난이도정렬</button>
           </div>
         </td>
         <td style="text-align:left;padding-left:10px;vertical-align:middle"><div style="display:flex;flex-wrap:wrap;align-items:center">${tierHtml}</div></td>
@@ -1095,7 +1108,7 @@ function renderRaids(){
     <thead><tr>
       <th>#</th>
       <th style="text-align:left">레이드</th>
-      <th>단계</th>
+      <th>난이도</th>
       <th>입장 레벨</th>
       <th>딜러</th>
       <th>서폿</th>
@@ -1109,7 +1122,7 @@ function renderRaids(){
         <td style="color:var(--muted);font-size:12px">${i+1}</td>
         <td style="text-align:left;font-weight:700">${r.baseName||r.name}</td>
         <td>${r.tier?`<span class="tier-badge" style="${ts};padding:3px 10px;font-size:11px">${r.tier}</span>`:'-'}</td>
-        <td><span class="tier-badge" style="${ts};font-size:11px;padding:3px 8px">Lv.${r.level}</span></td>
+        <td><span class="tier-badge" style="${ts};padding:3px 8px;font-size:11px">Lv.${r.level}</span></td>
         <td style="color:var(--dealer);font-weight:700">${r.dealers}명</td>
         <td style="color:var(--support);font-weight:700">${r.supports}명</td>
         <td style="color:var(--muted)">${r.dealers+r.supports}인</td>
