@@ -97,7 +97,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 .tbl tbody tr.dragging{opacity:.35;}
 
 /* char table */
-.ctbl{table-layout:fixed;width:100%;}
+.ctbl{table-layout:fixed;width:100%;border-collapse:collapse;}
 .ctbl th,.ctbl td{text-align:center;vertical-align:middle;}
 .ctbl th:nth-child(1),.ctbl td:nth-child(1){width:12%;}
 .ctbl th:nth-child(2),.ctbl td:nth-child(2){width:21%;text-align:left;padding-left:8px;}
@@ -143,7 +143,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 .exp-group{margin-bottom:14px;}
 .exp-hd{background:linear-gradient(90deg,rgba(201,168,76,0.08),transparent);border:1px solid var(--border);border-radius:6px 6px 0 0;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .exp-nm{font-weight:700;font-size:14px;color:var(--gold);}
-.exp-bd{border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;overflow:hidden;width:100%;}
+.exp-bd{border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;overflow:hidden;display:block;}
 .exp-nm-inp{background:var(--inp);border:1px solid var(--gold-dark);border-radius:4px;color:var(--text);padding:3px 8px;font-size:14px;font-weight:700;font-family:'Noto Sans KR',sans-serif;width:180px;}
 
 /* ─── DRAG SORT LIST ─── */
@@ -895,7 +895,7 @@ window.fetchLoaChar=async()=>{
         <select id="impExpId" style="padding:7px 10px;font-size:13px;width:100%"><option value="">원정대 선택</option>${expOpts}</select>
       </div>
       <div class="sel-ctrl">
-        <span style="font-size:12px;color:var(--muted)">총 ${chars.length}캐릭터 · <span style="color:var(--gold);font-weight:700">⚡ 전투력</span></span>
+        <span style="font-size:12px;color:var(--muted)">총 ${chars.length}캐릭터</span>
         <button class="btn btn-ghost btn-act" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=true)">전체선택</button>
         <button class="btn btn-ghost btn-act" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=false)">전체해제</button>
         <button class="btn btn-ghost btn-act" onclick="[...document.querySelectorAll('.api-chk')].forEach((b,i)=>b.checked=i<6)">상위6개</button>
@@ -903,13 +903,13 @@ window.fetchLoaChar=async()=>{
       <div style="overflow-x:auto">
         <table class="tbl" style="table-layout:auto;font-size:12px">
           <thead><tr>
-            <th style="width:32px">선택</th>
-            <th style="text-align:left">닉네임</th>
-            <th style="text-align:left;width:65px">클래스</th>
-            <th>아이템레벨</th>
-            <th>⚡전투력</th>
-            <th>역할</th>
-            <th style="width:80px">종류</th>
+            <th style="width:36px">선택</th>
+            <th style="text-align:left;width:100px">닉네임</th>
+            <th style="text-align:left;width:76px">클래스</th>
+            <th style="width:72px">아이템레벨</th>
+            <th style="width:72px">⚡전투력</th>
+            <th style="width:58px">역할</th>
+            <th style="width:75px">종류</th>
           </tr></thead>
           <tbody>${rows}</tbody>
         </table>
