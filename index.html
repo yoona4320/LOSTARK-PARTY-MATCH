@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>로아 파티 매칭</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐱</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
@@ -125,7 +126,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 .setbl th:nth-child(3),.setbl td:nth-child(3){width:30%;}
 
 /* settings raidbase table */
-.srbtbl{table-layout:fixed;}
+.srbtbl{table-layout:fixed;width:100%;}
 .srbtbl th:nth-child(1),.srbtbl td:nth-child(1){width:32px;}
 .srbtbl th:nth-child(2),.srbtbl td:nth-child(2){width:130px;text-align:left;}
 .srbtbl th:nth-child(3),.srbtbl td:nth-child(3){width:auto;text-align:left;}
@@ -142,7 +143,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 .exp-group{margin-bottom:14px;}
 .exp-hd{background:linear-gradient(90deg,rgba(201,168,76,0.08),transparent);border:1px solid var(--border);border-radius:6px 6px 0 0;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .exp-nm{font-weight:700;font-size:14px;color:var(--gold);}
-.exp-bd{border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;overflow:hidden;}
+.exp-bd{border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;overflow:hidden;width:100%;}
 .exp-nm-inp{background:var(--inp);border:1px solid var(--gold-dark);border-radius:4px;color:var(--text);padding:3px 8px;font-size:14px;font-weight:700;font-family:'Noto Sans KR',sans-serif;width:180px;}
 
 /* ─── DRAG SORT LIST ─── */
@@ -259,7 +260,6 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
     <div class="api-nb">
       <strong>로스트아크 공식 Open API</strong>로 원정대 캐릭터를 자동으로 가져옵니다.<br>
       API 키: <a href="https://developer-lostark.game.onstove.com/" target="_blank">developer-lostark.game.onstove.com</a> (무료 발급)<br>
-      ※ CORS 오류 시 서버 프록시가 필요합니다.
     </div>
     <div class="api-qrow">
       <div class="ff"><label>API 키</label><input id="loaApiKey" type="password" placeholder="bearer 토큰"></div>
@@ -296,7 +296,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
 <!-- ══════ EXP ORDER MODAL ══════ -->
 <div class="ov" id="expOrderModal" style="z-index:2000">
 <div class="mbox sm">
-  <div class="mhd"><div class="mtitle">🏰 원정대 순서변경</div><button class="mclose" onclick="closeM('expOrderModal')">✕</button></div>
+  <div class="mhd"><div class="mtitle">⚔ 원정대 순서변경</div><button class="mclose" onclick="closeM('expOrderModal')">✕</button></div>
   <div class="mbody">
     <div style="font-size:12px;color:var(--muted);margin-bottom:12px">드래그하여 순서를 변경하세요</div>
     <ul class="sort-list" id="expOrderList"></ul>
@@ -359,7 +359,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
   <div class="mhd"><div class="mtitle">⚙ 설정</div><button class="mclose" onclick="closeM('settingsModal')">✕</button></div>
   <div class="mbody">
     <div class="set-tabs">
-      <button class="set-tab active" onclick="setTab(0)">🏰 원정대 이름 관리</button>
+      <button class="set-tab active" onclick="setTab(0)">⚔ 원정대 이름 관리</button>
       <button class="set-tab" onclick="setTab(1)">🗡 레이드 이름 / 난이도</button>
     </div>
     <!-- 원정대 설정 -->
@@ -373,7 +373,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
           <button class="btn btn-gold" onclick="addExpS()" style="flex-shrink:0;height:36px">추가</button>
         </div>
       </div>
-      <div id="settingsExpList"><div class="empty" style="padding:16px"><div class="empty-icon">🏰</div>원정대 없음</div></div>
+      <div id="settingsExpList"><div class="empty" style="padding:16px"><div class="empty-icon">⚔</div>원정대 없음</div></div>
     </div>
     <!-- 레이드 설정 -->
     <div class="set-pane" id="sp1">
@@ -439,7 +439,7 @@ input.ierr{border-color:var(--dealer)!important;box-shadow:0 0 0 2px rgba(224,90
     </div>
   </div>
 
-  <div id="expList"><div class="empty"><div class="empty-icon">🏰</div>등록된 원정대가 없습니다<br><span style="font-size:12px">⚙ 설정에서 원정대를 추가하세요</span></div></div>
+  <div id="expList"><div class="empty"><div class="empty-icon">⚔</div>등록된 원정대가 없습니다<br><span style="font-size:12px">⚙ 설정에서 원정대를 추가하세요</span></div></div>
 </div>
 
 <!-- ══ TAB2: 레이드 ══ -->
@@ -671,7 +671,7 @@ window.openExpOrder=()=>{
   ul.innerHTML=sorted.map(([id,e])=>`
     <li class="sort-item" draggable="true" data-eid="${id}">
       <span class="sh">⠿</span>
-      <span style="font-size:13px">🏰</span>
+      <span style="font-size:13px">⚔</span>
       <span class="sn">${e.name}</span>
     </li>`).join('');
   initDragList(ul);
@@ -851,10 +851,10 @@ window.fetchLoaChar=async()=>{
   const name=document.getElementById('loaCharName').value.trim();
   const res=document.getElementById('loaApiResult');
   if(!name)return toast('캐릭터명을 입력하세요','err');
-  res.innerHTML=`<div style="color:var(--muted);font-size:13px"><span class="spin"></span>전투력 실값 수집 중... (10~20초 소요)</div>`;
+  res.innerHTML=`<div style="color:var(--muted);font-size:13px"><span class="spin"></span>정보검색중... (10~20초 소요)</div>`;
   document.getElementById('importBtn').style.display='none';
   try{
-    // Netlify Function 호출 (전정실 스크래핑 → 전투력 실값)
+    // Netlify Function 호출 (전정실 스크래핑 → 전투력 수집)
     let url=`${FUNC_PATH}?name=${encodeURIComponent(name)}`;
     if(key)url+=`&key=${encodeURIComponent(key)}`;
     const r=await fetch(url);
@@ -871,7 +871,7 @@ window.fetchLoaChar=async()=>{
           ${autoSel.has(c.name)?'checked':''}
           style="accent-color:var(--gold);width:14px;height:14px"></td>
         <td style="text-align:left;font-weight:600">${c.name}</td>
-        <td style="text-align:left;color:var(--muted);font-size:12px">${c.className||'-'}</td>
+        <td style="text-align:left;color:var(--muted);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:65px">${c.className||'-'}</td>
         <td><span class="badge blv">${c.itemLevel}</span></td>
         <td style="font-weight:700;color:${c.role==='support'?'var(--support)':'var(--dealer)'}">
           ${c.combatPower>0?c.combatPower.toLocaleString():'<span style="color:var(--muted);font-size:11px">비공개</span>'}
@@ -883,7 +883,7 @@ window.fetchLoaChar=async()=>{
           </select>
         </td>
         <td>
-          <select id="ict-${c.name}" style="padding:3px 5px;font-size:11px;width:58px">
+          <select id="ict-${c.name}" style="padding:3px 5px;font-size:11px;width:75px">
             <option value="cp">전투력</option>
             <option value="lopek">로펙</option>
           </select>
@@ -895,22 +895,21 @@ window.fetchLoaChar=async()=>{
         <select id="impExpId" style="padding:7px 10px;font-size:13px;width:100%"><option value="">원정대 선택</option>${expOpts}</select>
       </div>
       <div class="sel-ctrl">
-        <span style="font-size:12px;color:var(--muted)">총 ${chars.length}캐릭터 · <span style="color:var(--gold);font-weight:700">⚡ 전투력 실값</span></span>
+        <span style="font-size:12px;color:var(--muted)">총 ${chars.length}캐릭터 · <span style="color:var(--gold);font-weight:700">⚡ 전투력</span></span>
         <button class="btn btn-ghost btn-act" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=true)">전체선택</button>
         <button class="btn btn-ghost btn-act" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=false)">전체해제</button>
         <button class="btn btn-ghost btn-act" onclick="[...document.querySelectorAll('.api-chk')].forEach((b,i)=>b.checked=i<6)">상위6개</button>
-        <span style="font-size:11px;color:var(--muted)">※ 딜/폿 자동 감지</span>
       </div>
       <div style="overflow-x:auto">
         <table class="tbl" style="table-layout:auto;font-size:12px">
           <thead><tr>
             <th style="width:32px">선택</th>
             <th style="text-align:left">닉네임</th>
-            <th style="text-align:left">클래스</th>
+            <th style="text-align:left;width:65px">클래스</th>
             <th>아이템레벨</th>
-            <th>⚡전투력 실값</th>
+            <th>⚡전투력</th>
             <th>역할</th>
-            <th>종류</th>
+            <th style="width:80px">종류</th>
           </tr></thead>
           <tbody>${rows}</tbody>
         </table>
@@ -969,7 +968,7 @@ window.fetchLoaChar=async()=>{
           <select id="impExpId" style="padding:7px 10px;font-size:13px;width:100%"><option value="">원정대 선택</option>${expOpts2}</select>
         </div>
         <div class="sel-ctrl">
-          <span style="font-size:12px;color:var(--muted)">총 ${parsed.length}캐릭터 · 딜/폿 자동 감지</span>
+          <span style="font-size:12px;color:var(--muted)">총 ${parsed.length}캐릭터</span>
           <button class="btn btn-ghost btn-act" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=true)">전체선택</button>
           <button class="btn btn-ghost btn-act" onclick="document.querySelectorAll('.api-chk').forEach(b=>b.checked=false)">전체해제</button>
           <button class="btn btn-ghost btn-act" onclick="[...document.querySelectorAll('.api-chk')].forEach((b,i)=>b.checked=i<6)">상위6개</button>
@@ -1021,7 +1020,7 @@ onValue(ref(db,'raidBase'),snap=>{window._RB=snap.val()||{};renderSRBList();upda
 window.renderSExpList=()=>{
   const el=document.getElementById('settingsExpList');if(!el)return;
   const exps=window._E;
-  if(!Object.keys(exps).length){el.innerHTML='<div class="empty" style="padding:14px"><div class="empty-icon">🏰</div>원정대 없음</div>';return;}
+  if(!Object.keys(exps).length){el.innerHTML='<div class="empty" style="padding:14px"><div class="empty-icon">⚔</div>원정대 없음</div>';return;}
   const sorted=Object.entries(exps).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
   el.innerHTML=`
     <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
@@ -1108,7 +1107,7 @@ function tierStyle(baseName,tier){
 window.renderExp=()=>{
   const el=document.getElementById('expList'),exps=window._E;
   if(!Object.keys(exps).length){
-    el.innerHTML='<div class="empty"><div class="empty-icon">🏰</div>등록된 원정대가 없습니다<br><span style="font-size:12px">⚙ 설정 → 원정대 이름 관리에서 추가하세요</span></div>';
+    el.innerHTML='<div class="empty"><div class="empty-icon">⚔</div>등록된 원정대가 없습니다<br><span style="font-size:12px">⚙ 설정 → 원정대 이름 관리에서 추가하세요</span></div>';
     return;
   }
   const sorted=Object.entries(exps).sort((a,b)=>(a[1].order??999)-(b[1].order??999));
@@ -1136,7 +1135,7 @@ window.renderExp=()=>{
 
     return`<div class="exp-group">
       <div class="exp-hd">
-        <span style="font-size:18px">🏰</span>
+        <span style="font-size:18px">⚔</span>
         <span class="exp-nm">${exp.name}</span>
         <span style="font-size:11px;color:var(--dealer)">딜러 ${nd}명</span>
         <span style="font-size:11px;color:var(--support);margin-left:4px">서폿 ${ns}명</span>
